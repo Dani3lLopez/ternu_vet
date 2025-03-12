@@ -45,8 +45,24 @@ public class People {
             }
         }
     }
+    public void cargarPersona(int registro){
+        PeopleController con = new PeopleController();
+        con.cargarListaPersonas();
+        List<String> persona = con.cargarDatosPersona(registro);
+
+        if (!persona.isEmpty()) {
+            System.out.println("Información de la persona:");
+            System.out.println("Nombre: " + persona.get(1));
+            System.out.println("Apellido: " + persona.get(2));
+            System.out.println("Teléfono: " + persona.get(3));
+            System.out.println("Email: " + persona.get(4));
+            System.out.println("DUI: " + persona.get(5));
+        } else {
+            System.out.println("No se encontró una persona con ese registro.");
+        }
+    }
     public void eliminarPersona(int registro) {
-        String id = person.capturarId(registro);
+        String id = person.capturarIdLista(registro);
         if (id != null) {
             int resultado = PeopleModel.eliminarPersona(id);
             if (resultado > 0) {
@@ -113,6 +129,9 @@ public class People {
                 case 5:
                     active = false;
                     System.out.println("Cerrando menú...");
+                    break;
+                case 6:
+                    actual.cargarPersona(2);
                     break;
                 default:
                     System.out.println("El valor ingresado no corresponde a una opción de menú");

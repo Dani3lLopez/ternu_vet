@@ -36,6 +36,32 @@ public class PeopleModel {
         return listaPersonas;
     }
 
+    public static List<String> cargarPersona(String id){
+        List<String> datosPersona = new ArrayList<>();
+        String sql = "SELECT * FROM personas WHERE id_persona = ?";
+
+        try (
+                Connection conexion = ConnectionModel.conectar();
+                PreparedStatement ps = conexion.prepareStatement(sql);
+        ) {
+            ps.setString(1, id);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                datosPersona.add(rs.getString("id_persona"));
+                datosPersona.add(rs.getString("nombre_persona"));
+                datosPersona.add(rs.getString("apellido_persona"));
+                datosPersona.add(rs.getString("telefono_persona"));
+                datosPersona.add(rs.getString("email_persona"));
+                datosPersona.add(rs.getString("dui_persona"));
+            }
+        } catch (SQLException e) {
+            System.out.println("Error al leer datos: " + e.getMessage());
+        }
+
+        return datosPersona;
+    }
+
     public static int ingresarNuevaPersona(String nombre, String apellido, String telefono, String email, String dui){
         int retorno = 0;
         String sql = "INSERT INTO personas (nombre_persona, apellido_persona, telefono_persona, email_persona, dui_persona) VALUES (?,?,?,?,?)";
