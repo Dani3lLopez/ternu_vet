@@ -75,16 +75,22 @@ public class People {
         }
     }
     public void actualizarPersona(int r){
+        List<String> persona = person.cargarDatosPersona(r);
         System.out.print("Nuevo Nombre: ");
         String nombre = scan.nextLine();
+        if (nombre.isEmpty()) nombre = persona.get(1);
         System.out.print("Nuevo Apellido: ");
         String apellido = scan.nextLine();
+        if (apellido.isEmpty()) apellido = persona.get(2);
         System.out.print("Nuevo Teléfono: ");
         String telefono = scan.nextLine();
+        if (telefono.isEmpty()) telefono = persona.get(3);
         System.out.print("Nuevo Email: ");
         String email = scan.nextLine();
+        if (email.isEmpty()) email = persona.get(4);
         System.out.print("Nuevo DUI: ");
         String dui = scan.nextLine();
+        if (dui.isEmpty()) dui = persona.get(5);
         person.actualizarPersona(r, nombre, apellido, telefono, email, dui);
     }
 
