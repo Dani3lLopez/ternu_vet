@@ -74,15 +74,23 @@ public class PeopleController {
         return PeopleModel.ingresarNuevaPersona(nombrePersona, apellidoPersona, telefonoPersona, emailPersona, duiPersona);
     }
 
-    public String capturarId(int numero) {
+    public String capturarIdLista(int numero) {
         if (numero > 0 && numero <= listaPersonas.size()) {
             return listaPersonas.get(numero - 1).get(0);
         }
         return null;
     }
 
+    public List<String> cargarDatosPersona(int registro){
+        String id = capturarIdLista(registro);
+        if (id != null){
+            return PeopleModel.cargarPersona(id);
+        }
+        return new ArrayList<>();
+    }
+
     public void actualizarPersona(int registro, String nombre, String apellido, String telefono, String email, String dui) {
-        String id = capturarId(registro);
+        String id = capturarIdLista(registro);
         if (id != null) {
             int resultado = PeopleModel.actualizarPersona(id, nombre, apellido, telefono, email, dui);
             if (resultado > 0) {
