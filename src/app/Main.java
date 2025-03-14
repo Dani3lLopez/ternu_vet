@@ -2,6 +2,7 @@ package src.app;
 
 //import src.Controllers.PeopleController;
 import src.Models.PeopleModel;
+import src.Views.Doctors;
 import src.Views.Owners;
 import src.Views.People;
 import java.util.Scanner;
@@ -16,7 +17,8 @@ public class Main {
             System.out.println("\uD83D\uDC36 Escoge una opción de menú para navegar");
             System.out.println("1. Personas");
             System.out.println("2. Propietarios");
-            System.out.println("3. Salir");
+            System.out.println("3. Doctores");
+            System.out.println("4. Salir");
             System.out.println(separador);
             System.out.print("Seleccione una opción: ");
             int choice = scan.nextInt();
@@ -33,6 +35,10 @@ public class Main {
                     owner.ownerMenu();
                     break;
                 case 3:
+                    Doctors doctor = new Doctors();
+                    doctor.doctorMenu();
+                    break;
+                case 4:
                     active = false;
                     System.out.println("Cerrando el programa...");
                     break;
