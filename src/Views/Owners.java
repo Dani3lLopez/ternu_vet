@@ -113,7 +113,7 @@ public class Owners {
 
             for (int c = 0; c < owner.listaCiudades().size(); c++) {
                 List<String> ciudad = owner.listaCiudades().get(c);
-                System.out.printf("| %-5d | %-50s |\n", (c + 1), ciudad.get(1) + " " + ciudad.get(2));
+                System.out.printf("| %-5d | %-50s |\n", (c + 1), ciudad.get(1));
             }
             System.out.println(separador);
 
