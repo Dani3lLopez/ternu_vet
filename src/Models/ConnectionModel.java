@@ -5,7 +5,7 @@ import java.sql.SQLException;
 
 public class ConnectionModel {
     public static Connection conectar() throws SQLException{
-        String url = "jdbc:mariadb://localhost:3306/ternuvet";
+        String url = "jdbc:mariadb://localhost:3306/db_vet_ternurita";
         String user = "root";
         String pass = "1234";
 

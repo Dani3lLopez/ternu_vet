@@ -11,7 +11,7 @@ public class PeopleModel {
 
     public static List<List<String>> cargarListaPersonas() {
         List<List<String>> listaPersonas = new ArrayList<>();
-        String sql = "SELECT * FROM personas";
+        String sql = "SELECT DISTINCT(dui_persona), nombre_persona, apellido_persona, telefono_persona, email_persona, id_persona FROM personas";
 
         try (
                 Connection conexion = ConnectionModel.conectar();
@@ -35,7 +35,6 @@ public class PeopleModel {
 
         return listaPersonas;
     }
-
     public static List<String> cargarPersona(String id){
         List<String> datosPersona = new ArrayList<>();
         String sql = "SELECT * FROM personas WHERE id_persona = ?";
@@ -61,7 +60,6 @@ public class PeopleModel {
 
         return datosPersona;
     }
-
     public static int ingresarNuevaPersona(String nombre, String apellido, String telefono, String email, String dui){
         int retorno = 0;
         String sql = "INSERT INTO personas (nombre_persona, apellido_persona, telefono_persona, email_persona, dui_persona) VALUES (?,?,?,?,?)";
@@ -81,7 +79,6 @@ public class PeopleModel {
             return retorno;
         }
     }
-
     public static int actualizarPersona(String id, String nombre, String apellido, String telefono, String email, String dui) {
         String sql = "UPDATE personas SET nombre_persona=?, apellido_persona=?, telefono_persona=?, email_persona=?, dui_persona=? WHERE id_persona=?";
         try (Connection conexion = ConnectionModel.conectar();
@@ -98,7 +95,6 @@ public class PeopleModel {
         }
         return 0;
     }
-
     public static int eliminarPersona(String id) {
         String sql = "DELETE FROM personas WHERE id_persona=?";
         try (Connection conexion = ConnectionModel.conectar();
