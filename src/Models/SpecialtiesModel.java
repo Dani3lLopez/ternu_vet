@@ -30,4 +30,30 @@ public class SpecialtiesModel {
 
         return listaEspecialidades;
     }
+    public static int ingresarNuevaEspecialidad(String nombreEspecialidad){
+        int retorno = 0;
+        String sql = "INSERT INTO especialidades (nombre_especialidad) VALUES (?)";
+        try(
+                Connection conexion = ConnectionModel.conectar();
+                PreparedStatement ps = conexion.prepareStatement(sql)){
+            ps.setString(1, nombreEspecialidad);
+
+            retorno = ps.executeUpdate();
+            return retorno;
+        } catch (SQLException e) {
+            System.out.println("Error al registrar datos: " + e.getMessage());
+            return retorno;
+        }
+    }
+    public static int eliminarEspecialidad(String id) {
+        String sql = "DELETE FROM especialidades WHERE id_especialidad=?";
+        try (Connection conexion = ConnectionModel.conectar();
+             PreparedStatement ps = conexion.prepareStatement(sql)) {
+            ps.setString(1, id);
+            return ps.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("Error al eliminar el registro de persona: " + e.getMessage());
+        }
+        return 0;
+    }
 }

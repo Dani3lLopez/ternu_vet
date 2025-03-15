@@ -3,6 +3,7 @@ package src.Controllers;
 import src.Models.PeopleModel;
 import src.Models.SpecialtiesModel;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class SpecialtiesController {
@@ -10,7 +11,7 @@ public class SpecialtiesController {
     }
 
     private String idEspecialidad;
-    private String nombre_especialidad;
+    private String nombreEspecialidad;
     private List<List<String>> listaEspecialidades;
 
     public String getIdEspecialidad() {
@@ -21,19 +22,40 @@ public class SpecialtiesController {
         this.idEspecialidad = idEspecialidad;
     }
 
-    public String getNombre_especialidad() {
-        return nombre_especialidad;
+    public String getNombreEspecialidad() {
+        return nombreEspecialidad;
     }
 
-    public void setNombre_especialidad(String nombre_especialidad) {
-        this.nombre_especialidad = nombre_especialidad;
+    public void setNombreEspecialidad(String nombreEspecialidad) {
+        this.nombreEspecialidad = nombreEspecialidad;
     }
 
+    public String capturarIdLista(int numero) {
+        if (numero > 0 && numero <= listaEspecialidades.size()) {
+            return listaEspecialidades.get(numero - 1).get(0);
+        }
+        return null;
+    }
     public void cargarListaEspecialidades() {
         listaEspecialidades = SpecialtiesModel.cargarListaEspecialidades();
     }
-
     public List<List<String>> listaEspecialidades() {
         return listaEspecialidades;
+    }
+    public int RegistrarEspecialidad() {
+        return SpecialtiesModel.ingresarNuevaEspecialidad(nombreEspecialidad);
+    }
+    public void eliminarEspecialidad(int numero){
+        String id = this.capturarIdLista(numero);
+        if (id != null) {
+            int resultado = SpecialtiesModel.eliminarEspecialidad(id);
+            if (resultado > 0) {
+                System.out.println("Especialidad eliminada correctamente.");
+            } else {
+                System.out.println("Error al eliminar el registro.");
+            }
+        } else {
+            System.out.println("Registro inexistente.");
+        }
     }
 }

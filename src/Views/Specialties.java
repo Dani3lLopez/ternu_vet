@@ -30,23 +30,16 @@ public class Specialties {
                     actual.cargarEspecialidades();
                     break;
                 case 2:
-                    //actual.registrarPersona();
+                    actual.registrarEspecialidad();
                     break;
                 case 3:
                     actual.cargarEspecialidades();
-                    System.out.print("Ingrese el número de registro a actualizar: ");
+                    System.out.print("Ingrese el número de registro que desea eliminar: ");
                     int r = scan.nextInt();
                     scan.nextLine();
-                    //actual.actualizarPersona(r);
+                    actual.eliminarEspecialidad(r);
                     break;
                 case 4:
-                    actual.cargarEspecialidades();
-                    System.out.print("Ingrese el número de registro a eliminar: ");
-                    int registro = scan.nextInt();
-                    scan.nextLine();
-                    //actual.eliminarPersona(registro);
-                    break;
-                case 5:
                     active = false;
                     System.out.println("Cerrando menú...");
                     break;
@@ -73,5 +66,20 @@ public class Specialties {
             }
             System.out.println(separador);
         }
+    }
+    public void registrarEspecialidad(){
+        System.out.println("Nombres: ");
+        String nombreEspecialidad = scan.nextLine();
+        specialty.setNombreEspecialidad(nombreEspecialidad);
+
+        int resultado = specialty.RegistrarEspecialidad();
+        if (resultado == 1){
+            System.out.println("Especialidad registrada con éxito");
+        }else{
+            System.out.println("Ha ocurrido un error");
+        }
+    }
+    public void eliminarEspecialidad(int registro) {
+        specialty.eliminarEspecialidad(registro);
     }
 }
