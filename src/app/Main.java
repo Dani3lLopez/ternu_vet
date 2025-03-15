@@ -17,7 +17,8 @@ public class Main {
             System.out.println("3. Doctores");
             System.out.println("4. Especialidades");
             System.out.println("5. Usuarios");
-            System.out.println("6. Salir");
+            System.out.println("6. Facturas");
+            System.out.println("7. Salir");
             System.out.println(separador);
             System.out.print("Seleccione una opción: ");
             int choice = scan.nextInt();
@@ -46,6 +47,10 @@ public class Main {
                     user.userMenu();
                     break;
                 case 6:
+                    Invoices invoice = new Invoices();
+                    invoice.invoiceMenu();
+                    break;
+                case 7:
                     active = false;
                     System.out.println("Cerrando el programa...");
                     break;
