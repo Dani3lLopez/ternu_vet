@@ -1,5 +1,6 @@
 package src.Controllers;
 
+import src.Models.DoctorsModel;
 import src.Models.OwnersModel;
 import src.Models.UsersModel;
 
@@ -104,9 +105,9 @@ public class UsersController extends PeopleController {
         return listaDoctoresSinUsuario;
     }
 
-    public String capturarIdLista(int numero) {
-        if (numero > 0 && numero <= listaDoctores.size()) {
-            return listaDoctores.get(numero - 1).get(0);
+    public String capturarIdListaUsuario(int numero) {
+        if (numero > 0 && numero <= listaUsuarios.size()) {
+            return listaUsuarios.get(numero - 1).get(0);
         }
         return null;
     }
@@ -117,5 +118,41 @@ public class UsersController extends PeopleController {
 
     public int RegistrarUsuario() {
         return UsersModel.ingresarNuevoUsuario(nombreUsuario, claveUsuario, estadoUsuario, administrador, idDoctor);
+    }
+
+    public List<String> cargarDatosUsuario(int registro){
+        String id = capturarIdListaUsuario(registro);
+        if (id != null){
+            return UsersModel.cargarUsuario(id);
+        }
+        return new ArrayList<>();
+    }
+
+    public void actualizarUsuario(int registro, String nombreUsuario, String claveUsuario, String estadoUsuario, int administrador, String idDoctor) {
+        String id = capturarIdListaUsuario(registro);
+        if (id != null) {
+            int resultado = UsersModel.actualizarUsuario(id, nombreUsuario, claveUsuario, estadoUsuario, administrador, idDoctor);
+            if (resultado > 0) {
+                System.out.println("Registro actualizado correctamente.");
+            } else {
+                System.out.println("Error al actualizar el registro.");
+            }
+        } else {
+            System.out.println("Registro inexistente.");
+        }
+    }
+
+    public void desactivarUsuario(int numero){
+        String id = this.capturarIdListaUsuario(numero);
+        if (id != null) {
+            int resultado = UsersModel.desactivarUsuario(id);
+            if (resultado > 0) {
+                System.out.println("Usuario desactivado correctamente.");
+            } else {
+                System.out.println("Error al desactivar el registro.");
+            }
+        } else {
+            System.out.println("Registro inexistente.");
+        }
     }
 }

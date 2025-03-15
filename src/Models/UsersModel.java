@@ -10,7 +10,7 @@ import java.util.List;
 public class UsersModel {
     public static List<List<String>> cargarListaUsuarios() {
         List<List<String>> listaUsuarios = new ArrayList<>();
-        String sql = "SELECT * FROM usuarios WHERE estado_usuario = 'Activo' ";
+        String sql = "SELECT * FROM usuarios";
 
         try (
                 Connection conexion = ConnectionModel.conectar();
@@ -19,6 +19,7 @@ public class UsersModel {
         ) {
             while (rs.next()) {
                 List<String> usuario = new ArrayList<>();
+                usuario.add(rs.getString("id_usuario"));
                 usuario.add(rs.getString("nombre_usuario"));
                 usuario.add(rs.getString("clave_usuario"));
                 usuario.add(rs.getString("estado_usuario"));
@@ -53,6 +54,31 @@ public class UsersModel {
         }
 
         return listaDoctores;
+    }
+    public static List<String> cargarUsuario(String id){
+        List<String> datosUsuario = new ArrayList<>();
+        String sql = "SELECT * FROM usuarios WHERE id_usuario = ?";
+
+        try (
+                Connection conexion = ConnectionModel.conectar();
+                PreparedStatement ps = conexion.prepareStatement(sql);
+        ) {
+            ps.setString(1, id);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                datosUsuario.add(rs.getString("id_usuario"));
+                datosUsuario.add(rs.getString("nombre_usuario"));
+                datosUsuario.add(rs.getString("clave_usuario"));
+                datosUsuario.add(rs.getString("estado_usuario"));
+                datosUsuario.add(rs.getString("administrador"));
+                datosUsuario.add(rs.getString("id_doctor"));
+            }
+        } catch (SQLException e) {
+            System.out.println("Error al leer datos: " + e.getMessage());
+        }
+
+        return datosUsuario;
     }
     public static boolean existenciaUsuario(String nombreUsuario) {
         String sql = "SELECT COUNT(*) FROM usuarios WHERE nombre_usuario = ?";
@@ -95,14 +121,15 @@ public class UsersModel {
     }
     public static int ingresarNuevoUsuario(String nombreUsuario, String claveUsuario, String estadoUsuario, Boolean administrador, String idDoctor){
         int retorno = 0;
-        String sql = "INSERT INTO usuarios (nombre_usuario, clave_usuario, estado_usuario, administrador, id_doctor) VALUES (?,?,?,1,?)";
+        String sql = "INSERT INTO usuarios (nombre_usuario, clave_usuario, estado_usuario, administrador, id_doctor) VALUES (?,?,?,?,?)";
         try(
                 Connection conexion = ConnectionModel.conectar();
                 PreparedStatement ps = conexion.prepareStatement(sql)){
             ps.setString(1, nombreUsuario);
             ps.setString(2, claveUsuario);
             ps.setString(3, estadoUsuario);
-            ps.setString(4, idDoctor);
+            ps.setBoolean(4, administrador);
+            ps.setString(5, idDoctor);
 
             retorno = ps.executeUpdate();
             return retorno;
@@ -110,5 +137,33 @@ public class UsersModel {
             System.out.println("Error al registrar datos: " + e.getMessage());
             return retorno;
         }
+    }
+    public static int actualizarUsuario(String id, String nombreUsuario, String claveUsuario, String estadoUsuario, int administrador, String idDoctor) {
+        String sql = "UPDATE usuarios SET nombre_usuario=?, clave_usuario=?, estado_usuario=?, administrador=?, id_doctor=? WHERE id_usuario=?";
+        try (Connection conexion = ConnectionModel.conectar();
+             PreparedStatement ps = conexion.prepareStatement(sql)) {
+            ps.setString(1, nombreUsuario);
+            ps.setString(2, claveUsuario);
+            ps.setString(3, estadoUsuario);
+            ps.setInt(4, administrador);
+            ps.setString(5, idDoctor);
+            ps.setString(6, id);
+            return ps.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("Error al actualizar persona: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return 0;
+    }
+    public static int desactivarUsuario(String id) {
+        String sql = "UPDATE usuarios SET estado_usuario = 'Inactivo' WHERE id_usuario=?";
+        try (Connection conexion = ConnectionModel.conectar();
+             PreparedStatement ps = conexion.prepareStatement(sql)) {
+            ps.setString(1, id);
+            return ps.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("Error al cambiar visibilidad del registro: " + e.getMessage());
+        }
+        return 0;
     }
 }
