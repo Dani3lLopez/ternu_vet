@@ -93,4 +93,39 @@ public class DoctorsController extends PeopleController{
         }
         return "Sin especialidad";
     }
+    public String capturarIdLista(int numero) {
+        if (numero > 0 && numero <= listaDoctores.size()) {
+            return listaDoctores.get(numero - 1).get(0);
+        }
+        return null;
+    }
+    public String capturarIdListaEspecialidad(int numero) {
+        if (numero > 0 && numero <= listaEspecialidades.size()) {
+            return listaEspecialidades.get(numero - 1).get(0);
+        }
+        return null;
+    }
+    public int RegistrarDoctor() {
+        return DoctorsModel.ingresarNuevoDoctor(fechaContratacionDoctor, fechaNacimientoDoctor, idPersona, idEspecialidad);
+    }
+    public List<String> cargarDatosDoctor(int registro){
+        String id = capturarIdLista(registro);
+        if (id != null){
+            return DoctorsModel.cargarDoctor(id);
+        }
+        return new ArrayList<>();
+    }
+    public void actualizarDoctor(int registro, String fechaContratacionDoctor, String fechaNacimientoDoctor, String idPersona, String idEspecialidad) {
+        String id = capturarIdLista(registro);
+        if (id != null) {
+            int resultado = DoctorsModel.actualizarDoctor(id, fechaContratacionDoctor, fechaNacimientoDoctor, idPersona, idEspecialidad);
+            if (resultado > 0) {
+                System.out.println("Registro actualizado correctamente.");
+            } else {
+                System.out.println("Error al actualizar el registro.");
+            }
+        } else {
+            System.out.println("Registro inexistente.");
+        }
+    }
 }
