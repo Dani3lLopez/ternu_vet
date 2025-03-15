@@ -37,11 +37,11 @@ public class Users {
                     actual.registrarUsuarios();
                     break;
                 case 3:
-                    //actual.cargarPropietarios();
+                    actual.cargarUsuarios();
                     System.out.print("Ingrese el número de registro a actualizar: ");
                     int r = scan.nextInt();
                     scan.nextLine();
-                    //actual.actualizarPropietario(r);
+                    actual.actualizarUsuario(r);
                     break;
                 case 4:
                     //actual.cargarPropietarios();
@@ -73,9 +73,9 @@ public class Users {
 
             int n = 1;
             for (List<String> usuario : usuarios) {
-                String nombre = usuario.get(0);
-                String estado = usuario.get(2);
-                String idDoctor = usuario.get(4);
+                String nombre = usuario.get(1);
+                String estado = usuario.get(3);
+                String idDoctor = usuario.get(5);
                 String idPersonaDoctor = "";
 
                 for (List<String> doctor : user.listaDoctores()) {
@@ -124,8 +124,8 @@ public class Users {
         int valor = scan.nextInt();
         scan.nextLine();
 
-        if (valor > 0 && valor <= user.listaDoctores().size()) {
-            String idDoctor = user.listaDoctores().get(valor - 1).get(0);
+        if (valor > 0 && valor <= doctores.size()) {
+            String idDoctor = doctores.get(valor - 1).get(0);
             user.setIdDoctor(idDoctor);
 
             System.out.println("Nombre de usuario: ");
@@ -141,15 +141,60 @@ public class Users {
             String estado = "Activo";
             user.setEstadoUsuario(estado);
 
+            List<List<String>> usuarios = user.listaUsuarios();
+            boolean admin = usuarios.isEmpty();
+            user.setAdministrador(admin);
+
             int resultado = user.RegistrarUsuario();
 
             if (resultado == 1) {
                 System.out.println("Usuario registrado con éxito.");
+
             } else {
                 System.out.println("Ha ocurrido un error al registrar el usuario.");
             }
         } else {
             System.out.println("Selección de persona inválida.");
         }
+    }
+
+    public void actualizarUsuario(int r) {
+        String idUsuario = user.capturarIdListaUsuario(r);
+        System.out.println(idUsuario);
+        if (idUsuario == null) {
+            System.out.println("Registro extraño");
+            return;
+        }
+
+        List<String> usuario = user.cargarDatosUsuario(r);
+        if (usuario.isEmpty()) {
+            System.out.println("No se encontró el registro especificado");
+            return;
+        }
+
+        String nombreUsuarioActual = usuario.get(1);
+        String claveUsuarioActual = usuario.get(2);
+        String idDoctorActual = usuario.get(5);
+
+        System.out.print("Nuevo nombre de usuario: ");
+        String nuevoNombreUsuario = scan.nextLine();
+        if (nuevoNombreUsuario.isEmpty()) {
+            nuevoNombreUsuario = nombreUsuarioActual;
+        }
+
+        System.out.print("Nueva clave: ");
+        String nuevaClaveUsuario = scan.nextLine();
+        if (nuevaClaveUsuario.isEmpty()) {
+            nuevaClaveUsuario = claveUsuarioActual;
+        }
+
+        System.out.print("¿Es administrador? (1/0): ");
+        int administrador = scan.nextInt();
+        scan.nextLine();
+
+        System.out.print("Estado (Activo/Inactivo): ");
+        String estado = scan.nextLine();
+
+        user.actualizarUsuario(r, nuevoNombreUsuario, nuevaClaveUsuario, estado, administrador, idDoctorActual);
     }
 }
