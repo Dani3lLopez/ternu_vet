@@ -2,6 +2,7 @@ package src.Controllers;
 
 import src.Models.InvoicesModel;
 import src.Models.OwnersModel;
+import src.Models.UsersModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -86,5 +87,9 @@ public class InvoicesController extends OwnersController{
         listaFacturas = InvoicesModel.cargarListaFacturas();
         listaPropietarios = InvoicesModel.cargarListaPropietarios();
         cargarListaPersonas();
+    }
+
+    public int crearFactura() {
+        return InvoicesModel.crearNuevaFactura(fechaEmisionFactura, horaEmisionFactura, idPropietario, visibilidadFactura);
     }
 }
