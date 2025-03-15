@@ -55,4 +55,22 @@ public class DoctorsModel {
 
         return listaEspecialidades;
     }
+    public static int ingresarNuevoDoctor(String fechaContratacion, String fechaNacimiento, String idPersona, String idEspecialidad){
+        int retorno = 0;
+        String sql = "INSERT INTO doctores (fecha_contratacion_doctor, fecha_nacimiento_doctor, id_persona, id_especialidad) VALUES (?,?,?,?)";
+        try(
+                Connection conexion = ConnectionModel.conectar();
+                PreparedStatement ps = conexion.prepareStatement(sql)){
+            ps.setString(1, fechaContratacion);
+            ps.setString(2, fechaNacimiento);
+            ps.setString(3, idPersona);
+            ps.setString(4, idEspecialidad);
+
+            retorno = ps.executeUpdate();
+            return retorno;
+        } catch (SQLException e) {
+            System.out.println("Error al registrar datos: " + e.getMessage());
+            return retorno;
+        }
+    }
 }

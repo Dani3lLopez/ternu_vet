@@ -93,4 +93,13 @@ public class DoctorsController extends PeopleController{
         }
         return "Sin especialidad";
     }
+    public String capturarIdListaEspecialidad(int numero) {
+        if (numero > 0 && numero <= listaEspecialidades.size()) {
+            return listaEspecialidades.get(numero - 1).get(0);
+        }
+        return null;
+    }
+    public int RegistrarDoctor() {
+        return DoctorsModel.ingresarNuevoDoctor(fechaContratacionDoctor, fechaNacimientoDoctor, idPersona, idEspecialidad);
+    }
 }

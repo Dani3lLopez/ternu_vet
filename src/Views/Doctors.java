@@ -34,6 +34,8 @@ public class Doctors {
                     System.out.println(separador.repeat(70));
                     break;
                 case 2:
+                    actual.registrarDoctor();
+                    break;
                 case 3:
                     //actual.cargarPropietarios();
                     System.out.print("Ingrese el número de registro a actualizar: ");
@@ -80,6 +82,69 @@ public class Doctors {
                 n++;
             }
             System.out.println(separador);
+        }
+    }
+    public void registrarDoctor() {
+        person.cargarListaPersonas();
+        doc.llenarListas();
+
+        String separador = "-".repeat(70);
+        System.out.println(separador);
+        System.out.printf("| %-5s | %-50s |\n", "No.", "Nombre");
+        System.out.println(separador);
+        int r = 1;
+        for (int p = 0; p < person.listaPersonas().size(); p++) {
+            List<String> persona = person.listaPersonas().get(p);
+
+            System.out.printf("| %-5d | %-50s |\n", r, persona.get(1) + " " + persona.get(2));
+            r++;
+        }
+        System.out.println(separador);
+
+        System.out.print("Seleccione a la persona doctor/a: ");
+        int valor = scan.nextInt();
+        scan.nextLine();
+
+        if (valor > 0 && valor <= person.listaPersonas().size()) {
+            String id = person.capturarIdLista(valor);
+            doc.setIdPersona(id);
+
+            System.out.println(separador);
+            System.out.printf("| %-5s | %-50s |\n", "No.", "Especialidad");
+            System.out.println(separador);
+
+            for (int c = 0; c < doc.listaEspecialidades().size(); c++) {
+                List<String> doctor = doc.listaEspecialidades().get(c);
+                System.out.printf("| %-5d | %-50s |\n", (c + 1), doctor.get(1));
+            }
+            System.out.println(separador);
+
+            System.out.print("Seleccione la especialidad: ");
+            int v = scan.nextInt();
+            scan.nextLine();
+
+            if (v > 0 && v <= doc.listaEspecialidades().size()) {
+                String n = doc.capturarIdListaEspecialidad(v);
+                doc.setIdEspecialidad(n);
+
+                System.out.println("Fecha de nacimiento (YYYY-MM-DD): ");
+                String fechaNacimiento = scan.nextLine();
+                doc.setFechaNacimientoDoctor(fechaNacimiento);
+
+                System.out.println("Fecha de contratacion (YYYY-MM-DD): ");
+                String fechaContratacion = scan.nextLine();
+                doc.setFechaContratacionDoctor(fechaContratacion);
+
+                int resultado = doc.RegistrarDoctor();
+
+                if (resultado == 1) {
+                    System.out.println("Doctor registrado con éxito.");
+                } else {
+                    System.out.println("Ha ocurrido un error al registrar el doctor.");
+                }
+            } else {
+                System.out.println("Selección de persona inválida.");
+            }
         }
     }
 }
