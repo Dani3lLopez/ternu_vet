@@ -1,13 +1,11 @@
 package src.Controllers;
 
-import src.Models.DoctorsModel;
-import src.Models.OwnersModel;
 import src.Models.UsersModel;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class UsersController extends PeopleController {
+public class UsersController extends DoctorsController {
 
     public UsersController(){
         super();

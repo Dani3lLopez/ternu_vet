@@ -156,7 +156,6 @@ public class Users {
     }
     public void actualizarUsuario(int r) {
         String idUsuario = user.capturarIdListaUsuario(r);
-        System.out.println(idUsuario);
         if (idUsuario == null) {
             System.out.println("Registro extraño");
             return;
