@@ -58,4 +58,33 @@ public class InvoicesModel {
 
         return listaFacturas;
     }
+    public static int crearNuevaFactura(String fechaEmision, String horaEmision, String idPropietario, Boolean visibilidadFactura){
+        int retorno = 0;
+        String sql = "INSERT INTO facturas (fecha_emision_factura, hora_emision_factura, id_propietario, visibilidad_factura) VALUES (?,?,?,?)";
+        try(
+                Connection conexion = ConnectionModel.conectar();
+                PreparedStatement ps = conexion.prepareStatement(sql)){
+            ps.setString(1, fechaEmision);
+            ps.setString(2, horaEmision);
+            ps.setString(3, idPropietario);
+            ps.setBoolean(4, visibilidadFactura);
+
+            retorno = ps.executeUpdate();
+            return retorno;
+        } catch (SQLException e) {
+            System.out.println("Error al registrar datos: " + e.getMessage());
+            return retorno;
+        }
+    }
+    public static int desactivarFactura(String id) {
+        String sql = "UPDATE facturas SET visibilidad_factura = false WHERE numero_factura=?";
+        try (Connection conexion = ConnectionModel.conectar();
+             PreparedStatement ps = conexion.prepareStatement(sql)) {
+            ps.setString(1, id);
+            return ps.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("Error al cambiar visibilidad del registro: " + e.getMessage());
+        }
+        return 0;
+    }
 }

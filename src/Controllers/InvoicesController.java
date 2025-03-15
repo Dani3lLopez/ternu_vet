@@ -1,7 +1,7 @@
 package src.Controllers;
 
 import src.Models.InvoicesModel;
-import src.Models.OwnersModel;
+import src.Models.UsersModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -86,5 +86,30 @@ public class InvoicesController extends OwnersController{
         listaFacturas = InvoicesModel.cargarListaFacturas();
         listaPropietarios = InvoicesModel.cargarListaPropietarios();
         cargarListaPersonas();
+    }
+
+    public String capturarIdListaFactura(int numero) {
+        if (numero > 0 && numero <= listaFacturas.size()) {
+            return listaFacturas.get(numero - 1).get(0);
+        }
+        return null;
+    }
+
+    public int crearFactura() {
+        return InvoicesModel.crearNuevaFactura(fechaEmisionFactura, horaEmisionFactura, idPropietario, visibilidadFactura);
+    }
+
+    public void desactivarFactura(int numero){
+        String id = this.capturarIdListaFactura(numero);
+        if (id != null) {
+            int resultado = InvoicesModel.desactivarFactura(id);
+            if (resultado > 0) {
+                System.out.println("Factura desactivada correctamente.");
+            } else {
+                System.out.println("Error al desactivar el registro.");
+            }
+        } else {
+            System.out.println("Registro inexistente.");
+        }
     }
 }
