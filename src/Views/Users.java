@@ -16,7 +16,7 @@ public class Users {
         String separador = "-";
 
         boolean active = true;
-        while (active){
+        while (active) {
             System.out.println("\uD83D\uDC36 Qué haremos hoy?");
             System.out.println("1. Listar Usuarios");
             System.out.println("2. Registrar Usuarios");
@@ -28,13 +28,13 @@ public class Users {
             int choice = scan.nextInt();
             Users actual = new Users();
 
-            switch (choice){
+            switch (choice) {
                 case 1:
                     actual.cargarUsuarios();
                     System.out.println(separador.repeat(70));
                     break;
                 case 2:
-                    //actual.registrarPropietario();
+                    actual.registrarUsuarios();
                     break;
                 case 3:
                     //actual.cargarPropietarios();
@@ -60,12 +60,12 @@ public class Users {
         }
     }
 
-    public void cargarUsuarios(){
+    public void cargarUsuarios() {
         user.llenarListas();
         List<List<String>> usuarios = user.listaUsuarios();
         if (user.listaUsuarios().isEmpty()) {
             System.out.println("No hay usuarios registrados.");
-        }else {
+        } else {
             String separador = "-".repeat(85);
             System.out.println(separador);
             System.out.printf("| %-5s | %-20s | %-20s | %-20s |\n", "No.", "Usuario", "Estado", "Doctor");
@@ -78,8 +78,8 @@ public class Users {
                 String idDoctor = usuario.get(4);
                 String idPersonaDoctor = "";
 
-                for(List<String> doctor: user.listaDoctores()){
-                    if(doctor.get(0).equalsIgnoreCase(idDoctor)){
+                for (List<String> doctor : user.listaDoctores()) {
+                    if (doctor.get(0).equalsIgnoreCase(idDoctor)) {
                         idPersonaDoctor = doctor.get(1);
                         break;
                     }
@@ -90,6 +90,66 @@ public class Users {
                 n++;
             }
             System.out.println(separador);
+        }
+    }
+
+    public void registrarUsuarios() {
+        user.llenarListas();
+
+        String separador = "-".repeat(70);
+        System.out.println(separador);
+        System.out.printf("| %-5s | %-50s |\n", "No.", "Doctor");
+        System.out.println(separador);
+
+        List<List<String>> doctores = user.listaDoctoresSinUsuario();
+
+        if (doctores.isEmpty()) {
+            System.out.println("Todos los doctores poseen un usuario.");
+            System.out.println(separador);
+            userMenu();
+            return;
+        }
+
+        int r = 1;
+        for (List<String> doctor : doctores) {
+            String idp = doctor.get(1);
+            String nombreDoctor = user.capturarNombres(idp);
+
+            System.out.printf("| %-5d | %-50s |\n", r, nombreDoctor);
+            r++;
+        }
+        System.out.println(separador);
+
+        System.out.print("Seleccione al usuario: ");
+        int valor = scan.nextInt();
+        scan.nextLine();
+
+        if (valor > 0 && valor <= user.listaDoctores().size()) {
+            String idDoctor = user.listaDoctores().get(valor - 1).get(0);
+            user.setIdDoctor(idDoctor);
+
+            System.out.println("Nombre de usuario: ");
+            String nombre = scan.nextLine();
+            if (user.existenciaUsuario(nombre)) {
+                System.out.println("El usuario ya existe.");
+                return;
+            }
+            user.setNombreUsuario(nombre);
+            System.out.println("Clave: ");
+            String clave = scan.nextLine();
+            user.setClaveUsuario(clave);
+            String estado = "Activo";
+            user.setEstadoUsuario(estado);
+
+            int resultado = user.RegistrarUsuario();
+
+            if (resultado == 1) {
+                System.out.println("Usuario registrado con éxito.");
+            } else {
+                System.out.println("Ha ocurrido un error al registrar el usuario.");
+            }
+        } else {
+            System.out.println("Selección de persona inválida.");
         }
     }
 }

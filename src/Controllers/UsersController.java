@@ -1,5 +1,6 @@
 package src.Controllers;
 
+import src.Models.OwnersModel;
 import src.Models.UsersModel;
 
 import java.util.ArrayList;
@@ -11,6 +12,7 @@ public class UsersController extends PeopleController {
         super();
         listaUsuarios = new ArrayList<>();
         listaDoctores = new ArrayList<>();
+        listaDoctoresSinUsuario = new ArrayList<>();
     }
 
     private String idUsuario;
@@ -21,6 +23,7 @@ public class UsersController extends PeopleController {
     private String idDoctor;
     private List<List<String>> listaUsuarios;
     private List<List<String>> listaDoctores;
+    private List<List<String>> listaDoctoresSinUsuario;
 
     public String getIdUsuario() {
         return idUsuario;
@@ -72,10 +75,10 @@ public class UsersController extends PeopleController {
 
     public String capturarNombres(String idPersona) {
         for (List<String> doctor : listaDoctores()) {
-            if (doctor.get(1).trim().equalsIgnoreCase(idPersona.trim())) { // Compara id_persona
+            if (doctor.get(1).trim().equalsIgnoreCase(idPersona.trim())) {
                 for (List<String> persona : listaPersonas()) {
                     if (persona.get(0).trim().equalsIgnoreCase(idPersona.trim())) {
-                        return persona.get(1) + " " + persona.get(2); // Obtiene el nombre de la persona
+                        return persona.get(1) + " " + persona.get(2);
                     }
                 }
             }
@@ -83,18 +86,11 @@ public class UsersController extends PeopleController {
         return "Desconocido";
     }
 
-    public String capturarNombreDoctor(String idPersona) {
-        for (List<String> doctor : listaDoctores()) {
-            if (doctor.get(1).trim().equalsIgnoreCase(idPersona.trim())) {
-                return capturarNombres(idPersona);
-            }
-        }
-        return "Desconocido";
-    }
 
     public void llenarListas(){
         listaUsuarios = UsersModel.cargarListaUsuarios();
         listaDoctores = UsersModel.cargarListaDoctores();
+        listaDoctoresSinUsuario = UsersModel.cargarDoctoresSinUsuario();
         cargarListaPersonas();
     }
 
@@ -103,5 +99,23 @@ public class UsersController extends PeopleController {
     }
     public List<List<String>> listaDoctores() {
         return listaDoctores;
+    }
+    public List<List<String>> listaDoctoresSinUsuario() {
+        return listaDoctoresSinUsuario;
+    }
+
+    public String capturarIdLista(int numero) {
+        if (numero > 0 && numero <= listaDoctores.size()) {
+            return listaDoctores.get(numero - 1).get(0);
+        }
+        return null;
+    }
+
+    public boolean existenciaUsuario(String nombreUsuario) {
+        return UsersModel.existenciaUsuario(nombreUsuario);
+    }
+
+    public int RegistrarUsuario() {
+        return UsersModel.ingresarNuevoUsuario(nombreUsuario, claveUsuario, estadoUsuario, administrador, idDoctor);
     }
 }
