@@ -20,9 +20,8 @@ public class Invoices {
             System.out.println("\uD83D\uDC36 Qué haremos hoy?");
             System.out.println("1. Listar Facturas");
             System.out.println("2. Crear Factura");
-            System.out.println("3. Actualizar Factura");
-            System.out.println("4. Desactivar Factura");
-            System.out.println("5. Volver al menú principal");
+            System.out.println("3. Desactivar Factura");
+            System.out.println("4. Volver al menú principal");
             System.out.println(separador.repeat(50));
             System.out.print("Seleccione una opción: ");
             int choice = scan.nextInt();
@@ -30,27 +29,20 @@ public class Invoices {
 
             switch (choice){
                 case 1:
-                    actual.cargarFacturas();
+                    cargarFacturas();
                     System.out.println(separador.repeat(70));
                     break;
                 case 2:
-                    actual.crearFactura();
+                    crearFactura();
                     break;
                 case 3:
-                    actual.cargarFacturas();
-                    System.out.print("Ingrese el número de registro a actualizar: ");
-                    int r = scan.nextInt();
-                    scan.nextLine();
-                    //actual.actualizarPropietario(r);
-                    break;
-                case 4:
-                    actual.cargarFacturas();
+                    cargarFacturas();
                     System.out.print("Ingrese el número de registro a eliminar: ");
                     int registro = scan.nextInt();
                     scan.nextLine();
-                    //actual.desactivarPropietario(registro);
+                    desactivarFactura(registro);
                     break;
-                case 5:
+                case 4:
                     active = false;
                     System.out.println("Cerrando menú...");
                     break;
@@ -140,5 +132,8 @@ public class Invoices {
         } else {
             System.out.println("Selección de persona inválida.");
         }
+    }
+    public void desactivarFactura(int registro) {
+        invoice.desactivarFactura(registro);
     }
 }

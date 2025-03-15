@@ -76,4 +76,15 @@ public class InvoicesModel {
             return retorno;
         }
     }
+    public static int desactivarFactura(String id) {
+        String sql = "UPDATE facturas SET visibilidad_factura = false WHERE numero_factura=?";
+        try (Connection conexion = ConnectionModel.conectar();
+             PreparedStatement ps = conexion.prepareStatement(sql)) {
+            ps.setString(1, id);
+            return ps.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("Error al cambiar visibilidad del registro: " + e.getMessage());
+        }
+        return 0;
+    }
 }
