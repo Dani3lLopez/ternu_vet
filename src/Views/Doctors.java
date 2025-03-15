@@ -21,8 +21,7 @@ public class Doctors {
             System.out.println("1. Listar Doctores");
             System.out.println("2. Registrar Doctores");
             System.out.println("3. Actualizar Doctores");
-            System.out.println("4. Eliminar Doctores");
-            System.out.println("5. Volver al menú principal");
+            System.out.println("4. Volver al menú principal");
             System.out.println(separador.repeat(50));
             System.out.print("Seleccione una opción: ");
             int choice = scan.nextInt();
@@ -44,13 +43,6 @@ public class Doctors {
                     actual.actualizarDoctor(r);
                     break;
                 case 4:
-                    actual.cargarDoctores();
-                    System.out.print("Ingrese el número de registro a eliminar: ");
-                    int registro = scan.nextInt();
-                    scan.nextLine();
-                    //actual.desactivarPropietario(registro);
-                    break;
-                case 5:
                     active = false;
                     System.out.println("Cerrando menú...");
                     break;
@@ -149,7 +141,6 @@ public class Doctors {
     }
     public void actualizarDoctor(int r) {
         List<String> doctor = doc.cargarDatosDoctor(r);
-        System.out.println(doctor);
         if (doctor.isEmpty()) {
             System.out.println("No se encontró el registro especificado");
             return;
