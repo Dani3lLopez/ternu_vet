@@ -155,4 +155,15 @@ public class UsersModel {
         }
         return 0;
     }
+    public static int desactivarUsuario(String id) {
+        String sql = "UPDATE usuarios SET estado_usuario = 'Inactivo' WHERE id_usuario=?";
+        try (Connection conexion = ConnectionModel.conectar();
+             PreparedStatement ps = conexion.prepareStatement(sql)) {
+            ps.setString(1, id);
+            return ps.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("Error al cambiar visibilidad del registro: " + e.getMessage());
+        }
+        return 0;
+    }
 }

@@ -141,4 +141,18 @@ public class UsersController extends PeopleController {
             System.out.println("Registro inexistente.");
         }
     }
+
+    public void desactivarUsuario(int numero){
+        String id = this.capturarIdListaUsuario(numero);
+        if (id != null) {
+            int resultado = UsersModel.desactivarUsuario(id);
+            if (resultado > 0) {
+                System.out.println("Usuario desactivado correctamente.");
+            } else {
+                System.out.println("Error al desactivar el registro.");
+            }
+        } else {
+            System.out.println("Registro inexistente.");
+        }
+    }
 }

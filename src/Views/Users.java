@@ -1,6 +1,5 @@
 package src.Views;
 
-import src.Controllers.PeopleController;
 import src.Controllers.UsersController;
 
 import java.util.List;
@@ -9,7 +8,6 @@ import java.util.Scanner;
 public class Users {
     Scanner scan = new Scanner(System.in);
     public UsersController user = new UsersController();
-    public PeopleController person = new PeopleController();
 
     public void userMenu() {
         Scanner scan = new Scanner(System.in);
@@ -44,11 +42,11 @@ public class Users {
                     actual.actualizarUsuario(r);
                     break;
                 case 4:
-                    //actual.cargarPropietarios();
-                    System.out.print("Ingrese el número de registro a eliminar: ");
+                    actual.cargarUsuarios();
+                    System.out.print("Ingrese el número de registro que desea desactivar: ");
                     int registro = scan.nextInt();
                     scan.nextLine();
-                    //actual.desactivarPropietario(registro);
+                    actual.desactivarUsuario(registro);
                     break;
                 case 5:
                     active = false;
@@ -92,7 +90,6 @@ public class Users {
             System.out.println(separador);
         }
     }
-
     public void registrarUsuarios() {
         user.llenarListas();
 
@@ -157,7 +154,6 @@ public class Users {
             System.out.println("Selección de persona inválida.");
         }
     }
-
     public void actualizarUsuario(int r) {
         String idUsuario = user.capturarIdListaUsuario(r);
         System.out.println(idUsuario);
@@ -196,5 +192,8 @@ public class Users {
         String estado = scan.nextLine();
 
         user.actualizarUsuario(r, nuevoNombreUsuario, nuevaClaveUsuario, estado, administrador, idDoctorActual);
+    }
+    public void desactivarUsuario(int registro) {
+        user.desactivarUsuario(registro);
     }
 }
