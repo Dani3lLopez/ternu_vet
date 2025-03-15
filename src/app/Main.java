@@ -1,7 +1,5 @@
 package src.app;
 
-//import src.Controllers.PeopleController;
-import src.Models.PeopleModel;
 import src.Views.Doctors;
 import src.Views.Owners;
 import src.Views.People;

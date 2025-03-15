@@ -37,14 +37,14 @@ public class Doctors {
                     actual.registrarDoctor();
                     break;
                 case 3:
-                    //actual.cargarPropietarios();
+                    actual.cargarDoctores();
                     System.out.print("Ingrese el número de registro a actualizar: ");
                     int r = scan.nextInt();
                     scan.nextLine();
-                    //actual.actualizarPropietario(r);
+                    actual.actualizarDoctor(r);
                     break;
                 case 4:
-                    //actual.cargarPropietarios();
+                    actual.cargarDoctores();
                     System.out.print("Ingrese el número de registro a eliminar: ");
                     int registro = scan.nextInt();
                     scan.nextLine();
@@ -101,7 +101,7 @@ public class Doctors {
         }
         System.out.println(separador);
 
-        System.out.print("Seleccione a la persona doctor/a: ");
+        System.out.print("Seleccione al doctor/a: ");
         int valor = scan.nextInt();
         scan.nextLine();
 
@@ -146,5 +146,72 @@ public class Doctors {
                 System.out.println("Selección de persona inválida.");
             }
         }
+    }
+    public void actualizarDoctor(int r) {
+        List<String> doctor = doc.cargarDatosDoctor(r);
+        System.out.println(doctor);
+        if (doctor.isEmpty()) {
+            System.out.println("No se encontró el registro especificado");
+            return;
+        }
+
+        String id = doctor.get(0);
+        person.cargarListaPersonas();
+        System.out.println("Personas Disponibles:");
+        String separador = "-".repeat(70);
+        System.out.println(separador);
+        System.out.printf("| %-5s | %-50s |\n", "No.", "Nombre");
+        System.out.println(separador);
+        int i = 1;
+        for (List<String> persona : person.listaPersonas()) {
+            System.out.printf("| %-5d | %-50s |\n", i, persona.get(1) + " " + persona.get(2));
+            i++;
+        }
+        System.out.println(separador);
+
+        System.out.print("Nuevo doctor: ");
+        String np = scan.nextLine();
+        String nid = doctor.get(3);
+        if (!np.isEmpty()) {
+            int idNuevo = Integer.parseInt(np);
+            if (idNuevo > 0 && idNuevo <= person.listaPersonas().size()) {
+                nid = person.capturarIdLista(idNuevo);
+            } else {
+                System.out.println("Persona no valida.");
+            }
+        }
+
+        doc.llenarListas();
+        System.out.println("Especialidades:");
+        for (int c = 0; c < doc.listaEspecialidades().size(); c++) {
+            List<String> especialidad = doc.listaEspecialidades().get(c);
+            System.out.println((c + 1) + ". " + especialidad.get(1));
+        }
+
+        System.out.print("Nueva especialidad: ");
+        String ne = scan.nextLine();
+        String nide = doctor.get(4);
+        if (!ne.isEmpty()) {
+            int idNuevo = Integer.parseInt(ne);
+            if (idNuevo > 0 && idNuevo <= doc.listaEspecialidades().size()) {
+                nide = doc.capturarIdListaEspecialidad(idNuevo);
+            } else {
+                System.out.println("Especialidad no valida.");
+            }
+        }
+
+        System.out.print("Nueva fecha de nacimiento (YYYY-MM-DD): ");
+        String nuevaFechaNacimiento = scan.nextLine();
+        if (nuevaFechaNacimiento.isEmpty()) {
+            nuevaFechaNacimiento = doctor.get(2);
+        }
+
+        System.out.print("Nueva fecha de contratacion (YYYY-MM-DD): ");
+        String nuevaFechaContratacion = scan.nextLine();
+        if (nuevaFechaContratacion.isEmpty()) {
+            nuevaFechaContratacion = doctor.get(1);
+        }
+
+        doc.actualizarDoctor(r, nuevaFechaContratacion, nuevaFechaNacimiento, nid, nide);
     }
 }
