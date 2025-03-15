@@ -1,9 +1,6 @@
 package src.app;
 
-import src.Views.Doctors;
-import src.Views.Owners;
-import src.Views.People;
-import src.Views.Specialties;
+import src.Views.*;
 
 import java.util.Scanner;
 
@@ -19,7 +16,8 @@ public class Main {
             System.out.println("2. Propietarios");
             System.out.println("3. Doctores");
             System.out.println("4. Especialidades");
-            System.out.println("5. Salir");
+            System.out.println("5. Usuarios");
+            System.out.println("6. Salir");
             System.out.println(separador);
             System.out.print("Seleccione una opción: ");
             int choice = scan.nextInt();
@@ -44,6 +42,10 @@ public class Main {
                     especialty.specialtiesMenu();
                     break;
                 case 5:
+                    Users user = new Users();
+                    user.userMenu();
+                    break;
+                case 6:
                     active = false;
                     System.out.println("Cerrando el programa...");
                     break;
