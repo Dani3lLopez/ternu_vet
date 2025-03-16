@@ -17,7 +17,7 @@ public class Invoices {
 
         boolean active = true;
         while (active){
-            System.out.println("\uD83D\uDC36 Qué haremos hoy?");
+            System.out.println("\uD83D\uDCCB Qué haremos hoy?");
             System.out.println("1. Listar Facturas");
             System.out.println("2. Crear Factura");
             System.out.println("3. Desactivar Factura");

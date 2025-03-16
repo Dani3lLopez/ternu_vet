@@ -17,7 +17,7 @@ public class Owners {
 
         boolean active = true;
         while (active){
-            System.out.println("\uD83D\uDC36 Qué haremos hoy?");
+            System.out.println("\uD83E\uDDB4 Qué haremos hoy?");
             System.out.println("1. Listar Propietarios");
             System.out.println("2. Registrar Propietarios");
             System.out.println("3. Actualizar Propietarios");

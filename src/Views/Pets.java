@@ -43,7 +43,6 @@ public class Pets {
                     break;
                 case 3:
                     actual.cargarMascotas();
-                    scan.nextLine();
                     String registroActualizar;
                     while(true){
                         System.out.print("Ingrese el número de registro a actualizar: ");
@@ -60,7 +59,6 @@ public class Pets {
                     break;
                 case 4:
                     actual.cargarMascotas();
-                    scan.nextLine();
                     String registroEliminar;
                     while(true){
                         System.out.print("Ingrese el número de registro a eliminar: ");

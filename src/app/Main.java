@@ -58,6 +58,10 @@ public class Main {
                     Pets pet = new Pets();
                     pet.petMenu();
                     break;
+                case 9:
+                    Services service = new Services();
+                    service.serviceMenu();
+                    break;
                 default:
                     active = false;
                     System.out.println("Cerrando el programa...");

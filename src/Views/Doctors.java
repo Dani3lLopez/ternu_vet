@@ -17,7 +17,7 @@ public class Doctors {
 
         boolean active = true;
         while (active){
-            System.out.println("\uD83D\uDC36 Qué haremos hoy?");
+            System.out.println("\uD83D\uDC8A Qué haremos hoy?");
             System.out.println("1. Listar Doctores");
             System.out.println("2. Registrar Doctores");
             System.out.println("3. Actualizar Doctores");
