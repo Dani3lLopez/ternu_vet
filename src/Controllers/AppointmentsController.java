@@ -156,4 +156,26 @@ public class AppointmentsController extends DoctorsController {
     public int registrarCita() {
         return AppointmentsModel.ingresarNuevaCita(motivoCita, fechaCita, horaCita, idMascota, idDoctor, visibilidadCita);
     }
+
+    public List<String> cargarDatosCita(int registro){
+        String id = capturarIdLista(registro);
+        if (id != null){
+            return AppointmentsModel.cargarCita(id);
+        }
+        return new ArrayList<>();
+    }
+
+    public void actualizarCita(int registro, String motivoCita, String fechaCita, String horaCita, String idMascota, String idDoctor, Boolean visibilidadCita) {
+        String id = capturarIdLista(registro);
+        if (id != null) {
+            int resultado = AppointmentsModel.actualizarCita(id, motivoCita, fechaCita, horaCita, idMascota, idDoctor, visibilidadCita);
+            if (resultado > 0) {
+                System.out.println("Registro actualizado correctamente.");
+            } else {
+                System.out.println("Error al actualizar el registro.");
+            }
+        } else {
+            System.out.println("Registro inexistente.");
+        }
+    }
 }

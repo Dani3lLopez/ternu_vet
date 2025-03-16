@@ -92,6 +92,32 @@ public class AppointmentsModel {
 
         return listaDoctores;
     }
+    public static List<String> cargarCita(String id){
+        List<String> datosCita = new ArrayList<>();
+        String sql = "SELECT * FROM citas WHERE id_cita = ?";
+
+        try (
+                Connection conexion = ConnectionModel.conectar();
+                PreparedStatement ps = conexion.prepareStatement(sql);
+        ) {
+            ps.setString(1, id);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                datosCita.add(rs.getString("id_cita"));
+                datosCita.add(rs.getString("motivo_cita"));
+                datosCita.add(rs.getString("fecha_cita"));
+                datosCita.add(rs.getString("hora_cita"));
+                datosCita.add(rs.getString("id_mascota"));
+                datosCita.add(rs.getString("id_doctor"));
+                datosCita.add(rs.getString("visibilidad_cita"));
+            }
+        } catch (SQLException e) {
+            System.out.println("Error al leer datos: " + e.getMessage());
+        }
+
+        return datosCita;
+    }
     public static int ingresarNuevaCita(String motivoCita, String fechaCita, String horaCita, String idMascota, String idDoctor, Boolean visibilidadCita){
         int retorno = 0;
         String sql = "INSERT INTO citas (motivo_cita, fecha_cita, hora_cita, id_mascota, id_doctor, visibilidad_cita) VALUES (?,?,?,?,?,?)";
@@ -111,5 +137,22 @@ public class AppointmentsModel {
             System.out.println("Error al registrar datos: " + e.getMessage());
             return retorno;
         }
+    }
+    public static int actualizarCita(String id, String motivoCita, String fechaCita, String horaCita, String idMascota, String idDoctor, Boolean visibilidadCita) {
+        String sql = "UPDATE citas SET motivo_cita=?, fecha_cita=?, hora_cita=?, id_mascota=?, id_doctor=?, visibilidad_cita=? WHERE id_cita=?";
+        try (Connection conexion = ConnectionModel.conectar();
+             PreparedStatement ps = conexion.prepareStatement(sql)) {
+            ps.setString(1, motivoCita);
+            ps.setString(2, fechaCita);
+            ps.setString(3, horaCita);
+            ps.setString(4, idMascota);
+            ps.setString(5, idDoctor);
+            ps.setBoolean(6, visibilidadCita);
+            ps.setString(7, id);
+            return ps.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("Error al actualizar persona: " + e.getMessage());
+        }
+        return 0;
     }
 }

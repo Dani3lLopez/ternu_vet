@@ -14,7 +14,7 @@ public class Appointments {
         String separador = "-";
 
         boolean active = true;
-        while (active){
+        while (active) {
             System.out.println("\uD83D\uDC36 Qué haremos hoy?");
             System.out.println("1. Listar Citas");
             System.out.println("2. Registrar Citas");
@@ -26,7 +26,7 @@ public class Appointments {
             int choice = scan.nextInt();
             Appointments actual = new Appointments();
 
-            switch (choice){
+            switch (choice) {
                 case 1:
                     cargarCitas();
                     System.out.println(separador.repeat(70));
@@ -39,7 +39,7 @@ public class Appointments {
                     System.out.print("Ingrese el número de registro a actualizar: ");
                     int r = scan.nextInt();
                     scan.nextLine();
-                    //actual.actualizarDoctor(r);
+                    actualizarCita(r);
                     break;
                 case 4:
                     active = false;
@@ -51,12 +51,12 @@ public class Appointments {
         }
     }
 
-    public void cargarCitas(){
+    public void cargarCitas() {
         appointment.llenarListas();
         List<List<String>> citas = appointment.listaCitas();
         if (appointment.listaCitas().isEmpty()) {
             System.out.println("No hay citas registradas.");
-        }else {
+        } else {
             String separador = "-".repeat(100);
             System.out.println(separador);
             System.out.printf("| %-5s | %-20s | %-20s | %-20s | %-20s |\n", "No.", "Fec. Cita", "Hora - Cita", "Mascota", "Doctor");
@@ -83,6 +83,7 @@ public class Appointments {
             System.out.println(separador);
         }
     }
+
     public void registrarCita() {
         appointment.llenarListas();
 
@@ -156,4 +157,86 @@ public class Appointments {
             }
         }
     }
+
+    public void actualizarCita(int r) {
+        String idCita = appointment.capturarIdLista(r);
+        if (idCita == null) {
+            System.out.println("Registro extraño");
+            return;
+        }
+
+        List<String> cita = appointment.cargarDatosCita(r);
+        if (cita.isEmpty()) {
+            System.out.println("No se encontró el registro especificado");
+            return;
+        }
+
+        String separador = "-".repeat(70);
+        System.out.println(separador);
+        System.out.printf("| %-5s | %-50s |\n", "No.", "Doctor");
+        System.out.println(separador);
+
+        List<List<String>> doctores = appointment.listaDoctores();
+        for (int i = 0; i < doctores.size(); i++) {
+            List<String> doctor = doctores.get(i);
+            String nombreDoctor = appointment.capturarNombresDoctores(doctor.get(3)); // ID persona en la posición 3
+            System.out.printf("| %-5d | %-50s |\n", (i + 1), nombreDoctor);
+        }
+        System.out.println(separador);
+
+        System.out.print("Nuevo doctor: ");
+        String np = scan.nextLine();
+        String nuevoIdDoctor = cita.get(5); // ID actual del doctor
+
+        if (!np.isEmpty()) {
+            int idNuevo = Integer.parseInt(np);
+            if (idNuevo > 0 && idNuevo <= doctores.size()) {
+                nuevoIdDoctor = doctores.get(idNuevo - 1).get(0);
+            } else {
+                System.out.println("Doctor no válido.");
+            }
+        }
+
+        System.out.println(separador);
+        System.out.printf("| %-5s | %-50s |\n", "No.", "Mascota");
+        System.out.println(separador);
+
+        List<List<String>> mascotas = appointment.listaMascotas();
+        for (int i = 0; i < mascotas.size(); i++) {
+            System.out.printf("| %-5d | %-50s |\n", (i + 1), mascotas.get(i).get(1));
+        }
+        System.out.println(separador);
+
+        // Seleccionar mascota
+        System.out.print("Nueva mascota: ");
+        String nm = scan.nextLine();
+        String nuevoIdMascota = cita.get(4);
+
+        if (!nm.isEmpty()) {
+            int idNuevaMascota = Integer.parseInt(nm);
+            if (idNuevaMascota > 0 && idNuevaMascota <= mascotas.size()) {
+                nuevoIdMascota = mascotas.get(idNuevaMascota - 1).get(0);
+            } else {
+                System.out.println("Mascota no válida.");
+            }
+        }
+
+        System.out.print("Nuevo motivo de cita: ");
+        String nuevoMotivo = scan.nextLine();
+        if (nuevoMotivo.isEmpty()) nuevoMotivo = cita.get(1);
+
+        System.out.print("Nueva fecha de cita: ");
+        String nuevaFecha = scan.nextLine();
+        if (nuevaFecha.isEmpty()) nuevaFecha = cita.get(2);
+
+        System.out.print("Nueva hora de cita: ");
+        String nuevaHora = scan.nextLine();
+        if (nuevaHora.isEmpty()) nuevaHora = cita.get(3);
+
+        Boolean visibilidad = true;
+
+        // Actualizar cita
+        appointment.actualizarCita(r, nuevoMotivo, nuevaFecha, nuevaHora, nuevoIdMascota, nuevoIdDoctor, visibilidad);
+    }
 }
+
