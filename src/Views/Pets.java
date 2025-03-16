@@ -21,6 +21,7 @@ public class Pets {
             System.out.println("4. Eliminar Mascota");
             System.out.println("5. Volver al menú principal");
             System.out.println(separador.repeat(50));
+
             String choice;
             while(true){
                 System.out.print("Seleccione una opción: ");
@@ -36,10 +37,10 @@ public class Pets {
 
             switch (Integer.parseInt(choice)){
                 case 1:
-                    actual.cargarMascotas();
+                    cargarMascotas();
                     break;
                 case 2:
-                    actual.registrarMascota();
+                    registrarMascota();
                     break;
                 case 3:
                     actual.cargarMascotas();

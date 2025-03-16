@@ -24,28 +24,27 @@ public class People {
             System.out.println(separador.repeat(50));
             System.out.print("Seleccione una opción: ");
             int choice = scan.nextInt();
-            People actual = new People();
 
             switch (choice){
                 case 1:
-                    actual.cargarPersonas();
+                    cargarPersonas();
                     break;
                 case 2:
-                    actual.registrarPersona();
+                    registrarPersona();
                     break;
                 case 3:
-                    actual.cargarPersonas();
+                    cargarPersonas();
                     System.out.print("Ingrese el número de registro a actualizar: ");
                     int r = scan.nextInt();
                     scan.nextLine();
-                    actual.actualizarPersona(r);
+                    actualizarPersona(r);
                     break;
                 case 4:
-                    actual.cargarPersonas();
+                    cargarPersonas();
                     System.out.print("Ingrese el número de registro a eliminar: ");
                     int registro = scan.nextInt();
                     scan.nextLine();
-                    actual.eliminarPersona(registro);
+                    eliminarPersona(registro);
                     break;
                 case 5:
                     active = false;
