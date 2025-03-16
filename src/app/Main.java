@@ -11,14 +11,18 @@ public class Main {
 
         boolean active = true;
         while (active) {
-            System.out.println("\uD83D\uDC36 Escoge una opción de menú para navegar");
-            System.out.println("1. Personas");
-            System.out.println("2. Propietarios");
-            System.out.println("3. Doctores");
-            System.out.println("4. Especialidades");
-            System.out.println("5. Usuarios");
-            System.out.println("6. Facturas");
-            System.out.println("7. Salir");
+            System.out.println(separador);
+            System.out.println("\uD83D\uDC3E ¡Bienvenido/a! Selecciona una opción para continuar \uD83D\uDC3E");
+            System.out.println("1. Personas \uD83E\uDDD1 ");
+            System.out.println("2. Propietarios \uD83E\uDDB4");
+            System.out.println("3. Doctores \uD83D\uDC8A");
+            System.out.println("4. Especialidades \uD83E\uDE7A");
+            System.out.println("5. Usuarios \uD83D\uDC64");
+            System.out.println("6. Facturas \uD83D\uDCCB");
+            System.out.println("7. Mascotas \uD83D\uDC36");
+            System.out.println("8. Productos \uD83E\uDD4E");
+            System.out.println("9. Servicios \uD83D\uDEC1");
+            System.out.println("❌ Cualquier otra opción para salir ❌");
             System.out.println(separador);
             System.out.print("Seleccione una opción: ");
             int choice = scan.nextInt();
@@ -51,11 +55,13 @@ public class Main {
                     invoice.invoiceMenu();
                     break;
                 case 7:
+                    Pets pet = new Pets();
+                    pet.petMenu();
+                    break;
+                default:
                     active = false;
                     System.out.println("Cerrando el programa...");
                     break;
-                default:
-                    System.out.println("Opción inválida.");
             }
         }
     }
