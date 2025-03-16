@@ -28,6 +28,22 @@ Este proyecto está diseñado para gestionar citas en una clínica veterinaria. 
 - **Gestión de Personas**: Registrar y actualizar la información de los usuarios.
 - **Interfaz en Consola**: El sistema es operado a través de la consola.
 
+## Estructura del proyecto 🗂️
+src
+├── Controllers
+│   ├── AppointmentsController.java      # Controlador para gestionar las citas
+│   └── DoctorsController.java          # Controlador para gestionar los doctores
+├── Models
+│   ├── AppointmentsModel.java          # Modelo para las citas
+│   ├── ConnectionModel.java           # Manejo de la conexión a la base de datos
+│   ├── DoctorsModel.java              # Modelo para los doctores
+│   └── PeopleModel.java               # Modelo para las personas
+├── Views
+│   ├── Appointments.java              # Vista para interactuar con las citas
+│   └── Doctors.java                   # Vista para interactuar con los doctores
+└── Main.java                          # Clase principal que ejecuta el programa
+
+
 ## Requisitos 📌
 
 Antes de comenzar, asegúrate de tener instalados los siguientes programas en tu máquina:
