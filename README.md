@@ -44,7 +44,7 @@ src
 │   ├── Appointments.java             # Vista para interactuar con las citas
 │   └── Doctors.java                  # Vista para interactuar con los doctores
 └── Main.java                          # Clase principal que ejecuta el programa
-
+```
 
 ## Requisitos 📌
 
