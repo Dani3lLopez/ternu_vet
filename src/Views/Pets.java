@@ -21,31 +21,57 @@ public class Pets {
             System.out.println("4. Eliminar Mascota");
             System.out.println("5. Volver al menú principal");
             System.out.println(separador.repeat(50));
-            System.out.print("Seleccione una opción: ");
-            int choice = scan.nextInt();
 
-            switch (choice){
+            String choice;
+            while(true){
+                System.out.print("Seleccione una opción: ");
+                choice = scan.nextLine().trim();
+                boolean validarMenu = validarOpciones(choice);
+                if (!validarMenu) {
+                    System.out.println("Opción inválida");
+                }else{
+                    break;
+                }
+            }
+            Pets actual = new Pets();
+
+            switch (Integer.parseInt(choice)){
                 case 1:
                     cargarMascotas();
                     break;
                 case 2:
                     registrarMascota();
                     break;
-                case 4:
-                    cargarMascotas();
-                    scan.nextLine();
-                    String registro;
+                case 3:
+                    actual.cargarMascotas();
+                    String registroActualizar;
                     while(true){
-                        System.out.print("Ingrese el número de registro a eliminar: ");
-                        registro = scan.nextLine().trim();
-                        boolean validacion = validarOpciones(registro);
+                        System.out.print("Ingrese el número de registro a actualizar: ");
+                        registroActualizar = scan.nextLine().trim();
+                        boolean validacion = validarOpciones(registroActualizar);
                         if (!validacion) {
                             System.out.println("El valor ingresado es inválido");
                         }else{
                             break;
                         }
                     }
-                    eliminarMascota(Integer.parseInt(registro));
+                    actual.actualizarMascota(Integer.parseInt(registroActualizar));
+                    System.out.println("-".repeat(50));
+                    break;
+                case 4:
+                    actual.cargarMascotas();
+                    String registroEliminar;
+                    while(true){
+                        System.out.print("Ingrese el número de registro a eliminar: ");
+                        registroEliminar = scan.nextLine().trim();
+                        boolean validacion = validarOpciones(registroEliminar);
+                        if (!validacion) {
+                            System.out.println("El valor ingresado es inválido");
+                        }else{
+                            break;
+                        }
+                    }
+                    actual.eliminarMascota(Integer.parseInt(registroEliminar));
                     System.out.println("-".repeat(50));
                     break;
                 case 5:
@@ -160,7 +186,7 @@ public class Pets {
         pet.setUnidadPesoMascota(unidadPesoMascota);
 
         String generoMascota;
-        System.out.println("Seleccione el genero de la mascota: ");
+        System.out.println("Seleccione el genero de la mascota *: ");
         System.out.println("1. Masculino");
         System.out.println("2. Femenino");
         while (true) {
@@ -194,7 +220,6 @@ public class Pets {
         System.out.println("1. Esterilizada");
         System.out.println("2. No esterilizada");
         System.out.println("3. Desconocido");
-        System.out.print("Opción seleccionada: ");
         String estadoRMascota = "";
         while (true) {
             System.out.print("Opción seleccionada: ");
@@ -299,6 +324,249 @@ public class Pets {
         System.out.println("-".repeat(50));
     }
 
+    public void actualizarMascota(int registro){
+        List<String> mascota = pet.cargarDatosMascota(registro);
+        String nombreMascota;
+        System.out.print("Nuevo nombre de la mascota: ");
+        nombreMascota = scan.nextLine().trim();
+        if (nombreMascota.equals("")) {
+            nombreMascota = mascota.get(1);
+        }
+
+
+        System.out.print("Nuevo color de la mascota: ");
+        String colorMascota = scan.nextLine().trim();
+        if(colorMascota.isEmpty()){
+            colorMascota = mascota.get(2);
+        }
+
+        double pesoMascota;
+        while (true) {
+            System.out.print("Nuevo peso de la mascota: ");
+            String input = scan.nextLine().trim();
+            if (input.equals("")) {
+                pesoMascota = Double.parseDouble(mascota.get(3));
+                break;
+            } else {
+                boolean validacion = validarOpciones(input);
+                if (validacion) {
+                    pesoMascota = Double.parseDouble(input);
+                    break;
+                } else {
+                    System.out.println("El valor ingresado es inválido");
+                }
+            }
+        }
+
+        System.out.println("Seleccione la unidad de medida nueva para el peso de la mascota: ");
+        System.out.println("1. lb");
+        System.out.println("2. kg");
+        String unidadPesoMascota = "";
+        while (true) {
+            System.out.print("Opción seleccionada: ");
+            String input = scan.nextLine().trim();
+            if (input.equals("")) {
+                unidadPesoMascota = mascota.get(4);
+                break;
+            } else {
+                boolean validacion = Pets.validarOpciones(input);
+                if(validacion) {
+                    int opcionUniPeso = Integer.parseInt(input);
+                    if (opcionUniPeso == 1) {
+                        unidadPesoMascota = "lb";
+                        break;
+                    } else if (opcionUniPeso == 2) {
+                        unidadPesoMascota = "kg";
+                        break;
+                    } else {
+                        System.out.println("El valor ingresado es inválido");
+                    }
+                }else{
+                    System.out.println("El valor ingresado es inválido");
+                }
+            }
+        }
+
+        String generoMascota;
+        System.out.println("Seleccione el nuevo genero de la mascota: ");
+        System.out.println("1. Masculino");
+        System.out.println("2. Femenino");
+        while (true) {
+            System.out.print("Opción seleccionada: ");
+            String opcionGenero = scan.nextLine().trim();
+            if(opcionGenero.isEmpty()){
+                generoMascota = mascota.get(5);
+                break;
+            }else{
+                boolean validacion = Pets.validarOpciones(opcionGenero);
+                if(validacion) {
+                    if (Integer.parseInt(opcionGenero) == 1) {
+                        generoMascota = "Masculino";
+                        break;
+                    } else if (Integer.parseInt(opcionGenero) == 2) {
+                        generoMascota = "Femenino";
+                        break;
+                    } else {
+                        System.out.println("Opción inválida");
+                    }
+                }else{
+                    System.out.println("Opción inválida");
+                }
+            }
+        }
+
+        System.out.print("Nuevo chip de la mascota: ");
+        String codigoChipMascota = scan.nextLine().trim();
+        if(codigoChipMascota.isEmpty()){
+            codigoChipMascota = mascota.get(6);
+        }
+
+        System.out.println("Seleccione el nuevo estado reproductivo de la mascota: ");
+        System.out.println("1. Esterilizada");
+        System.out.println("2. No esterilizada");
+        System.out.println("3. Desconocido");
+        String estadoRMascota = "";
+        while (true) {
+            System.out.print("Opción seleccionada: ");
+            String input = scan.nextLine().trim();
+            if (input.equals("")) {
+                estadoRMascota = mascota.get(7);
+                break;
+            } else {
+                boolean validacion = Pets.validarOpciones(input);
+                if(validacion) {
+                    int opcionEstadoR = Integer.parseInt(input);
+                    if (opcionEstadoR == 1) {
+                        estadoRMascota = "Esterilizado";
+                        break;
+                    } else if (opcionEstadoR == 2) {
+                        estadoRMascota = "No esterilizado";
+                        break;
+                    } else if(opcionEstadoR == 3) {
+                        estadoRMascota = "Desconocido";
+                        break;
+                    }
+                    else{
+                        System.out.println("El valor ingresado es inválido");
+                    }
+                }else{
+                    System.out.println("El valor ingresado es inválido");
+                }
+            }
+        }
+
+        String fechaNacimientoMascota;
+        while(true){
+            System.out.print("Nueva fecha de nacimiento de la mascota: ");
+            fechaNacimientoMascota = scan.nextLine();
+            if(fechaNacimientoMascota.trim().isEmpty()){
+                fechaNacimientoMascota = mascota.get(8);
+                break;
+            }else{
+                boolean validarFechaNacimientoMascota = validarFecha(fechaNacimientoMascota.trim());
+                if(validarFechaNacimientoMascota == false){
+                    System.out.println("El valor ingresado es inválido");
+                }else{
+                    break;
+                }
+            }
+        }
+
+        System.out.println("Seleccione la nueva talla de la mascota: ");
+        System.out.println("1. Miniatura");
+        System.out.println("2. Pequeño");
+        System.out.println("3. Mediano");
+        System.out.println("4. Grande");
+        System.out.println("5. Gigante");
+        System.out.println("6. Desconocido");
+        String tallaMascota;
+        while (true) {
+            System.out.print("Opción seleccionada: ");
+            String input = scan.nextLine().trim();
+            if (input.equals("")) {
+                tallaMascota = mascota.get(9);
+                break;
+            } else {
+                boolean validacion = Pets.validarOpciones(input);
+                if(validacion) {
+                    int opcionTalla = Integer.parseInt(input);
+                    if(opcionTalla == 1){
+                        tallaMascota = "Miniatura";
+                        break;
+                    }else if(opcionTalla == 2){
+                        tallaMascota = "Pequeño";
+                        break;
+                    }else if(opcionTalla == 3){
+                        tallaMascota = "Mediano";
+                        break;
+                    }else if(opcionTalla == 4){
+                        tallaMascota = "Grande";
+                        break;
+                    }else if(opcionTalla == 5){
+                        tallaMascota = "Gigante";
+                        break;
+                    }else if(opcionTalla == 6){
+                        tallaMascota = "Desconocido";
+                        break;
+                    }else{
+                        System.out.println("El valor ingresado es inválido");
+                    }
+                }else{
+                    System.out.println("El valor ingresado es inválido");
+                }
+            }
+        }
+
+        System.out.println("Indique si la mascota sigue con vida o ha fallecido: ");
+        System.out.println("1. No fallecido");
+        System.out.println("2. Fallecido");
+        boolean fallecido = false;
+        String razonesFallecimiento;
+        while (true) {
+            System.out.print("Opción seleccionada: ");
+            String input = scan.nextLine().trim();
+            if (input.equals("")) {
+                if(mascota.get(10).equals("1")){
+                    fallecido = true;
+                }else{
+                    fallecido = false;
+                }
+                break;
+            } else {
+                boolean validacion = Pets.validarOpciones(input);
+                if(validacion) {
+                    int opcionFallecido = Integer.parseInt(input);
+                    if (opcionFallecido == 1) {
+                        fallecido = false;
+                        break;
+                    }else if (opcionFallecido == 2) {
+                        fallecido = true;
+                        break;
+                    } else{
+                        System.out.println("El valor ingresado es inválido");
+                    }
+                }else{
+                    System.out.println("El valor ingresado es inválido");
+                }
+            }
+        }
+
+        if(fallecido && mascota.get(10).equals("0")){
+            System.out.print("Indique las razones del fallecimiento de la mascota: ");
+            razonesFallecimiento = scan.nextLine().trim();
+        }else if(!fallecido && mascota.get(10).equals("1")){
+            razonesFallecimiento = null;
+        }else{
+            razonesFallecimiento = mascota.get(11);
+        }
+
+        pet.actualizarMascota(registro, nombreMascota, colorMascota, pesoMascota, unidadPesoMascota, generoMascota, codigoChipMascota, estadoRMascota, fechaNacimientoMascota, tallaMascota, fallecido, razonesFallecimiento);
+    }
+
+    public void eliminarMascota(int registro) {
+        pet.eliminarMascota(registro);
+    }
+
     public static boolean validarOpciones(String input){
         boolean validarNumero = false;
         int conteoLetras = 0;
@@ -310,6 +578,10 @@ public class Pets {
 
         if(conteoLetras == 0){
             validarNumero = true;
+        }
+
+        if(input.isEmpty()){
+            validarNumero = false;
         }
 
         return validarNumero;
@@ -351,9 +623,5 @@ public class Pets {
             validarFecha = false;
         }
         return validarFecha;
-    }
-
-    public void eliminarMascota(int registro) {
-        pet.eliminarMascota(registro);
     }
 }

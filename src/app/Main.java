@@ -59,6 +59,10 @@ public class Main {
                     Pets pet = new Pets();
                     pet.petMenu();
                     break;
+                case 9:
+                    Services service = new Services();
+                    service.serviceMenu();
+                    break;
                 case 10:
                     Appointments appointment = new Appointments();
                     appointment.appointmentMenu();

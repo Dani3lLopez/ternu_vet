@@ -15,7 +15,7 @@ public class Users {
 
         boolean active = true;
         while (active) {
-            System.out.println("\uD83D\uDC36 Qué haremos hoy?");
+            System.out.println("\uD83D\uDC64 Qué haremos hoy?");
             System.out.println("1. Listar Usuarios");
             System.out.println("2. Registrar Usuarios");
             System.out.println("3. Actualizar Usuarios");

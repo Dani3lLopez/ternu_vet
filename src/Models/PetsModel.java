@@ -98,8 +98,31 @@ public class PetsModel {
         return datosMascota;
     }
 
+    public static int actualizarMascota(String id, String nombreMascota, String colorMascota, double pesoMascota, String unidadPesoMascota, String generoMascota, String codigoChipMascota, String estadoReproductivoMascota, String fechaNacimientoMascota, String tallaMascota, boolean fallecimiento_mascota, String razon_fallecimiento) {
+        String sql = "UPDATE mascotas SET nombre_mascota=?, color_mascota=?, peso_mascota=?, unidad_peso_mascota=?, genero_mascota=?, codigo_chip_mascota=?, estado_reproductivo_mascota=?, fecha_nacimiento_mascota=?, talla_mascota=?, fallecimiento_mascota=?, razon_fallecimiento=? WHERE id_mascota=?";
+        try (Connection conexion = ConnectionModel.conectar();
+             PreparedStatement ps = conexion.prepareStatement(sql)) {
+            ps.setString(1, nombreMascota);
+            ps.setString(2, colorMascota);
+            ps.setDouble(3, pesoMascota);
+            ps.setString(4, unidadPesoMascota);
+            ps.setString(5, generoMascota);
+            ps.setString(6, codigoChipMascota);
+            ps.setString(7, estadoReproductivoMascota);
+            ps.setString(8, fechaNacimientoMascota);
+            ps.setString(9, tallaMascota);
+            ps.setBoolean(10, fallecimiento_mascota);
+            ps.setString(11, razon_fallecimiento);
+            ps.setString(12, id);
+            return ps.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("Error al actualizar mascota: " + e.getMessage());
+        }
+        return 0;
+    }
+
     public static int eliminarMascota(String id) {
-        String sql = "DELETE FROM mascotas WHERE id_mascota=?";
+        String sql = "UPDATE mascotas SET visibilidad_mascota = false WHERE id_mascota=?";
         try (Connection conexion = ConnectionModel.conectar();
              PreparedStatement ps = conexion.prepareStatement(sql)) {
             ps.setString(1, id);
