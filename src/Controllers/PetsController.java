@@ -3,6 +3,7 @@ package src.Controllers;
 import src.Models.PeopleModel;
 import src.Models.PetsModel;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class PetsController {
@@ -149,6 +150,28 @@ public class PetsController {
             return listaMascotas.get(numero - 1).get(0);
         }
         return null;
+    }
+
+    public List<String> cargarDatosMascota(int registro){
+        String id = capturarIdLista(registro);
+        if (id != null){
+            return PetsModel.cargarMascota(id);
+        }
+        return new ArrayList<>();
+    }
+
+    public void actualizarMascota(int registro, String nombreMascota, String colorMascota, double pesoMascota, String unidadPesoMascota, String generoMascota, String codigoChipMascota, String estadoReproductivoMascota, String fechaNacimientoMascota, String tallaMascota, boolean fallecimientoMascota, String razonFallecimiento) {
+        String id = capturarIdLista(registro);
+        if (id != null) {
+            int resultado = PetsModel.actualizarMascota(id, nombreMascota, colorMascota, pesoMascota, unidadPesoMascota, generoMascota, codigoChipMascota, estadoReproductivoMascota, fechaNacimientoMascota, tallaMascota, fallecimientoMascota, razonFallecimiento);
+            if (resultado > 0) {
+                System.out.println("Registro actualizado correctamente.");
+            } else {
+                System.out.println("Error al actualizar el registro.");
+            }
+        } else {
+            System.out.println("Registro inexistente.");
+        }
     }
 
     public void eliminarMascota(int numero){
