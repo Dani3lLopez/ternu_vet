@@ -26,29 +26,28 @@ public class Owners {
             System.out.println(separador.repeat(50));
             System.out.print("Seleccione una opción: ");
             int choice = scan.nextInt();
-            Owners actual = new Owners();
 
             switch (choice){
                 case 1:
-                    actual.cargarPropietarios();
+                    cargarPropietarios();
                     System.out.println(separador.repeat(70));
                     break;
                 case 2:
-                    actual.registrarPropietario();
+                    registrarPropietario();
                     break;
                 case 3:
-                    actual.cargarPropietarios();
+                    cargarPropietarios();
                     System.out.print("Ingrese el número de registro a actualizar: ");
                     int r = scan.nextInt();
                     scan.nextLine();
-                    actual.actualizarPropietario(r);
+                    actualizarPropietario(r);
                     break;
                 case 4:
-                    actual.cargarPropietarios();
+                    cargarPropietarios();
                     System.out.print("Ingrese el número de registro a eliminar: ");
                     int registro = scan.nextInt();
                     scan.nextLine();
-                    actual.desactivarPropietario(registro);
+                    desactivarPropietario(registro);
                     break;
                 case 5:
                     active = false;

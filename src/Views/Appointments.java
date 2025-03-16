@@ -24,7 +24,6 @@ public class Appointments {
             System.out.println(separador.repeat(50));
             System.out.print("Seleccione una opción: ");
             int choice = scan.nextInt();
-            Appointments actual = new Appointments();
 
             switch (choice) {
                 case 1:
@@ -42,6 +41,13 @@ public class Appointments {
                     actualizarCita(r);
                     break;
                 case 4:
+                    cargarCitas();
+                    System.out.print("Ingrese el número de registro a eliminar: ");
+                    int registro = scan.nextInt();
+                    scan.nextLine();
+                    desactivarCita(registro);
+                    break;
+                case 5:
                     active = false;
                     System.out.println("Cerrando menú...");
                     break;
@@ -83,7 +89,6 @@ public class Appointments {
             System.out.println(separador);
         }
     }
-
     public void registrarCita() {
         appointment.llenarListas();
 
@@ -157,7 +162,6 @@ public class Appointments {
             }
         }
     }
-
     public void actualizarCita(int r) {
         String idCita = appointment.capturarIdLista(r);
         if (idCita == null) {
@@ -237,6 +241,9 @@ public class Appointments {
 
         // Actualizar cita
         appointment.actualizarCita(r, nuevoMotivo, nuevaFecha, nuevaHora, nuevoIdMascota, nuevoIdDoctor, visibilidad);
+    }
+    public void desactivarCita(int registro) {
+        appointment.desactivarCita(registro);
     }
 }
 

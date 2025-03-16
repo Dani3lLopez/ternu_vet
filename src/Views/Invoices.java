@@ -25,7 +25,6 @@ public class Invoices {
             System.out.println(separador.repeat(50));
             System.out.print("Seleccione una opción: ");
             int choice = scan.nextInt();
-            Invoices actual = new Invoices();
 
             switch (choice){
                 case 1:

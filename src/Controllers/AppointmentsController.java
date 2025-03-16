@@ -1,7 +1,6 @@
 package src.Controllers;
 
 import src.Models.AppointmentsModel;
-import src.Models.DoctorsModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -144,15 +143,6 @@ public class AppointmentsController extends DoctorsController {
         return "No encontrada";
     }
 
-    public String capturarDoctores(String idDoctor){
-        for (List<String> doctor : listaDoctores()) {
-            if (doctor.get(0).trim().equalsIgnoreCase(idDoctor)) {
-                return doctor.get(3);
-            }
-        }
-        return "No encontrado";
-    }
-
     public int registrarCita() {
         return AppointmentsModel.ingresarNuevaCita(motivoCita, fechaCita, horaCita, idMascota, idDoctor, visibilidadCita);
     }
@@ -173,6 +163,20 @@ public class AppointmentsController extends DoctorsController {
                 System.out.println("Registro actualizado correctamente.");
             } else {
                 System.out.println("Error al actualizar el registro.");
+            }
+        } else {
+            System.out.println("Registro inexistente.");
+        }
+    }
+
+    public void desactivarCita(int numero){
+        String id = this.capturarIdLista(numero);
+        if (id != null) {
+            int resultado = AppointmentsModel.desactivarCita(id);
+            if (resultado > 0) {
+                System.out.println("Cita desactivada correctamente.");
+            } else {
+                System.out.println("Error al desactivar el registro.");
             }
         } else {
             System.out.println("Registro inexistente.");

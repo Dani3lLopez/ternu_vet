@@ -25,22 +25,21 @@ public class Doctors {
             System.out.println(separador.repeat(50));
             System.out.print("Seleccione una opción: ");
             int choice = scan.nextInt();
-            Doctors actual = new Doctors();
 
             switch (choice){
                 case 1:
-                    actual.cargarDoctores();
+                    cargarDoctores();
                     System.out.println(separador.repeat(70));
                     break;
                 case 2:
-                    actual.registrarDoctor();
+                    registrarDoctor();
                     break;
                 case 3:
-                    actual.cargarDoctores();
+                    cargarDoctores();
                     System.out.print("Ingrese el número de registro a actualizar: ");
                     int r = scan.nextInt();
                     scan.nextLine();
-                    actual.actualizarDoctor(r);
+                    actualizarDoctor(r);
                     break;
                 case 4:
                     active = false;

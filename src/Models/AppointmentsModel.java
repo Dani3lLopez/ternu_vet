@@ -155,4 +155,15 @@ public class AppointmentsModel {
         }
         return 0;
     }
+    public static int desactivarCita(String id) {
+        String sql = "UPDATE citas SET visibilidad_cita = 0 WHERE id_cita=?";
+        try (Connection conexion = ConnectionModel.conectar();
+             PreparedStatement ps = conexion.prepareStatement(sql)) {
+            ps.setString(1, id);
+            return ps.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("Error al cambiar visibilidad del registro: " + e.getMessage());
+        }
+        return 0;
+    }
 }

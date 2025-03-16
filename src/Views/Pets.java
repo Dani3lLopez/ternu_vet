@@ -23,17 +23,16 @@ public class Pets {
             System.out.println(separador.repeat(50));
             System.out.print("Seleccione una opción: ");
             int choice = scan.nextInt();
-            Pets actual = new Pets();
 
             switch (choice){
                 case 1:
-                    actual.cargarMascotas();
+                    cargarMascotas();
                     break;
                 case 2:
-                    actual.registrarMascota();
+                    registrarMascota();
                     break;
                 case 4:
-                    actual.cargarMascotas();
+                    cargarMascotas();
                     scan.nextLine();
                     String registro;
                     while(true){
@@ -46,7 +45,7 @@ public class Pets {
                             break;
                         }
                     }
-                    actual.eliminarMascota(Integer.parseInt(registro));
+                    eliminarMascota(Integer.parseInt(registro));
                     System.out.println("-".repeat(50));
                     break;
                 case 5:

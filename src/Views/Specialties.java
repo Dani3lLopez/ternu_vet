@@ -23,21 +23,20 @@ public class Specialties {
             System.out.println(separador.repeat(50));
             System.out.print("Seleccione una opción: ");
             int choice = scan.nextInt();
-            Specialties actual = new Specialties();
 
             switch (choice){
                 case 1:
-                    actual.cargarEspecialidades();
+                    cargarEspecialidades();
                     break;
                 case 2:
-                    actual.registrarEspecialidad();
+                    registrarEspecialidad();
                     break;
                 case 3:
-                    actual.cargarEspecialidades();
+                    cargarEspecialidades();
                     System.out.print("Ingrese el número de registro que desea eliminar: ");
                     int r = scan.nextInt();
                     scan.nextLine();
-                    actual.eliminarEspecialidad(r);
+                    eliminarEspecialidad(r);
                     break;
                 case 4:
                     active = false;
