@@ -22,6 +22,7 @@ public class Main {
             System.out.println("7. Mascotas \uD83D\uDC36");
             System.out.println("8. Productos \uD83E\uDD4E");
             System.out.println("9. Servicios \uD83D\uDEC1");
+            System.out.println("10. Citas \uD83D\uDCC5");
             System.out.println("❌ Cualquier otra opción para salir ❌");
             System.out.println(separador);
             System.out.print("Seleccione una opción: ");
@@ -57,6 +58,10 @@ public class Main {
                 case 7:
                     Pets pet = new Pets();
                     pet.petMenu();
+                    break;
+                case 10:
+                    Appointments appointment = new Appointments();
+                    appointment.appointmentMenu();
                     break;
                 default:
                     active = false;

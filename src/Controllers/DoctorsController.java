@@ -85,6 +85,7 @@ public class DoctorsController extends PeopleController{
         }
         return "Desconocido";
     }
+
     public String capturarEspecialidades(String idEspecialidad){
         for (List<String> especialidad : listaEspecialidades()) {
             if (especialidad.get(0).trim().equalsIgnoreCase(idEspecialidad)) {
