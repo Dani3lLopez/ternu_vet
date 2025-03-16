@@ -18,9 +18,10 @@ public class AppointmentsController extends DoctorsController {
     private String idCita;
     private String motivoCita;
     private String fechaCita;
+    private String horaCita;
     private String idMascota;
     private String idDoctor;
-    private String visibilidadCita;
+    private Boolean visibilidadCita;
     private List<List<String>> listaCitas;
     private List<List<String>> listaMascotas;
     private List<List<String>> listaDoctores;
@@ -49,6 +50,14 @@ public class AppointmentsController extends DoctorsController {
         this.fechaCita = fechaCita;
     }
 
+    public String getHoraCita() {
+        return horaCita;
+    }
+
+    public void setHoraCita(String horaCita) {
+        this.horaCita = horaCita;
+    }
+
     public String getIdMascota() {
         return idMascota;
     }
@@ -65,11 +74,11 @@ public class AppointmentsController extends DoctorsController {
         this.idDoctor = idDoctor;
     }
 
-    public String getVisibilidadCita() {
+    public Boolean getVisibilidadCita() {
         return visibilidadCita;
     }
 
-    public void setVisibilidadCita(String visibilidadCita) {
+    public void setVisibilidadCita(Boolean visibilidadCita) {
         this.visibilidadCita = visibilidadCita;
     }
 
@@ -142,5 +151,9 @@ public class AppointmentsController extends DoctorsController {
             }
         }
         return "No encontrado";
+    }
+
+    public int registrarCita() {
+        return AppointmentsModel.ingresarNuevaCita(motivoCita, fechaCita, horaCita, idMascota, idDoctor, visibilidadCita);
     }
 }

@@ -28,14 +28,14 @@ public class Appointments {
 
             switch (choice){
                 case 1:
-                    actual.cargarCitas();
+                    cargarCitas();
                     System.out.println(separador.repeat(70));
                     break;
                 case 2:
-                    //actual.registrarDoctor();
+                    registrarCita();
                     break;
                 case 3:
-                    //actual.cargarDoctores();
+                    cargarCitas();
                     System.out.print("Ingrese el número de registro a actualizar: ");
                     int r = scan.nextInt();
                     scan.nextLine();
@@ -81,6 +81,79 @@ public class Appointments {
                 n++;
             }
             System.out.println(separador);
+        }
+    }
+    public void registrarCita() {
+        appointment.llenarListas();
+
+        String separador = "-".repeat(70);
+        System.out.println(separador);
+        System.out.printf("| %-5s | %-50s |\n", "No.", "Doctor");
+        System.out.println(separador);
+
+        List<List<String>> doctores = appointment.listaDoctores();
+
+        int r = 1;
+        for (List<String> doctor : doctores) {
+            String idp = doctor.get(3);
+            String nombreDoctor = appointment.capturarNombresDoctores(idp);
+
+            System.out.printf("| %-5d | %-50s |\n", r, nombreDoctor);
+            r++;
+        }
+        System.out.println(separador);
+
+        System.out.print("Seleccione al doctor/a: ");
+        int valor = scan.nextInt();
+        scan.nextLine();
+
+        if (valor > 0 && valor <= appointment.listaDoctores().size()) {
+            String id = appointment.capturarIdListaDoctores(valor);
+            appointment.setIdDoctor(id);
+
+            System.out.println(separador);
+            System.out.printf("| %-5s | %-50s |\n", "No.", "Mascota");
+            System.out.println(separador);
+
+            for (int c = 0; c < appointment.listaMascotas().size(); c++) {
+                List<String> mascota = appointment.listaMascotas().get(c);
+                System.out.printf("| %-5d | %-50s |\n", (c + 1), mascota.get(1));
+            }
+            System.out.println(separador);
+
+            System.out.print("Seleccione la mascota: ");
+            int v = scan.nextInt();
+            scan.nextLine();
+
+            if (v > 0 && v <= appointment.listaMascotas().size()) {
+                String n = appointment.capturarIdListaMascotas(v);
+                appointment.setIdMascota(n);
+
+                System.out.println("Motivo de la cita: ");
+                String motivoCita = scan.nextLine();
+                appointment.setMotivoCita(motivoCita);
+
+                System.out.println("Fecha de cita (YYYY-MM-DD): ");
+                String fechaCita = scan.nextLine();
+                appointment.setFechaCita(fechaCita);
+
+                System.out.println("Hora de cita (HH-MM-SS): ");
+                String horaCita = scan.nextLine();
+                appointment.setHoraCita(horaCita);
+
+                Boolean visibilidad = true;
+                appointment.setVisibilidadCita(visibilidad);
+
+                int resultado = appointment.registrarCita();
+
+                if (resultado == 1) {
+                    System.out.println("Cita registrada con éxito.");
+                } else {
+                    System.out.println("Ha ocurrido un error al registrar la cita.");
+                }
+            } else {
+                System.out.println("Selección de persona inválida.");
+            }
         }
     }
 }

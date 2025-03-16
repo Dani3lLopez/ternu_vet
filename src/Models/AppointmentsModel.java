@@ -92,4 +92,24 @@ public class AppointmentsModel {
 
         return listaDoctores;
     }
+    public static int ingresarNuevaCita(String motivoCita, String fechaCita, String horaCita, String idMascota, String idDoctor, Boolean visibilidadCita){
+        int retorno = 0;
+        String sql = "INSERT INTO citas (motivo_cita, fecha_cita, hora_cita, id_mascota, id_doctor, visibilidad_cita) VALUES (?,?,?,?,?,?)";
+        try(
+                Connection conexion = ConnectionModel.conectar();
+                PreparedStatement ps = conexion.prepareStatement(sql)){
+            ps.setString(1, motivoCita);
+            ps.setString(2, fechaCita);
+            ps.setString(3, horaCita);
+            ps.setString(4, idMascota);
+            ps.setString(5, idDoctor);
+            ps.setBoolean(6, visibilidadCita);
+
+            retorno = ps.executeUpdate();
+            return retorno;
+        } catch (SQLException e) {
+            System.out.println("Error al registrar datos: " + e.getMessage());
+            return retorno;
+        }
+    }
 }
