@@ -41,4 +41,4 @@ Antes de comenzar, asegúrate de tener instalados los siguientes programas en tu
 1. **Clona el repositorio:**
 
    ```bash
-   git clone https://github.com/TuUsuario/nombre-del-repositorio.git
+   git clone https://github.com/Dani3lLopez/ternu_vet.git
