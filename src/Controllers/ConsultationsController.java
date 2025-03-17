@@ -160,7 +160,7 @@ public class ConsultationsController extends DoctorsController{
     public List<String> cargarDatosConsulta(int registro){
         String id = capturarIdLista(registro);
         if (id != null){
-            return AppointmentsModel.cargarCita(id);
+            return ConsultationsModel.cargarCita(id);
         }
         return new ArrayList<>();
     }
