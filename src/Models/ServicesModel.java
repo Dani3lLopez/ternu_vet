@@ -33,15 +33,15 @@ public class ServicesModel {
         return listaServicios;
     }
 
-    public static int ingresarServicio(String nombre_servicio, String descripcion_servicio, double precio_servicio) {
+    public static int ingresarServicio(String nombreServicio, String descripcionServicio, double precioServicio) {
         int retorno = 0;
         String sql = "INSERT INTO servicios (nombre_servicio, descripcion_servicio, precio_servicio) VALUES (?,?,?)";
         try(
                 Connection conexion = ConnectionModel.conectar();
                 PreparedStatement ps = conexion.prepareStatement(sql)){
-            ps.setString(1, nombre_servicio);
-            ps.setString(2, descripcion_servicio);
-            ps.setDouble(3, precio_servicio);
+            ps.setString(1, nombreServicio);
+            ps.setString(2, descripcionServicio);
+            ps.setDouble(3, precioServicio);
 
             retorno = ps.executeUpdate();
             return retorno;
