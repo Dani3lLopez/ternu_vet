@@ -96,9 +96,19 @@ Antes de comenzar, asegúrate de tener instalados los siguientes programas en tu
 2. **Desacargar el JDBC JAR Driver de mariaDB**
 
    **Link de descarga:**
-   https://mariadb.com/kb/en/installing-mariadb-connectorj/
    
-   ![image](https://github.com/user-attachments/assets/a3b26676-262a-4954-95a8-0a7c96dca4e6)
+   https://mariadb.com/kb/en/installing-mariadb-connectorj/
 
    **Configuración necesaria:**
+   
    ![image](https://github.com/user-attachments/assets/279bd8ed-1461-4e97-b3fc-194e164f8500)
+
+4. **Añadir el JDBC al proyecto:**
+
+   - ![image](https://github.com/user-attachments/assets/a5270c2a-c6ec-4910-b506-219598c5cf3e)
+   - ![image](https://github.com/user-attachments/assets/429f8a21-53c0-443c-9cd4-8002dc1b9f66)
+   - ![image](https://github.com/user-attachments/assets/f9c681ad-674b-4414-9b37-12065de6f754)
+   - Buscar el archivo JAR y cargarlo en el programa.
+
+
+ 
