@@ -93,7 +93,7 @@ Antes de comenzar, asegúrate de tener instalados los siguientes programas en tu
    ```bash
    git clone https://github.com/Dani3lLopez/ternu_vet.git
 
-2. **Desacargar el JDBC JAR Driver de mariaDB**
+2. **Descargar el JDBC JAR Driver de mariaDB**
 
    **Link de descarga:**
    
