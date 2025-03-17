@@ -44,19 +44,28 @@ public class PetsModel {
 
     public static int ingresarNuevaMascota(String nombreMascota, String colorMascota, double pesoMascota, String unidadPesoMascota, String generoMascota, String codigoChipMascota, String estadoReproductivoMascota, String fechaNacimientoMascota, String tallaMascota){
         int retorno = 0;
-        String sql = "INSERT INTO mascotas (nombre_mascota, color_mascota, peso_mascota, unidad_peso_mascota, genero_mascota, codigo_chip_mascota, estado_reproductivo_mascota, fecha_nacimiento_mascota, talla_mascota) VALUES (?,?,?,?,?,?,?,?,?)";
+        String sql;
+
+        if(unidadPesoMascota == null){
+            sql = "INSERT INTO mascotas (nombre_mascota, color_mascota, peso_mascota, genero_mascota, codigo_chip_mascota, estado_reproductivo_mascota, fecha_nacimiento_mascota, talla_mascota) VALUES (?,?,?,?,?,?,?,?)";
+        }else{
+            sql = "INSERT INTO mascotas (nombre_mascota, color_mascota, peso_mascota, genero_mascota, codigo_chip_mascota, estado_reproductivo_mascota, fecha_nacimiento_mascota, talla_mascota, unidad_peso_mascota) VALUES (?,?,?,?,?,?,?,?,?)";
+        }
         try(
                 Connection conexion = ConnectionModel.conectar();
                 PreparedStatement ps = conexion.prepareStatement(sql)){
                 ps.setString(1, nombreMascota);
                 ps.setString(2, colorMascota);
                 ps.setDouble(3, pesoMascota);
-                ps.setString(4, unidadPesoMascota);
-                ps.setString(5, generoMascota);
-                ps.setString(6, codigoChipMascota);
-                ps.setString(7, estadoReproductivoMascota);
-                ps.setString(8, fechaNacimientoMascota);
-                ps.setString(9, tallaMascota);
+                ps.setString(4, generoMascota);
+                ps.setString(5, codigoChipMascota);
+                ps.setString(6, estadoReproductivoMascota);
+                ps.setString(7, fechaNacimientoMascota);
+                ps.setString(8, tallaMascota);
+
+                if(unidadPesoMascota != null){
+                    ps.setString(9, unidadPesoMascota);
+                }
 
             retorno = ps.executeUpdate();
             return retorno;

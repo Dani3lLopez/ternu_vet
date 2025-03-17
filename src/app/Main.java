@@ -60,6 +60,9 @@ public class Main {
                     Pets pet = new Pets();
                     pet.petMenu();
                     break;
+                case 8:
+                    Products product = new Products();
+                    product.productMenu();
                 case 9:
                     Services service = new Services();
                     service.serviceMenu();
