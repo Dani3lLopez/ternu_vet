@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+//
 public class AppointmentsModel {
     public static List<List<String>> cargarListaCitas() {
         List<List<String>> listaCitas = new ArrayList<>();
@@ -15,8 +16,7 @@ public class AppointmentsModel {
         try (
                 Connection conexion = ConnectionModel.conectar();
                 PreparedStatement ps = conexion.prepareStatement(sql);
-                ResultSet rs = ps.executeQuery()
-        ) {
+                ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
                 List<String> cita = new ArrayList<>();
                 cita.add(rs.getString("id_cita"));
@@ -35,6 +35,7 @@ public class AppointmentsModel {
 
         return listaCitas;
     }
+
     public static List<List<String>> cargarListaMascotas() {
         List<List<String>> listaMascotas = new ArrayList<>();
         String sql = "SELECT id_mascota, nombre_mascota, color_mascota, peso_mascota, unidad_peso_mascota, genero_mascota, codigo_chip_mascota, estado_reproductivo_mascota, fecha_nacimiento_mascota, talla_mascota, fallecimiento_mascota, razon_fallecimiento FROM mascotas WHERE visibilidad_mascota = 1";
@@ -42,8 +43,7 @@ public class AppointmentsModel {
         try (
                 Connection conexion = ConnectionModel.conectar();
                 PreparedStatement ps = conexion.prepareStatement(sql);
-                ResultSet rs = ps.executeQuery()
-        ) {
+                ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
                 List<String> mascota = new ArrayList<>();
                 mascota.add(rs.getString("id_mascota"));
@@ -67,6 +67,7 @@ public class AppointmentsModel {
 
         return listaMascotas;
     }
+
     public static List<List<String>> cargarListaDoctores() {
         List<List<String>> listaDoctores = new ArrayList<>();
         String sql = "SELECT * FROM doctores";
@@ -74,8 +75,7 @@ public class AppointmentsModel {
         try (
                 Connection conexion = ConnectionModel.conectar();
                 PreparedStatement ps = conexion.prepareStatement(sql);
-                ResultSet rs = ps.executeQuery()
-        ) {
+                ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
                 List<String> doctor = new ArrayList<>();
                 doctor.add(rs.getString("id_doctor"));
@@ -92,14 +92,14 @@ public class AppointmentsModel {
 
         return listaDoctores;
     }
-    public static List<String> cargarCita(String id){
+
+    public static List<String> cargarCita(String id) {
         List<String> datosCita = new ArrayList<>();
         String sql = "SELECT * FROM citas WHERE id_cita = ?";
 
         try (
                 Connection conexion = ConnectionModel.conectar();
-                PreparedStatement ps = conexion.prepareStatement(sql);
-        ) {
+                PreparedStatement ps = conexion.prepareStatement(sql);) {
             ps.setString(1, id);
             ResultSet rs = ps.executeQuery();
 
@@ -118,12 +118,14 @@ public class AppointmentsModel {
 
         return datosCita;
     }
-    public static int ingresarNuevaCita(String motivoCita, String fechaCita, String horaCita, String idMascota, String idDoctor, Boolean visibilidadCita){
+
+    public static int ingresarNuevaCita(String motivoCita, String fechaCita, String horaCita, String idMascota,
+            String idDoctor, Boolean visibilidadCita) {
         int retorno = 0;
         String sql = "INSERT INTO citas (motivo_cita, fecha_cita, hora_cita, id_mascota, id_doctor, visibilidad_cita) VALUES (?,?,?,?,?,?)";
-        try(
+        try (
                 Connection conexion = ConnectionModel.conectar();
-                PreparedStatement ps = conexion.prepareStatement(sql)){
+                PreparedStatement ps = conexion.prepareStatement(sql)) {
             ps.setString(1, motivoCita);
             ps.setString(2, fechaCita);
             ps.setString(3, horaCita);
@@ -138,10 +140,12 @@ public class AppointmentsModel {
             return retorno;
         }
     }
-    public static int actualizarCita(String id, String motivoCita, String fechaCita, String horaCita, String idMascota, String idDoctor, Boolean visibilidadCita) {
+
+    public static int actualizarCita(String id, String motivoCita, String fechaCita, String horaCita, String idMascota,
+            String idDoctor, Boolean visibilidadCita) {
         String sql = "UPDATE citas SET motivo_cita=?, fecha_cita=?, hora_cita=?, id_mascota=?, id_doctor=?, visibilidad_cita=? WHERE id_cita=?";
         try (Connection conexion = ConnectionModel.conectar();
-             PreparedStatement ps = conexion.prepareStatement(sql)) {
+                PreparedStatement ps = conexion.prepareStatement(sql)) {
             ps.setString(1, motivoCita);
             ps.setString(2, fechaCita);
             ps.setString(3, horaCita);
@@ -155,10 +159,11 @@ public class AppointmentsModel {
         }
         return 0;
     }
+
     public static int desactivarCita(String id) {
         String sql = "UPDATE citas SET visibilidad_cita = 0 WHERE id_cita=?";
         try (Connection conexion = ConnectionModel.conectar();
-             PreparedStatement ps = conexion.prepareStatement(sql)) {
+                PreparedStatement ps = conexion.prepareStatement(sql)) {
             ps.setString(1, id);
             return ps.executeUpdate();
         } catch (SQLException e) {
