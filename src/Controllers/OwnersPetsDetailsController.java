@@ -1,5 +1,6 @@
 package src.Controllers;
 
+import src.Models.ConsultationsModel;
 import src.Models.OwnersPetsDetailsModel;
 
 import java.util.ArrayList;
@@ -113,5 +114,9 @@ public class OwnersPetsDetailsController extends OwnersController{
             }
         }
         return "No encontrada";
+    }
+
+    public int registrarDetalle() {
+        return OwnersPetsDetailsModel.ingresarNuevoDetalle(tipoPropietario, idMascota, idPropietario);
     }
 }

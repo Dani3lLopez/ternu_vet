@@ -31,7 +31,7 @@ public class OwnersPetsDetails {
                     System.out.println(separador.repeat(70));
                     break;
                 case 2:
-                    //registrarConsulta();
+                    registrarDetalle();
                     break;
                 case 3:
                     cargarDetalles();
@@ -86,6 +86,76 @@ public class OwnersPetsDetails {
                 n++;
             }
             System.out.println(separador);
+        }
+    }
+    public void registrarDetalle() {
+        detail.llenarListas();
+
+        String separador = "-".repeat(70);
+        System.out.println(separador);
+        System.out.printf("| %-5s | %-50s |\n", "No.", "Propietario");
+        System.out.println(separador);
+
+        List<List<String>> propietarios = detail.listaPropietarios();
+
+        int r = 1;
+        for (List<String> propietario : propietarios) {
+            String idp = propietario.get(1);
+            String nombrePropietario = detail.capturarNombresPropietarios(idp);
+
+            System.out.printf("| %-5d | %-50s |\n", r, nombrePropietario);
+            r++;
+        }
+        System.out.println(separador);
+
+        System.out.print("Seleccione al propietario/a: ");
+        int valor = scan.nextInt();
+        scan.nextLine();
+
+        if (valor > 0 && valor <= detail.listaPropietarios().size()) {
+            String id = detail.capturarIdListaPropietarios(valor);
+            detail.setIdPropietario(id);
+
+            System.out.println(separador);
+            System.out.printf("| %-5s | %-50s |\n", "No.", "Mascota");
+            System.out.println(separador);
+
+            for (int c = 0; c < detail.listaMascotas().size(); c++) {
+                List<String> mascota = detail.listaMascotas().get(c);
+                System.out.printf("| %-5d | %-50s |\n", (c + 1), mascota.get(1));
+            }
+            System.out.println(separador);
+
+            System.out.print("Seleccione la mascota: ");
+            int v = scan.nextInt();
+            scan.nextLine();
+
+            if (v > 0 && v <= detail.listaMascotas().size()) {
+                String n = detail.capturarIdListaMascotas(v);
+                detail.setIdMascota(n);
+
+                System.out.println("Tipo de propietario: ");
+                System.out.println("1. Propietario principal");
+                System.out.println("2. Propietario secundario");
+                String tipoPropietario = scan.nextLine();
+                int tipoSeleccionado = Integer.parseInt(tipoPropietario);
+                if (tipoSeleccionado == 1){
+                    tipoPropietario = "Propietario principal";
+                }else if(tipoSeleccionado == 2){
+                    tipoPropietario = "Propietario secundario";
+                }
+                detail.setTipoPropietario(tipoPropietario);
+
+                int resultado = detail.registrarDetalle();
+
+                if (resultado == 1) {
+                    System.out.println("detalle registrado con éxito.");
+                } else {
+                    System.out.println("Ha ocurrido un error al registrar el detalle.");
+                }
+            } else {
+                System.out.println("Selección de persona inválida.");
+            }
         }
     }
 }
