@@ -20,7 +20,7 @@ public class PeopleModel {
      */
     public static List<List<String>> cargarListaPersonas() {
         List<List<String>> listaPersonas = new ArrayList<>();
-        // Querry para obtener los datos deseados con base al DUI (datos unicos) de la tabla "personas"
+        // Query para obtener los datos deseados con base al DUI (datos unicos) de la tabla "personas"
         String sql = "SELECT DISTINCT(dui_persona), nombre_persona, apellido_persona, telefono_persona, email_persona, id_persona FROM personas";
 
         // Se garantiza un manejo de cierre de recursos automatico con una estructura try-with-resources
@@ -28,7 +28,7 @@ public class PeopleModel {
                 // Conexion con la base de datos
                 Connection conexion = ConnectionModel.conectar();
                 PreparedStatement ps = conexion.prepareStatement(sql);
-                //Realiza la Querry y guarda los resutlados
+                //Realiza la Query y guarda los resutlados
                 ResultSet rs = ps.executeQuery()
         ) {
             // Itera cada registro del ResultSet
@@ -104,7 +104,7 @@ public class PeopleModel {
                 Connection conexion = ConnectionModel.conectar();
                 PreparedStatement ps = conexion.prepareStatement(sql)
         ){
-            // Parametros de la querry
+            // Parametros de la query
             ps.setString(1, nombre);
             ps.setString(2, apellido);
             ps.setString(3, telefono);
