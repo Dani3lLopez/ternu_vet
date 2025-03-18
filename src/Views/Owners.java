@@ -6,11 +6,22 @@ import src.Controllers.PeopleController;
 import java.util.List;
 import java.util.Scanner;
 
+/*
+ * Vista de propetiarios: gestiona la interaccion con el usuario
+ * Se basa en operaciones de un menu para registrar, actualizar, desactivar propietarios
+ */
 public class Owners {
+
+    // Clase para leer entradas
     Scanner scan = new Scanner(System.in);
+    // Instancia del controlador de propietarios
     public OwnersController owner = new OwnersController();
+    // Instancia del controlador de personas
     public PeopleController person = new PeopleController();
 
+    /*
+     * Muestra el menu principal y gestiona la opcion que se seleccione
+     */
     public void ownerMenu() {
         Scanner scan = new Scanner(System.in);
         String separador = "-";
@@ -27,6 +38,8 @@ public class Owners {
             System.out.print("Seleccione una opción: ");
             int choice = scan.nextInt();
 
+            // Se llaman a los metodos respectivos a la opcion seleccioanda
+            // Si se necesita mas informacion, se solicita y guarda
             switch (choice){
                 case 1:
                     cargarPropietarios();
@@ -59,6 +72,9 @@ public class Owners {
         }
     }
 
+    /*
+     * Carga y muestra la lista de propietarios en formato de tabla
+     */
     public void cargarPropietarios(){
         owner.llenarListas();
         List<List<String>> propietarios = owner.listaPropietarios();
@@ -71,6 +87,7 @@ public class Owners {
             System.out.println(separador);
 
             int n = 1;
+            // Itera y muestra cada propietario
             for (List<String> propietario : propietarios) {
                 String nombre = owner.capturarNombres(propietario.get(1));
                 String ciudad = owner.capturarCiudad(propietario.get(2));
@@ -81,6 +98,12 @@ public class Owners {
             }
         }
     }
+    /*
+     * Registra a un nuevo propietario
+     * Muetsra primero la lista de personas disponibles para seleccionar al propietario
+     * Luego, muestra la lista de ciudades para elgeir una
+     * Por ultimo, se solicita la direccion
+     */
     public void registrarPropietario() {
         person.cargarListaPersonas();
         owner.llenarListas();
@@ -140,6 +163,10 @@ public class Owners {
             }
         }
     }
+    /*
+     * Actualizar los datos de un propietario que existe
+     * El parametro es el idncie del registro a actualizar
+     */
     public void actualizarPropietario(int r) {
         List<String> propietario = owner.cargarDatosPropietario(r);
         if (propietario.isEmpty()) {
@@ -173,6 +200,7 @@ public class Owners {
             }
         }
 
+        // muestra la lsita de ciudades disponibles
         owner.llenarListas();
         System.out.println("Ciudades Disponibles:");
         for (int c = 0; c < owner.listaCiudades().size(); c++) {
@@ -200,6 +228,9 @@ public class Owners {
         boolean visibilidad = true;
         owner.actualizarPropietario(r, nid, nidc, nuevaDireccion, visibilidad);
     }
+    /*
+     * Desactiva un propietario
+     */
     public void desactivarPropietario(int registro) {
         owner.desactivarPropietario(registro);
     }

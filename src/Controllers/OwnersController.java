@@ -5,22 +5,33 @@ import src.Models.OwnersModel;
 import java.util.ArrayList;
 import java.util.List;
 
+/*
+ * Controlador para la entidad "Propetiarios" (Owners)
+ * Extiende las funcionalidades del controlador de People (PeopleController)
+ * Interactua con OwnerModel para gestionar propietarios y cuidades
+ */
 public class OwnersController extends PeopleController{
 
+    /*
+     * Contructor para incializar las listas de propietarios y ciudades
+     */
     public OwnersController() {
         super();
         listaPropietarios = new ArrayList<>();
         listaCiudades = new ArrayList<>();
     }
-
+    // Atributos especificos para Owners
     private String idPropietario;
     private String idPersona;
     private String idCiudad;
     private String direccion;
     private Boolean visibilidadPropietario;
+
+    //Listas para almacenar los registros de propietarios y cuidades
     private List<List<String>> listaPropietarios;
     private List<List<String>> listaCiudades;
 
+    // Getters y setters
     public String getIdPropietario() {
         return idPropietario;
     }
@@ -61,7 +72,13 @@ public class OwnersController extends PeopleController{
         this.visibilidadPropietario = visibilidadPropietario;
     }
 
+    /*
+     * Captura el nombre completo de la persona relacionada al propietario
+     * El parametro es el id de la persona
+     * Retorna el nombre completo, o "Desconocido" si no se encuentra
+     */
     public String capturarNombres(String idPersona) {
+        // Itera la lsita de personas (heredada de PeopleController)
         for (List<String> persona : listaPersonas()) {
             if (persona.get(0).trim().equalsIgnoreCase(idPersona.trim())) {
                 return persona.get(1) + " " + persona.get(2);
@@ -69,6 +86,12 @@ public class OwnersController extends PeopleController{
         }
         return "Desconocido";
     }
+
+    /*
+     * Captura el nombre de la ciudad con base al id
+     * El parametro es el id de la ciudad
+     * Retorna el nombre de la ciudad, o "Sin ciudad" si no se encuentra
+     */
     public String capturarCiudad(String idCiudad){
         for (List<String> ciudad : listaCiudades) {
             if (ciudad.get(0).trim().equalsIgnoreCase(idCiudad)) {
@@ -77,32 +100,68 @@ public class OwnersController extends PeopleController{
         }
         return "Sin ciudad";
     }
+
+    /*
+     * Captura el id del propietario a partir de su posicion en la lista
+     * El parametro es el numero indice en la lista
+     * Retorna el id si existe, o null en caso que no
+     */
     public String capturarIdLista(int numero) {
         if (numero > 0 && numero <= listaPropietarios.size()) {
             return listaPropietarios.get(numero - 1).get(0);
         }
         return null;
     }
+
+    /*
+     * Captura el id de la ciudad con base a su posicion en la lista
+     * El parametro es el numero indice en la lsita de ciudades
+     * Retorna el id de la ciudad o null si no
+     */
     public String capturarIdListaCiudad(int numero) {
         if (numero > 0 && numero <= listaCiudades.size()) {
             return listaCiudades.get(numero - 1).get(0);
         }
         return null;
     }
+
+    /*
+     * Llena las listas de  propietarios y ciudades,y carga la lista de las personas
+     */
     public void llenarListas(){
         listaPropietarios = OwnersModel.cargarListaPropietarios();
         listaCiudades = OwnersModel.cargarListaCiudades();
+        // Metodo heredado de PeopleController para cargar la lista de personas
         cargarListaPersonas();
     }
+
+    /*
+     * Retorna la lista de propietarios cargados
+     */
     public List<List<String>> listaPropietarios() {
         return listaPropietarios;
     }
+
+    /*
+     * Retorna la lista de ciudades cargadas
+     */
     public List<List<String>> listaCiudades() {
         return listaCiudades;
     }
+
+    /*
+     * Registra un nuevo propietario en la base de datos con los atributos actuales
+     * Retorna el numero de filas afectadas
+     */
     public int RegistrarPropietario() {
         return OwnersModel.ingresarNuevoPropietario(idPersona, idCiudad, direccion, visibilidadPropietario);
     }
+
+    /*
+     * Carga los datos de un propietario especifico con base a su posicion en la lista
+     * El parametro es el registro indice en la lista
+     * Retorna la lista con los datos del propietario, o lista vacia si no se encuentra
+     */
     public List<String> cargarDatosPropietario(int registro){
         String id = capturarIdLista(registro);
         if (id != null){
@@ -110,6 +169,10 @@ public class OwnersController extends PeopleController{
         }
         return new ArrayList<>();
     }
+
+    /*
+     * Actualiza los datos de un propietario
+     */
     public void actualizarPropietario(int registro, String idPersona, String idCiudad, String direccion, Boolean visibilidadPropietario) {
         String id = capturarIdLista(registro);
         if (id != null) {
@@ -123,6 +186,10 @@ public class OwnersController extends PeopleController{
             System.out.println("Registro inexistente.");
         }
     }
+
+    /*
+     * Desactiva un porpietario con base a su posicion en la lista  (eliminar)
+     */
     public void desactivarPropietario(int numero){
         String id = this.capturarIdLista(numero);
         if (id != null) {
