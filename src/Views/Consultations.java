@@ -1,6 +1,5 @@
 package src.Views;
 
-import src.Controllers.AppointmentsController;
 import src.Controllers.ConsultationsController;
 
 import java.util.List;
