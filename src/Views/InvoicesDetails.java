@@ -31,7 +31,7 @@ public class InvoicesDetails {
                     System.out.println(separador.repeat(70));
                     break;
                 case 2:
-                    registrarDetalle();
+                    registrarDetalleFactura();
                     break;
                 case 3:
                     cargarDetallesFacturas();
@@ -88,51 +88,70 @@ public class InvoicesDetails {
             System.out.println(separador);
         }
     }
-    public void registrarDetalle() {
+
+    public void registrarDetalleFactura() {
         invoiceDetail.llenarListas();
 
         String separador = "-".repeat(70);
         System.out.println(separador);
-        System.out.printf("| %-5s | %-50s |\n", "No.", "Producto");
+        System.out.printf("| %-5s | %-50s |\n", "No.", "Factura");
         System.out.println(separador);
 
-        List<List<String>> productos = invoiceDetail.listaNombresItems();
+        List<List<String>> facturas = invoiceDetail.listaFacturas();
 
         int r = 1;
-        for (List<String> producto : productos) {
-            String idp = producto.get(1);
-            String nombreProducto = invoiceDetail.capturarNombreItem(idp);
+        for (List<String> factura : facturas) {
+            String idp = factura.get(0);
 
-            System.out.printf("| %-5d | %-50s |\n", r, nombreProducto);
+            System.out.printf("| %-5d | %-50s |\n", r, idp);
             r++;
         }
         System.out.println(separador);
 
-        System.out.print("Seleccione el producto: ");
+        System.out.print("Seleccione la factura: ");
         int valor = scan.nextInt();
         scan.nextLine();
 
-        if (valor > 0 && valor <= invoiceDetail.listaNombresItems().size()) {
-            String id = invoiceDetail.capturarIdListaDetallesItems(valor);
-            invoiceDetail.setIdDetalleItem(id);
+        if (valor > 0 && valor <= invoiceDetail.listaFacturas().size()) {
+            String id = invoiceDetail.capturarIdListaFacturas(valor);
+            invoiceDetail.setNumeroFactura(id);
 
-            System.out.println("Cantidad: ");
-            String cantidadProducto = scan.nextLine();
-            invoiceDetail.setCantidadItem(cantidadProducto);
+            System.out.println(separador);
+            System.out.printf("| %-5s | %-50s |\n", "No.", "Producto");
+            System.out.println(separador);
 
-            System.out.println("Precio unitario: ");
-            String precioUnitario = scan.nextLine();
-            invoiceDetail.setPrecioUnitarioItem(precioUnitario);
-
-            int resultado = invoiceDetail.registrarItemFactura();
-
-            if (resultado == 1) {
-                    System.out.println("detalle registrado con éxito.");
-            } else {
-                    System.out.println("Ha ocurrido un error al registrar el detalle.");
+            for (int c = 0; c < invoiceDetail.listaNombresItems().size(); c++) {
+                List<String> item = invoiceDetail.listaNombresItems().get(c);
+                System.out.printf("| %-5d | %-50s |\n", (c + 1), item.get(1));
             }
-        } else {
-                System.out.println("Selección de item inválida.");
+            System.out.println(separador);
+
+            System.out.print("Seleccione el producto: ");
+            int v = scan.nextInt();
+            scan.nextLine();
+
+            if (v > 0 && v <= invoiceDetail.listaNombresItems().size()) {
+                String n = invoiceDetail.capturarIdListaDetallesItems(v);
+                invoiceDetail.setIdDetalleItem(n);
+
+                System.out.println("Cantidad: ");
+                String cantidad = scan.nextLine();
+                invoiceDetail.setCantidadItem(cantidad);
+
+                System.out.println("Precio unitario: ");
+                String precio = scan.nextLine();
+                invoiceDetail.setPrecioUnitarioItem(precio);
+
+                int resultado = invoiceDetail.registrarItemFactura();
+
+                if (resultado == 1) {
+                    System.out.println("detalle registrado con éxito.");
+                } else {
+                    System.out.println("Ha ocurrido un error al registrar el detalle.");
+                }
+            } else {
+                System.out.println("Selección de persona inválida.");
+            }
         }
     }
 
