@@ -66,7 +66,7 @@ public class OwnersPetsDetailsController extends OwnersController{
     public void setIdPropietario(String idPropietario) {
         this.idPropietario = idPropietario;
     }
-    // Metodos de acceso a la lista
+    // Metodos de acceso a las listas
     /*
      * Retorna una lista de detalles de propietarios con mascotas
      */
@@ -165,11 +165,19 @@ public class OwnersPetsDetailsController extends OwnersController{
         }
         return "No encontrada";
     }
-
+    /*
+     * Registra un nuevo detalle en la base de datos con los atributos actuales
+     * Retorna el numero de filas afectadas
+     */
     public int registrarDetalle() {
         return OwnersPetsDetailsModel.ingresarNuevoDetalle(tipoPropietario, idMascota, idPropietario);
     }
 
+    /*
+     * Carga los datos de detalle especifico con base a su posicion en la lista
+     * El parametro es el registro indice en la lista
+     * Retorna la lista con los datos del detalle, o lista vacia si no se encuentra
+     */
     public List<String> cargarDatosDetalle(int registro){
         String id = capturarIdLista(registro);
         if (id != null){
@@ -177,6 +185,10 @@ public class OwnersPetsDetailsController extends OwnersController{
         }
         return new ArrayList<>();
     }
+
+    /*
+     * Actualiza los datos del detalle
+     */
 
     public void actualizarDetalle(int registro, String tipoPropietario, String idMascota, String idPropietario) {
         String id = capturarIdLista(registro);
@@ -192,6 +204,9 @@ public class OwnersPetsDetailsController extends OwnersController{
         }
     }
 
+    /*
+     * Desactiva un detalle con base a su posicion en la lista (eliminar)
+     */
     public void eliminarDetalle(int numero){
         String id = this.capturarIdLista(numero);
         if (id != null) {
