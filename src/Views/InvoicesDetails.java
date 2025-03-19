@@ -31,7 +31,7 @@ public class InvoicesDetails {
                     System.out.println(separador.repeat(70));
                     break;
                 case 2:
-                    //registrarDetalle();
+                    registrarDetalle();
                     break;
                 case 3:
                     cargarDetallesFacturas();
@@ -45,7 +45,7 @@ public class InvoicesDetails {
                     System.out.print("Ingrese el número de registro a eliminar: ");
                     int registro = scan.nextInt();
                     scan.nextLine();
-                    //eliminarDetalle(registro);
+                    eliminarDetalleFactura(registro);
                     break;
                 case 5:
                     active = false;
@@ -87,5 +87,56 @@ public class InvoicesDetails {
             }
             System.out.println(separador);
         }
+    }
+    public void registrarDetalle() {
+        invoiceDetail.llenarListas();
+
+        String separador = "-".repeat(70);
+        System.out.println(separador);
+        System.out.printf("| %-5s | %-50s |\n", "No.", "Producto");
+        System.out.println(separador);
+
+        List<List<String>> productos = invoiceDetail.listaNombresItems();
+
+        int r = 1;
+        for (List<String> producto : productos) {
+            String idp = producto.get(1);
+            String nombreProducto = invoiceDetail.capturarNombreItem(idp);
+
+            System.out.printf("| %-5d | %-50s |\n", r, nombreProducto);
+            r++;
+        }
+        System.out.println(separador);
+
+        System.out.print("Seleccione el producto: ");
+        int valor = scan.nextInt();
+        scan.nextLine();
+
+        if (valor > 0 && valor <= invoiceDetail.listaNombresItems().size()) {
+            String id = invoiceDetail.capturarIdListaDetallesItems(valor);
+            invoiceDetail.setIdDetalleItem(id);
+
+            System.out.println("Cantidad: ");
+            String cantidadProducto = scan.nextLine();
+            invoiceDetail.setCantidadItem(cantidadProducto);
+
+            System.out.println("Precio unitario: ");
+            String precioUnitario = scan.nextLine();
+            invoiceDetail.setPrecioUnitarioItem(precioUnitario);
+
+            int resultado = invoiceDetail.registrarItemFactura();
+
+            if (resultado == 1) {
+                    System.out.println("detalle registrado con éxito.");
+            } else {
+                    System.out.println("Ha ocurrido un error al registrar el detalle.");
+            }
+        } else {
+                System.out.println("Selección de item inválida.");
+        }
+    }
+
+    public void eliminarDetalleFactura(int registro) {
+        invoiceDetail.eliminarDetalleFactura(registro);
     }
 }

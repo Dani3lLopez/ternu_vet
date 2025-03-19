@@ -1,6 +1,7 @@
 package src.Controllers;
 
 import src.Models.InvoicesDetailsModel;
+import src.Models.OwnersPetsDetailsModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -146,5 +147,45 @@ public class InvoicesDetailsController {
             }
         }
         return "No encontrado";
+    }
+
+    public int registrarItemFactura() {
+        return InvoicesDetailsModel.ingresarNuevoDetalleFactura(numeroFactura, idDetalleItem, cantidadItem, precioUnitarioItem);
+    }
+
+    public List<String> cargarDatosDetalle(int registro){
+        String id = capturarIdLista(registro);
+        if (id != null){
+            return OwnersPetsDetailsModel.cargarDetalle(id);
+        }
+        return new ArrayList<>();
+    }
+
+    public void actualizarDetalle(int registro, String tipoPropietario, String idMascota, String idPropietario) {
+        String id = capturarIdLista(registro);
+        if (id != null) {
+            int resultado = OwnersPetsDetailsModel.actualizarDetalle(id, tipoPropietario, idMascota, idPropietario);
+            if (resultado > 0) {
+                System.out.println("Registro actualizado correctamente.");
+            } else {
+                System.out.println("Error al actualizar el registro.");
+            }
+        } else {
+            System.out.println("Registro inexistente.");
+        }
+    }
+
+    public void eliminarDetalleFactura(int numero){
+        String id = this.capturarIdLista(numero);
+        if (id != null) {
+            int resultado = InvoicesDetailsModel.eliminarDetalleFactura(id);
+            if (resultado > 0) {
+                System.out.println("Detalle eliminado correctamente.");
+            } else {
+                System.out.println("Error al eliminar el registro.");
+            }
+        } else {
+            System.out.println("Registro inexistente.");
+        }
     }
 }
