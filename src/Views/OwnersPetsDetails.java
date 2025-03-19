@@ -158,7 +158,6 @@ public class OwnersPetsDetails {
             }
         }
     }
-
     public void actualizarDetalle(int r) {
         String idDetalle = detail.capturarIdLista(r);
         if (idDetalle == null) {
