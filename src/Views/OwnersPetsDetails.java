@@ -5,14 +5,22 @@ import src.Controllers.OwnersPetsDetailsController;
 import java.util.List;
 import java.util.Scanner;
 
+/*
+ * Vista de detalles de propietarios con mascotas
+ *  Interactua con el usuario para gestionar el detalles de propietarios con mascotas
+ * Permite listar, registrar, actualizar y eliminar registros
+ * Se comunica con el controlador OwnersPetsDetailsController para realizar las opciones
+ */
 public class OwnersPetsDetails {
     Scanner scan = new Scanner(System.in);
     public OwnersPetsDetailsController detail = new OwnersPetsDetailsController();
 
+    /*
+     * Muestra el menu
+     */
     public void detailMenu() {
         Scanner scan = new Scanner(System.in);
         String separador = "-";
-
         boolean active = true;
         while (active) {
             System.out.println("\uD83D\uDC36 Qué haremos hoy?");
@@ -25,6 +33,7 @@ public class OwnersPetsDetails {
             System.out.print("Seleccione una opción: ");
             int choice = scan.nextInt();
 
+            // Se llama el metodo con base a la seleccion. Si se requieren mas parametros, se solicitan
             switch (choice) {
                 case 1:
                     cargarDetalles();
@@ -57,6 +66,11 @@ public class OwnersPetsDetails {
         }
     }
 
+    /*
+     * Carga y muestra la lista de detalles en formato de tabla
+     * Se obtienen las listas de detalles, mascotas y propietarios a traves del controlador
+     * Se muestra la informacion por columnas
+     */
     public void cargarDetalles() {
         detail.llenarListas();
         List<List<String>> detalles = detail.listaDetalles();

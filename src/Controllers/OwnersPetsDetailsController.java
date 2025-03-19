@@ -5,22 +5,35 @@ import src.Models.OwnersPetsDetailsModel;
 import java.util.ArrayList;
 import java.util.List;
 
+/*
+ * Controlador que extiende OwnersController para gestionar el detalle de propietarios con mascotas
+ * Facilita metodos para llenar listas de detalles, mascotas y propietarios
+ * Captura informacion especifica de estas listas
+ * Hereda funcionalidades de OwnersController
+ */
 public class OwnersPetsDetailsController extends OwnersController{
+
+    /*
+     * Constructor para inicializar las listas de detalles, mascotas y propietarios
+     */
     public OwnersPetsDetailsController() {
         super();
         listaDetalles = new ArrayList<>();
         listaMascotas = new ArrayList<>();
         listaPropietarios = new ArrayList<>();
     }
-
+    // Atributos especificos
     private String idDetallePropietarioMascota;
     private String tipoPropietario;
     private String idMascota;
     private String idPropietario;
+
+    //Listas que almacenan los registros cargados de la base de datos
     private List<List<String>> listaDetalles;
     private List<List<String>> listaMascotas;
     private List<List<String>> listaPropietarios;
 
+    // Metodos getter y setter
     public String getIdDetallePropietarioMascota() {
         return idDetallePropietarioMascota;
     }
@@ -52,19 +65,32 @@ public class OwnersPetsDetailsController extends OwnersController{
     public void setIdPropietario(String idPropietario) {
         this.idPropietario = idPropietario;
     }
-
+    // Metodos de acceso a la lista
+    /*
+     * Retorna una lista de detalles de propietarios con mascotas
+     */
     public List<List<String>> listaDetalles() {
         return listaDetalles;
     }
 
+    /*
+     * Retorna la lista de mascotas
+     */
     public List<List<String>> listaMascotas() {
         return listaMascotas;
     }
 
+    /*
+     * Retorna la lista de propietarios
+     */
     public List<List<String>> listaPropietarios() {
         return listaPropietarios;
     }
-
+    
+    /*
+     * Llena la listas de detalles, mascotas y propietarios con el modelo
+     * Por otro lado, hereda el metodo cargarListaPersonas() para actualizar la lista de personas
+     */
     public void llenarListas(){
         listaDetalles = OwnersPetsDetailsModel.cargarListaDetalles();
         listaMascotas = OwnersPetsDetailsModel.cargarListaMascotas();
@@ -72,13 +98,23 @@ public class OwnersPetsDetailsController extends OwnersController{
         cargarListaPersonas();
     }
 
+    // Metodos de captura de ids y nombres
+    /*
+     * Captura el id de un registro de detalle con base a su posicion en la lista
+     * El parametro es el numero indice del registro
+     * Retorna el id del registro si existe y si no, null
+     */
     public String capturarIdLista(int numero) {
         if (numero > 0 && numero <= listaDetalles.size()) {
             return listaDetalles.get(numero - 1).get(0);
         }
         return null;
     }
-
+    /*
+     * Captura el id de una mascota con base a su posicion en la lista
+     * El parametro es el numero indice en la lista de mascotas
+     * Retorna el id de la mascota si existe o null si no
+     */
     public String capturarIdListaMascotas(int numero) {
         if (numero > 0 && numero <= listaMascotas.size()) {
             return listaMascotas.get(numero - 1).get(0);
@@ -86,6 +122,11 @@ public class OwnersPetsDetailsController extends OwnersController{
         return null;
     }
 
+    /*
+     * Captura el id de un propietario con base a su posicion en la lista
+     * El parametro es el numero indice del registro
+     * Retorna el id del propietario si existe y si no, null
+     */
     public String capturarIdListaPropietarios(int numero) {
         if (numero > 0 && numero <= listaPropietarios.size()) {
             return listaPropietarios.get(numero - 1).get(0);
@@ -93,6 +134,11 @@ public class OwnersPetsDetailsController extends OwnersController{
         return null;
     }
 
+    /*
+     * Busca y retorna el nombre completo del propietario relacionado a un id de persona
+     * Recorre la lista de propietarios, y para el registro que encuentra, recorre la lista de personas
+     * (heredada de PeopleController) para obtener el nombre y el apellido
+     */
     public String capturarNombresPropietarios(String idPersona) {
         for (List<String> propietario : listaPropietarios()) {
             if (propietario.get(1).trim().equalsIgnoreCase(idPersona.trim())) {
@@ -105,7 +151,11 @@ public class OwnersPetsDetailsController extends OwnersController{
         }
         return "Desconocido";
     }
-
+    /*
+     * Busca y retorna el nombre de la mascota a partir de su id
+     * El parametro es el nombre de la mascota a bsucar
+     * Retorna el nombre de la mascota si existe; si no, "No encontrada"
+     */
     public String capturarMascotas(String idMascota){
         for (List<String> mascota : listaMascotas()) {
             if (mascota.get(0).trim().equalsIgnoreCase(idMascota)) {

@@ -130,7 +130,7 @@ public class People {
     }
 
     /*
-     * Actualza los datos de una persona; solicita a los usuarios los nuevos valores
+     * Actualiza los datos de una persona; solicita a los usuarios los nuevos valores
      * Permite dejar un campo vacio para mantener el valor que ya tenia
      */
     public void actualizarPersona(int r){

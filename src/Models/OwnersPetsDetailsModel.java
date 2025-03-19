@@ -7,9 +7,20 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+/*
+ * Modelo de detalle de propietarios con mascotas
+ * Este modelo contiene métodos para cargar listas de registros de detalle, mascotas y propietarios desde
+ * la base de datos con la tabla "detalle_propietarios_mascotas y las tablas relacionadas
+ */
 public class OwnersPetsDetailsModel {
+
+    /*
+     * Carga la lista de detalles de propietarios con mascotas
+     * Retorna una lista de listas. Cada sublista contiene datos de un registro en la tabla dicha
+     */
     public static List<List<String>> cargarListaDetalles() {
         List<List<String>> listaDetalles = new ArrayList<>();
+        // Query para obtener los registros
         String sql = "SELECT * FROM detalle_propietarios_mascotas";
 
         try (
@@ -32,7 +43,10 @@ public class OwnersPetsDetailsModel {
 
         return listaDetalles;
     }
-
+    /*
+     * Carga la lista de mascotas activas
+     * Retorna una lista de listas. Cada sublista con datos de las mascotas con visibilidad activa
+     */
     public static List<List<String>> cargarListaMascotas() {
         List<List<String>> listaMascotas = new ArrayList<>();
         String sql = "SELECT id_mascota, nombre_mascota, color_mascota, peso_mascota, unidad_peso_mascota, genero_mascota, codigo_chip_mascota, estado_reproductivo_mascota, fecha_nacimiento_mascota, talla_mascota, fallecimiento_mascota, razon_fallecimiento FROM mascotas WHERE visibilidad_mascota = 1";
@@ -66,8 +80,13 @@ public class OwnersPetsDetailsModel {
         return listaMascotas;
     }
 
+    /*
+     * Carga la lista de propietarios
+     * Retorna una lista de listas. Cada sublista contiene datos de un propietario
+     */
     public static List<List<String>> cargarListaPropietarios() {
         List<List<String>> listaPropietarios = new ArrayList<>();
+        // Query para obtener los registros de los propietarios
         String sql = "SELECT * FROM propietarios";
 
         try (

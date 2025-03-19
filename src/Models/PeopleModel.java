@@ -9,7 +9,7 @@ import java.util.List;
 
 /*
  * Modelo de personas: maneja las operaciones CRUD en la base de datos
- * Este modelo contiene métodos para cargar, crear, actualizar y eleiminar registros de personas
+ * Este modelo contiene métodos para cargar, crear, actualizar y eliminar registros de personas
  * sobre la tabla "personas" de la base de datos
  */
 
@@ -20,7 +20,7 @@ public class PeopleModel {
      */
     public static List<List<String>> cargarListaPersonas() {
         List<List<String>> listaPersonas = new ArrayList<>();
-        // Query para obtener los datos deseados con base al DUI (datos unicos) de la tabla "personas"
+        // Query para obtener los datos de la tabla "personas"
         String sql = "SELECT DISTINCT(dui_persona), nombre_persona, apellido_persona, telefono_persona, email_persona, id_persona FROM personas";
 
         // Se garantiza un manejo de cierre de recursos automatico con una estructura try-with-resources
@@ -28,7 +28,7 @@ public class PeopleModel {
                 // Conexion con la base de datos
                 Connection conexion = ConnectionModel.conectar();
                 PreparedStatement ps = conexion.prepareStatement(sql);
-                //Realiza la Query y guarda los resutlados
+                //Realiza la query y guarda los resultados
                 ResultSet rs = ps.executeQuery()
         ) {
             // Itera cada registro del ResultSet
@@ -54,13 +54,13 @@ public class PeopleModel {
     }
 
     /*
-     * Carga los datos de una persona con base a su ID
+     * Carga los datos de una persona con base a su id
      * El parametro id es el identificador de la persona
      * Retorna una lista con los datos de la persona
      */
     public static List<String> cargarPersona(String id){
         List<String> datosPersona = new ArrayList<>();
-        //Querry para seleccionar los datos del registro de persona con base a su ID
+        //Query para seleccionar los datos del registro de persona con base a su ID
         String sql = "SELECT * FROM personas WHERE id_persona = ?";
 
         // Manejo de cierre de recursos automatico
@@ -68,7 +68,7 @@ public class PeopleModel {
                 Connection conexion = ConnectionModel.conectar();
                 PreparedStatement ps = conexion.prepareStatement(sql);
         ) {
-            // Establece  el valor del parametro, ID, para la consulta
+            // Establece  el valor del parametro (id) para la consulta
             ps.setString(1, id);
             // Realzia la consulta y obtiene el resultado
             ResultSet rs = ps.executeQuery();
@@ -92,11 +92,11 @@ public class PeopleModel {
 
     /*
      * Inserta una nueva persona a la base de datos
-     * Retorna el número de filas afectadas al realizar la querry. Se espera 1 si sí se insertó
+     * Retorna el numero de filas afectadas al realizar la query. Se espera 1 si sí se insertó
      */
     public static int ingresarNuevaPersona(String nombre, String apellido, String telefono, String email, String dui){
         int retorno = 0;
-        // Querry para insertar un nuevo registro en la tabla "personas" de la base de datos
+        // Query para insertar un nuevo registro en la tabla "personas" de la base de datos
         String sql = "INSERT INTO personas (nombre_persona, apellido_persona, telefono_persona, email_persona, dui_persona) VALUES (?,?,?,?,?)";
 
         // Manejo de cierre de recursos automatico
@@ -111,7 +111,7 @@ public class PeopleModel {
             ps.setString(4, email);
             ps.setString(5, dui);
 
-            // Ejecuta la querry y guarda el numero de filas afectadas
+            // Ejecuta la query y guarda el numero de filas afectadas
             retorno = ps.executeUpdate();
             return retorno;
         } catch (SQLException e) {
@@ -138,7 +138,7 @@ public class PeopleModel {
             ps.setString(5, dui);
             ps.setString(6, id);
 
-            // Ejecuta Querry y devuelve la cantidad de filas afectadas
+            // Ejecuta la query y devuelve la cantidad de filas afectadas
             return ps.executeUpdate();
         } catch (SQLException e) {
             System.out.println("Error al actualizar persona: " + e.getMessage());
