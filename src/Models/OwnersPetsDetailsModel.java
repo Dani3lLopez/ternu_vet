@@ -91,4 +91,70 @@ public class OwnersPetsDetailsModel {
 
         return listaPropietarios;
     }
+
+    public static List<String> cargarDetalle(String id){
+        List<String> datosDetalle = new ArrayList<>();
+        String sql = "SELECT * FROM detalle_propietarios_mascotas WHERE id_detalle_propietario_mascota = ?";
+
+        try (
+                Connection conexion = ConnectionModel.conectar();
+                PreparedStatement ps = conexion.prepareStatement(sql);
+        ) {
+            ps.setString(1, id);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                datosDetalle.add(rs.getString("id_detalle_propietario_mascota"));
+                datosDetalle.add(rs.getString("tipo_propietario"));
+                datosDetalle.add(rs.getString("id_mascota"));
+                datosDetalle.add(rs.getString("id_propietario"));
+            }
+        } catch (SQLException e) {
+            System.out.println("Error al leer datos: " + e.getMessage());
+        }
+
+        return datosDetalle;
+    }
+    public static int ingresarNuevoDetalle(String tipoPropietario, String idMascota, String idPropietario){
+        int retorno = 0;
+        String sql = "INSERT INTO detalle_propietarios_mascotas (tipo_propietario, id_mascota, id_propietario) VALUES (?,?,?)";
+        try(
+                Connection conexion = ConnectionModel.conectar();
+                PreparedStatement ps = conexion.prepareStatement(sql)){
+            ps.setString(1, tipoPropietario);
+            ps.setString(2, idMascota);
+            ps.setString(3, idPropietario);
+
+            retorno = ps.executeUpdate();
+            return retorno;
+        } catch (SQLException e) {
+            System.out.println("Error al registrar datos: " + e.getMessage());
+            return retorno;
+        }
+    }
+    public static int actualizarDetalle(String id, String tipoPropietario, String idMascota, String idPropietario) {
+        String sql = "UPDATE detalle_propietarios_mascotas SET tipo_propietario=?, id_mascota=?, id_propietario=? WHERE id_detalle_propietario_mascota=?";
+        try (Connection conexion = ConnectionModel.conectar();
+             PreparedStatement ps = conexion.prepareStatement(sql)) {
+            ps.setString(1, tipoPropietario);
+            ps.setString(2, idMascota);
+            ps.setString(3, idPropietario);
+            ps.setString(4, id);
+            return ps.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("Error al actualizar detalle: " + e.getMessage());
+        }
+        return 0;
+    }
+    public static int eliminarDetalle(String id) {
+        String sql = "DELETE FROM detalle_propietarios_mascotas WHERE id_detalle_propietario_mascota=?";
+        try (Connection conexion = ConnectionModel.conectar();
+             PreparedStatement ps = conexion.prepareStatement(sql)) {
+            ps.setString(1, id);
+            return ps.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("Error al eliminar el registro: " + e.getMessage());
+        }
+        return 0;
+    }
 }
