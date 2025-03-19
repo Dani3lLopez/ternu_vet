@@ -1,5 +1,6 @@
 package src.Controllers;
 
+import src.Models.ConsultationsModel;
 import src.Models.OwnersPetsDetailsModel;
 
 import java.util.ArrayList;
@@ -163,5 +164,45 @@ public class OwnersPetsDetailsController extends OwnersController{
             }
         }
         return "No encontrada";
+    }
+
+    public int registrarDetalle() {
+        return OwnersPetsDetailsModel.ingresarNuevoDetalle(tipoPropietario, idMascota, idPropietario);
+    }
+
+    public List<String> cargarDatosDetalle(int registro){
+        String id = capturarIdLista(registro);
+        if (id != null){
+            return OwnersPetsDetailsModel.cargarDetalle(id);
+        }
+        return new ArrayList<>();
+    }
+
+    public void actualizarDetalle(int registro, String tipoPropietario, String idMascota, String idPropietario) {
+        String id = capturarIdLista(registro);
+        if (id != null) {
+            int resultado = OwnersPetsDetailsModel.actualizarDetalle(id, tipoPropietario, idMascota, idPropietario);
+            if (resultado > 0) {
+                System.out.println("Registro actualizado correctamente.");
+            } else {
+                System.out.println("Error al actualizar el registro.");
+            }
+        } else {
+            System.out.println("Registro inexistente.");
+        }
+    }
+
+    public void eliminarDetalle(int numero){
+        String id = this.capturarIdLista(numero);
+        if (id != null) {
+            int resultado = OwnersPetsDetailsModel.eliminarDetalle(id);
+            if (resultado > 0) {
+                System.out.println("Detalle eliminado correctamente.");
+            } else {
+                System.out.println("Error al eliminar el registro.");
+            }
+        } else {
+            System.out.println("Registro inexistente.");
+        }
     }
 }

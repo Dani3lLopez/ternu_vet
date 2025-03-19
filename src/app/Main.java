@@ -26,6 +26,7 @@ public class Main {
             System.out.println("10. Citas \uD83D\uDCC5");
             System.out.println("11. Consultas \uD83E\uDD15");
             System.out.println("12. Detalles-Propietarios-Mascotas \u2764\uFE0F");
+            System.out.println("13. Detalles-Facturas \uD83E\uDDFE");
             System.out.println("❌ Cualquier otra opción para salir ❌");
             System.out.println(separador);
             System.out.print("Seleccione una opción: ");
@@ -80,6 +81,10 @@ public class Main {
                 case 12:
                     OwnersPetsDetails detail = new OwnersPetsDetails();
                     detail.detailMenu();
+                    break;
+                case 13:
+                    InvoicesDetails invoiceDetail = new InvoicesDetails();
+                    invoiceDetail.invoiceDetailMenu();
                     break;
                 default:
                     active = false;
