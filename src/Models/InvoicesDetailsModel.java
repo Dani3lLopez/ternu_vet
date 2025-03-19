@@ -146,14 +146,15 @@ public class InvoicesDetailsModel {
             return retorno;
         }
     }
-    public static int actualizarDetalle(String id, String tipoPropietario, String idMascota, String idPropietario) {
-        String sql = "UPDATE detalle_propietarios_mascotas SET tipo_propietario=?, id_mascota=?, id_propietario=? WHERE id_detalle_propietario_mascota=?";
+    public static int actualizarDetalle(String id, String numeroFactura, String idDetalleItem, String cantidadItem, String precioUnitario) {
+        String sql = "UPDATE detalle_facturas SET numero_factura=?, id_detalle_item=(SELECT id_detalle_item FROM detalle_items WHERE id_producto=? LIMIT 1), cantidad_item=?, precio_unitario_item =? WHERE id_detalle_factura=?";
         try (Connection conexion = ConnectionModel.conectar();
              PreparedStatement ps = conexion.prepareStatement(sql)) {
-            ps.setString(1, tipoPropietario);
-            ps.setString(2, idMascota);
-            ps.setString(3, idPropietario);
-            ps.setString(4, id);
+            ps.setString(1, numeroFactura);
+            ps.setString(2, idDetalleItem);
+            ps.setString(3, cantidadItem);
+            ps.setString(4, precioUnitario);
+            ps.setString(5, id);
             return ps.executeUpdate();
         } catch (SQLException e) {
             System.out.println("Error al actualizar detalle: " + e.getMessage());

@@ -111,7 +111,7 @@ public class InvoicesDetailsController {
     public String capturarFactura(String numeroFactura){
         for (List<String> factura : listaFacturas) {
             if (factura.get(0).trim().equalsIgnoreCase(numeroFactura)) {
-                return factura.get(1);
+                return factura.get(0);
             }
         }
         return "No encontrada";
@@ -156,15 +156,15 @@ public class InvoicesDetailsController {
     public List<String> cargarDatosDetalle(int registro){
         String id = capturarIdLista(registro);
         if (id != null){
-            return OwnersPetsDetailsModel.cargarDetalle(id);
+            return InvoicesDetailsModel.cargarDetalleFactura(id);
         }
         return new ArrayList<>();
     }
 
-    public void actualizarDetalle(int registro, String tipoPropietario, String idMascota, String idPropietario) {
+    public void actualizarDetalle(int registro, String numeroFactura, String idDetalleItem, String cantidadItem, String precioUnitarioItem) {
         String id = capturarIdLista(registro);
         if (id != null) {
-            int resultado = OwnersPetsDetailsModel.actualizarDetalle(id, tipoPropietario, idMascota, idPropietario);
+            int resultado = InvoicesDetailsModel.actualizarDetalle(id, numeroFactura, idDetalleItem, cantidadItem, precioUnitarioItem);
             if (resultado > 0) {
                 System.out.println("Registro actualizado correctamente.");
             } else {

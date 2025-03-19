@@ -38,7 +38,7 @@ public class InvoicesDetails {
                     System.out.print("Ingrese el número de registro a actualizar: ");
                     int r = scan.nextInt();
                     scan.nextLine();
-                    //actualizarDetalle(r);
+                    actualizarDetalle(r);
                     break;
                 case 4:
                     cargarDetallesFacturas();
@@ -153,6 +153,79 @@ public class InvoicesDetails {
                 System.out.println("Selección de persona inválida.");
             }
         }
+    }
+
+    public void actualizarDetalle(int r) {
+        String idDetalle = invoiceDetail.capturarIdLista(r);
+        if (idDetalle == null) {
+            System.out.println("Registro extraño");
+            return;
+        }
+
+        List<String> detalle = invoiceDetail.cargarDatosDetalle(r);
+        if (detalle.isEmpty()) {
+            System.out.println("No se encontró el registro especificado");
+            return;
+        }
+
+        String separador = "-".repeat(70);
+        System.out.println(separador);
+        System.out.printf("| %-5s | %-50s |\n", "No.", "Factura");
+        System.out.println(separador);
+
+        List<List<String>> facturas = invoiceDetail.listaFacturas();
+        for (int i = 0; i < facturas.size(); i++) {
+            List<String> factura = facturas.get(i);
+            String numeroFactura = invoiceDetail.capturarFactura(factura.get(0));
+            System.out.printf("| %-5d | %-50s |\n", (i + 1), numeroFactura);
+        }
+        System.out.println(separador);
+
+        System.out.print("Nueva factura: ");
+        String np = scan.nextLine();
+        String nuevoIdFactura = detalle.get(0);
+
+        if (!np.isEmpty()) {
+            int idNuevo = Integer.parseInt(np);
+            if (idNuevo > 0 && idNuevo <= facturas.size()) {
+                nuevoIdFactura = facturas.get(idNuevo - 1).get(0);
+            } else {
+                System.out.println("Factura no válida.");
+            }
+        }
+
+        System.out.println(separador);
+        System.out.printf("| %-5s | %-50s |\n", "No.", "Producto");
+        System.out.println(separador);
+
+        List<List<String>> productos = invoiceDetail.listaNombresItems();
+        for (int i = 0; i < productos.size(); i++) {
+            System.out.printf("| %-5d | %-50s |\n", (i + 1), productos.get(i).get(1));
+        }
+        System.out.println(separador);
+
+        System.out.print("Nuevo producto: ");
+        String nm = scan.nextLine();
+        String nuevoIdProducto = detalle.get(2);
+
+        if (!nm.isEmpty()) {
+            int idNuevoProducto = Integer.parseInt(nm);
+            if (idNuevoProducto > 0 && idNuevoProducto <= productos.size()) {
+                nuevoIdProducto = productos.get(idNuevoProducto - 1).get(0);
+            } else {
+                System.out.println("Producto no válida.");
+            }
+        }
+
+        System.out.print("Cantidad: ");
+        String nuevaCantidad = scan.nextLine();
+        if (nuevaCantidad.isEmpty()) nuevaCantidad = detalle.get(3);
+
+        System.out.print("Precio: ");
+        String nuevoPrecio = scan.nextLine();
+        if (nuevoPrecio.isEmpty()) nuevoPrecio = detalle.get(4);
+
+        invoiceDetail.actualizarDetalle(r, nuevoIdFactura, nuevoIdProducto, nuevaCantidad, nuevoPrecio);
     }
 
     public void eliminarDetalleFactura(int registro) {
