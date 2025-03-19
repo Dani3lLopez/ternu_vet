@@ -102,6 +102,13 @@ public class OwnersPetsDetails {
             System.out.println(separador);
         }
     }
+
+    /*
+     * Registra a un nuevo detalle
+     * Muetsra primero la lista de registros disponibles para seleccionar el propietario
+     * Luego, muestra la lista de ciudades para elegir la mascota
+     * Ademas, se guard el tipo de propietario, hay dos: el principal y el secundario
+     */
     public void registrarDetalle() {
         detail.llenarListas();
 
@@ -172,6 +179,11 @@ public class OwnersPetsDetails {
             }
         }
     }
+
+    /*
+     * Actualiza los datos del detalle
+     * Solicita la nueva informacion y actualiza con esos nuevos valores
+     */
     public void actualizarDetalle(int r) {
         String idDetalle = detail.capturarIdLista(r);
         if (idDetalle == null) {
@@ -242,6 +254,10 @@ public class OwnersPetsDetails {
         // Actualizar consulta
         detail.actualizarDetalle(r, nuevoTipoPropietario, nuevoIdMascota, nuevoIdPropietario);
     }
+
+    /*
+     * Elimina un registro de detalle
+     */
     public void eliminarDetalle(int registro) {
         detail.eliminarDetalle(registro);
     }
