@@ -6,7 +6,7 @@ import src.Models.UsersModel;
 import java.util.ArrayList;
 import java.util.List;
 
-public class InvoicesController extends OwnersController{
+public class InvoicesController extends OwnersController {
     public InvoicesController() {
         super();
         listaPropietarios = new ArrayList<>();
@@ -82,7 +82,7 @@ public class InvoicesController extends OwnersController{
         return "Desconocido";
     }
 
-    public void llenarListas(){
+    public void llenarListas() {
         listaFacturas = InvoicesModel.cargarListaFacturas();
         listaPropietarios = InvoicesModel.cargarListaPropietarios();
         cargarListaPersonas();
@@ -96,10 +96,11 @@ public class InvoicesController extends OwnersController{
     }
 
     public int crearFactura() {
-        return InvoicesModel.crearNuevaFactura(fechaEmisionFactura, horaEmisionFactura, idPropietario, visibilidadFactura);
+        return InvoicesModel.crearNuevaFactura(fechaEmisionFactura, horaEmisionFactura, idPropietario,
+                visibilidadFactura);
     }
 
-    public void desactivarFactura(int numero){
+    public void desactivarFactura(int numero) {
         String id = this.capturarIdListaFactura(numero);
         if (id != null) {
             int resultado = InvoicesModel.desactivarFactura(id);

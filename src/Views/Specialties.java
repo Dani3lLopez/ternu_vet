@@ -9,12 +9,13 @@ public class Specialties {
     Scanner scan = new Scanner(System.in);
     public SpecialtiesController specialty = new SpecialtiesController();
 
+    // Creamos un menú principal para la gestión de especialidades
     public void specialtiesMenu() {
         Scanner scan = new Scanner(System.in);
         String separador = "-";
 
         boolean active = true;
-        while (active){
+        while (active) {
             System.out.println("\uD83E\uDE7A Qué haremos hoy?");
             System.out.println("1. Listar Especialidades");
             System.out.println("2. Registrar Especialidades");
@@ -24,7 +25,7 @@ public class Specialties {
             System.out.print("Seleccione una opción: ");
             int choice = scan.nextInt();
 
-            switch (choice){
+            switch (choice) {
                 case 1:
                     cargarEspecialidades();
                     break;
@@ -48,6 +49,7 @@ public class Specialties {
         }
     }
 
+    // Primero carga la lista de especialidades y luego la muestra
     public void cargarEspecialidades() {
         specialty.cargarListaEspecialidades();
         if (specialty.listaEspecialidades().isEmpty()) {
@@ -66,18 +68,22 @@ public class Specialties {
             System.out.println(separador);
         }
     }
-    public void registrarEspecialidad(){
+
+    // Registra una nueva especialidad
+    public void registrarEspecialidad() {
         System.out.println("Nombres: ");
         String nombreEspecialidad = scan.nextLine();
         specialty.setNombreEspecialidad(nombreEspecialidad);
 
         int resultado = specialty.RegistrarEspecialidad();
-        if (resultado == 1){
+        if (resultado == 1) {
             System.out.println("Especialidad registrada con éxito");
-        }else{
+        } else {
             System.out.println("Ha ocurrido un error");
         }
     }
+
+    // Dado un número de registro, elemina una especialidad
     public void eliminarEspecialidad(int registro) {
         specialty.eliminarEspecialidad(registro);
     }

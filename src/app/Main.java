@@ -10,6 +10,7 @@ public class Main {
         String separador = "-".repeat(50);
 
         boolean active = true;
+        // Menú dentro de un bucle para navegar en el programa
         while (active) {
             System.out.println(separador);
             System.out.println("\uD83D\uDC3E ¡Bienvenido/a! Selecciona una opción para continuar \uD83D\uDC3E");
@@ -30,6 +31,8 @@ public class Main {
             scan.nextLine();
             System.out.println(separador);
 
+            // Maneja la opción del usuario, creando instancias dependiendo de esta y
+            // mostrando el menú respectivo
             switch (choice) {
                 case 1:
                     People ppl = new People();
