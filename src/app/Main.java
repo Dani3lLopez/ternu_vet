@@ -69,6 +69,7 @@ public class Main {
                 case 8:
                     Products product = new Products();
                     product.productMenu();
+                    break;
                 case 9:
                     Services service = new Services();
                     service.serviceMenu();

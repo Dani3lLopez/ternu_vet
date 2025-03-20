@@ -112,6 +112,8 @@ public class Products {
                 String valorDescripcion = "";
                 if (producto.get(2) == null) {
                     valorDescripcion = "";
+                }else{
+                    valorDescripcion = producto.get(2);
                 }
 
                 // Formatea el precio y peso obtenido del producto
