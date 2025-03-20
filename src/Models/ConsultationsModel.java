@@ -94,8 +94,8 @@ public class ConsultationsModel {
         return listaDoctores;
     }
     public static List<String> cargarCita(String id){
-        List<String> datosCita = new ArrayList<>();
-        String sql = "SELECT * FROM citas WHERE id_cita = ?";
+        List<String> datosConsulta = new ArrayList<>();
+        String sql = "SELECT * FROM consultas WHERE id_consulta = ?";
 
         try (
                 Connection conexion = ConnectionModel.conectar();
@@ -105,19 +105,20 @@ public class ConsultationsModel {
             ResultSet rs = ps.executeQuery();
 
             if (rs.next()) {
-                datosCita.add(rs.getString("id_cita"));
-                datosCita.add(rs.getString("motivo_cita"));
-                datosCita.add(rs.getString("fecha_cita"));
-                datosCita.add(rs.getString("hora_cita"));
-                datosCita.add(rs.getString("id_mascota"));
-                datosCita.add(rs.getString("id_doctor"));
-                datosCita.add(rs.getString("visibilidad_cita"));
+                datosConsulta.add(rs.getString("id_consulta"));
+                datosConsulta.add(rs.getString("fecha_consulta"));
+                datosConsulta.add(rs.getString("motivo_consulta"));
+                datosConsulta.add(rs.getString("diagnostico_consulta"));
+                datosConsulta.add(rs.getString("notas_consulta"));
+                datosConsulta.add(rs.getString("id_mascota"));
+                datosConsulta.add(rs.getString("id_doctor"));
+                datosConsulta.add(rs.getString("visibilidad_consulta"));
             }
         } catch (SQLException e) {
             System.out.println("Error al leer datos: " + e.getMessage());
         }
 
-        return datosCita;
+        return datosConsulta;
     }
     public static int ingresarNuevaConsulta(String fechaConsulta, String motivoConsulta, String diagnosticoConsulta, String notasConsulta, String idMascota, String idDoctor, Boolean visibilidadConsulta){
         int retorno = 0;
@@ -159,7 +160,7 @@ public class ConsultationsModel {
         return 0;
     }
     public static int desactivarConsulta(String id) {
-        String sql = "UPDATE citas SET visibilidad_cita = 0 WHERE id_cita=?";
+        String sql = "UPDATE consultas SET visibilidad_consulta = 0 WHERE id_consulta=?";
         try (Connection conexion = ConnectionModel.conectar();
              PreparedStatement ps = conexion.prepareStatement(sql)) {
             ps.setString(1, id);
