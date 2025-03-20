@@ -8,8 +8,8 @@ import java.util.List;
 import java.util.Scanner;
 
 /*
- * Esta vista gestiona la interaccion con el usuario para lsitar, crear y desactivar facturas
- * Muestra las opciones, captura entradas y llama a los meotodos correspondientes a la solicitud
+ * Esta vista gestiona la interaccion con el usuario para listar, crear y desactivar facturas
+ * Muestra las opciones, captura entradas y llama a los metodos correspondientes a la solicitud
  */
 public class Invoices {
 
@@ -20,7 +20,7 @@ public class Invoices {
 
     /*
      * Muestra el menu
-     * Gestiona la solicitud hecha por el usauario. Con base a la opcion seleccionada
+     * Gestiona la solicitud hecha por el usuario. Con base a la opcion seleccionada
      * se llaman a los metodos correspondientes y si se necesitan parametros se solicitan
      */
     public void invoiceMenu() {
@@ -63,7 +63,7 @@ public class Invoices {
         }
     }
     /*
-     * Carga la lsita de facturas desde el controlador y las muestra en formato tabular
+     * Carga la lista de facturas desde el controlador y las muestra en formato tabular
      */
     public void cargarFacturas(){
         invoice.llenarListas();
@@ -94,7 +94,7 @@ public class Invoices {
                     }
                 }
 
-                // OBtiene el nombre completo del propietario
+                // Obtiene el nombre completo del propietario respectivo
                 String nombrePropietario = invoice.capturarNombres(idPersonaPropietario);
                 System.out.printf("| %-5d | %-20s | %-20s | %-20s | %-20s |\n", n, numeroFactura, fechaEmision, horaEmision, nombrePropietario);
                 n++;
@@ -127,7 +127,7 @@ public class Invoices {
             r++;
         }
         System.out.println(separador);
-        // Solcita que se selecciona a un propietario
+        // Solicita que se selecciona a un propietario
         System.out.print("Seleccione al propietario: ");
         int valor = scan.nextInt();
         scan.nextLine();

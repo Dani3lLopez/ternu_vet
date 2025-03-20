@@ -23,7 +23,7 @@ public class InvoicesModel {
         String sql = "SELECT * FROM facturas WHERE visibilidad_factura = 1";
 
         try (
-                // Se conceta con la base de datos, se realiza el query y se guardan los resutlados
+                // Se conecta con la base de datos, se realiza la query y se guardan los resultados
                 Connection conexion = ConnectionModel.conectar();
                 PreparedStatement ps = conexion.prepareStatement(sql);
                 ResultSet rs = ps.executeQuery()
@@ -57,7 +57,7 @@ public class InvoicesModel {
         String sql = "SELECT * FROM propietarios WHERE visibilidad_propietario = 1";
 
         try (
-                // Se conceta con la base de datos, se realiza el query y se guardan los resutlados
+                // Se conecta con la base de datos, se realiza la query y se guardan los resultados
                 Connection conexion = ConnectionModel.conectar();
                 PreparedStatement ps = conexion.prepareStatement(sql);
                 ResultSet rs = ps.executeQuery()

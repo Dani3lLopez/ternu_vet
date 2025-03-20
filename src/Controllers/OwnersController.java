@@ -6,14 +6,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 /*
- * Controlador para la entidad "Propetiarios" (Owners)
+ * Controlador para la entidad Propietarios (Owners)
  * Extiende las funcionalidades del controlador de People (PeopleController)
  * Interactua con OwnerModel para gestionar propietarios y cuidades
  */
 public class OwnersController extends PeopleController{
 
     /*
-     * Contructor para incializar las listas de propietarios y ciudades
+     * Constructor para inicializar las listas de propietarios y ciudades
      */
     public OwnersController() {
         super();
@@ -115,7 +115,7 @@ public class OwnersController extends PeopleController{
 
     /*
      * Captura el id de la ciudad con base a su posicion en la lista
-     * El parametro es el numero indice en la lsita de ciudades
+     * El parametro es el numero indice en la lista de especialidades
      * Retorna el id de la ciudad o null si no
      */
     public String capturarIdListaCiudad(int numero) {
@@ -126,7 +126,7 @@ public class OwnersController extends PeopleController{
     }
 
     /*
-     * Llena las listas de  propietarios y ciudades,y carga la lista de las personas
+     * Llena las listas de  propietarios y ciudades, y carga la lista de las personas
      */
     public void llenarListas(){
         listaPropietarios = OwnersModel.cargarListaPropietarios();
@@ -188,7 +188,7 @@ public class OwnersController extends PeopleController{
     }
 
     /*
-     * Desactiva un porpietario con base a su posicion en la lista  (eliminar)
+     * Desactiva un porpietario con base a su posicion en la lista (eliminar)
      */
     public void desactivarPropietario(int numero){
         String id = this.capturarIdLista(numero);

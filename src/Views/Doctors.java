@@ -6,11 +6,22 @@ import src.Controllers.PeopleController;
 import java.util.List;
 import java.util.Scanner;
 
+/*
+ * Clase de vista (Doctors)
+ * Su funcion es realizar la interaccion con el usuario
+ * Muestra el menu de opciones para doctores, solicita acciones del usuario
+ * Ademas, llama a los metodos del controlador
+ */
 public class Doctors {
+    // Objeto Scanner para leer los datos ingresados en la consola por los usuarios
     Scanner scan = new Scanner(System.in);
+    // Se instancia el controlador para gestionar la parte logica de Doctors
     public DoctorsController doc = new DoctorsController();
     public PeopleController person = new PeopleController();
 
+    /*
+     * Metodo para mostrar el menu de opciones
+     */
     public void doctorMenu() {
         Scanner scan = new Scanner(System.in);
         String separador = "-";
@@ -24,8 +35,12 @@ public class Doctors {
             System.out.println("4. Volver al menú principal");
             System.out.println(separador.repeat(50));
             System.out.print("Seleccione una opción: ");
+
+            // Guarda la opcion seleccionada por el usuario
             int choice = scan.nextInt();
 
+            // Se llaman a los metodos correspondientes con base a la opcion seleccionada por el usuario.
+            // Ademas, si se requeiren ciertos parametros, se solicitan al usuario
             switch (choice){
                 case 1:
                     cargarDoctores();
@@ -42,6 +57,7 @@ public class Doctors {
                     actualizarDoctor(r);
                     break;
                 case 4:
+                    // Vuelve al menu principal
                     active = false;
                     System.out.println("Cerrando menú...");
                     break;
@@ -51,17 +67,23 @@ public class Doctors {
         }
     }
 
+    /*
+     * Carga la lista doctores desde el controlador
+     * Muestro estos doctores en la consola
+     */
     public void cargarDoctores(){
+        // Llama al controlador
         doc.llenarListas();
         List<List<String>> doctores = doc.listaDoctores();
         if (doc.listaDoctores().isEmpty()) {
             System.out.println("No hay doctores registrados.");
         }else {
+            // Formato para mostrar los datos
             String separador = "-".repeat(100);
             System.out.println(separador);
             System.out.printf("| %-5s | %-20s | %-20s | %-20s | %-20s |\n", "No.", "Fec. Contratacion", "Fec. Nacimiento", "Nombre", "Especialidad");
             System.out.println(separador);
-
+            //Muestra cada doctor
             int n = 1;
             for (List<String> doctor : doctores) {
                 String fechaCont = doctor.get(1);
@@ -75,6 +97,11 @@ public class Doctors {
             System.out.println(separador);
         }
     }
+
+    /*
+     * Solicita al usuario los datos del nuevo doctor
+     *  Registra los datos a traves del controlador
+     */
     public void registrarDoctor() {
         person.cargarListaPersonas();
         doc.llenarListas();
@@ -125,7 +152,7 @@ public class Doctors {
                 System.out.println("Fecha de contratacion (YYYY-MM-DD): ");
                 String fechaContratacion = scan.nextLine();
                 doc.setFechaContratacionDoctor(fechaContratacion);
-
+                // Llama al controlador para registrar a la persona
                 int resultado = doc.RegistrarDoctor();
 
                 if (resultado == 1) {
@@ -138,6 +165,11 @@ public class Doctors {
             }
         }
     }
+
+    /*
+     * Actualiza los datos de un doctor; solicita a los usuarios los nuevos valores
+     * Permite dejar un campo vacio para mantener el valor que ya tenia
+     */
     public void actualizarDoctor(int r) {
         List<String> doctor = doc.cargarDatosDoctor(r);
         if (doctor.isEmpty()) {
