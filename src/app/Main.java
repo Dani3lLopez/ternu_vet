@@ -1,14 +1,17 @@
 package src.app;
 
+import src.Controllers.OwnersPetsDetailsController;
 import src.Views.*;
 
 import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
+        //Scanner para manejar las opciones ingresadas por el usuario
         Scanner scan = new Scanner(System.in);
         String separador = "-".repeat(50);
 
+        //Se imprime el menú hasta que el usuario eliga una opción válida o ingrese la opción de salir
         boolean active = true;
         while (active) {
             System.out.println(separador);
@@ -22,6 +25,10 @@ public class Main {
             System.out.println("7. Mascotas \uD83D\uDC36");
             System.out.println("8. Productos \uD83E\uDD4E");
             System.out.println("9. Servicios \uD83D\uDEC1");
+            System.out.println("10. Citas \uD83D\uDCC5");
+            System.out.println("11. Consultas \uD83E\uDD15");
+            System.out.println("12. Detalles-Propietarios-Mascotas \u2764\uFE0F");
+            System.out.println("13. Detalles-Facturas \uD83E\uDDFE");
             System.out.println("❌ Cualquier otra opción para salir ❌");
             System.out.println(separador);
             System.out.print("Seleccione una opción: ");
@@ -29,6 +36,7 @@ public class Main {
             scan.nextLine();
             System.out.println(separador);
 
+            //Dependiendo de su elección se ejecuta el menú de la opción seleccionada
             switch (choice) {
                 case 1:
                     People ppl = new People();
@@ -61,11 +69,29 @@ public class Main {
                 case 8:
                     Products product = new Products();
                     product.productMenu();
+                    break;
                 case 9:
                     Services service = new Services();
                     service.serviceMenu();
                     break;
+                case 10:
+                    Appointments appointment = new Appointments();
+                    appointment.appointmentMenu();
+                    break;
+                case 11:
+                    Consultations consultation = new Consultations();
+                    consultation.consultationMenu();
+                    break;
+                case 12:
+                    OwnersPetsDetails detail = new OwnersPetsDetails();
+                    detail.detailMenu();
+                    break;
+                case 13:
+                    InvoicesDetails invoiceDetail = new InvoicesDetails();
+                    invoiceDetail.invoiceDetailMenu();
+                    break;
                 default:
+                    //Se cierra el programa
                     active = false;
                     System.out.println("Cerrando el programa...");
                     break;
