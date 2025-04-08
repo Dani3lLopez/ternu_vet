@@ -7,7 +7,16 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * InvoicesModel: Clase que gestiona todos los procesos relacionados con las facturas
+ * @author TernuVet-DevTeam
+ * @version 1.0
+ */
 public class InvoicesModel {
+    /**
+     * Carga todas las facturas registradas en la base de datos
+     * @return una lista de listas de facturas
+     */
     public static List<List<String>> cargarListaFacturas() {
         List<List<String>> listaFacturas = new ArrayList<>();
         String sql = "SELECT * FROM facturas WHERE visibilidad_factura = 1";
@@ -33,6 +42,11 @@ public class InvoicesModel {
 
         return listaFacturas;
     }
+
+    /**
+     * Carga todos los propietarios registrados en la base de datos
+     * @return una lista de listas de los propietarios registrados en la base de datos
+     */
     public static List<List<String>> cargarListaPropietarios() {
         List<List<String>> listaFacturas = new ArrayList<>();
         String sql = "SELECT * FROM propietarios WHERE visibilidad_propietario = 1";
@@ -58,6 +72,15 @@ public class InvoicesModel {
 
         return listaFacturas;
     }
+
+    /**
+     * Crea un nuevo registro de factura
+     * @param fechaEmision fecha de emision de la factura
+     * @param horaEmision hora de emision de la factura
+     * @param idPropietario id del propietario de la mascota
+     * @param visibilidadFactura visibilidad de la factura
+     * @return numero de filas afectadas
+     */
     public static int crearNuevaFactura(String fechaEmision, String horaEmision, String idPropietario, Boolean visibilidadFactura){
         int retorno = 0;
         String sql = "INSERT INTO facturas (fecha_emision_factura, hora_emision_factura, id_propietario, visibilidad_factura) VALUES (?,?,?,?)";
@@ -76,6 +99,12 @@ public class InvoicesModel {
             return retorno;
         }
     }
+
+    /**
+     * Actualiza la visibilidad de la factura (simula una eliminacion)
+     * @param id de la factura que se actualizará
+     * @return numero de filas afectadas
+     */
     public static int desactivarFactura(String id) {
         String sql = "UPDATE facturas SET visibilidad_factura = false WHERE numero_factura=?";
         try (Connection conexion = ConnectionModel.conectar();

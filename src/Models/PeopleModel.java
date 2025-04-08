@@ -7,8 +7,16 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * PeopleModel: Clase que gestiona todos los procesos relacionados con las personas
+ * @author TernuVet-DevTeam
+ * @version 1.0
+ */
 public class PeopleModel {
-
+    /**
+     * Carga a todas las personas registradas en la base de datos
+     * @return una lista de listas con los datos de todas las personas registras en la base de datos
+     */
     public static List<List<String>> cargarListaPersonas() {
         List<List<String>> listaPersonas = new ArrayList<>();
         String sql = "SELECT DISTINCT(dui_persona), nombre_persona, apellido_persona, telefono_persona, email_persona, id_persona FROM personas";
@@ -35,6 +43,12 @@ public class PeopleModel {
 
         return listaPersonas;
     }
+
+    /**
+     * Carga los datos de una persona especificada por su id
+     * @param id id de la persona
+     * @return los datos de la persona
+     */
     public static List<String> cargarPersona(String id){
         List<String> datosPersona = new ArrayList<>();
         String sql = "SELECT * FROM personas WHERE id_persona = ?";
@@ -60,6 +74,16 @@ public class PeopleModel {
 
         return datosPersona;
     }
+
+    /**
+     * Registra una nueva persona en la base de datos
+     * @param nombre nombre de la persona
+     * @param apellido apellido de la persona
+     * @param telefono telefono de la persona
+     * @param email email de la persona
+     * @param dui dui de la persona
+     * @return numero de filas afectadas
+     */
     public static int ingresarNuevaPersona(String nombre, String apellido, String telefono, String email, String dui){
         int retorno = 0;
         String sql = "INSERT INTO personas (nombre_persona, apellido_persona, telefono_persona, email_persona, dui_persona) VALUES (?,?,?,?,?)";
@@ -79,6 +103,17 @@ public class PeopleModel {
             return retorno;
         }
     }
+
+    /**
+     * Actualiza un registro de persona existente
+     * @param id id del registro de la persona
+     * @param nombre nuevo nombre de la persona
+     * @param apellido nuevo apellido de la persona
+     * @param telefono nuevo telefono de la persona
+     * @param email nuevo email de la persona
+     * @param dui nuevo dui de la persona
+     * @return numero de filas afectadas
+     */
     public static int actualizarPersona(String id, String nombre, String apellido, String telefono, String email, String dui) {
         String sql = "UPDATE personas SET nombre_persona=?, apellido_persona=?, telefono_persona=?, email_persona=?, dui_persona=? WHERE id_persona=?";
         try (Connection conexion = ConnectionModel.conectar();
@@ -95,6 +130,12 @@ public class PeopleModel {
         }
         return 0;
     }
+
+    /**
+     * Elimina el registro de una persona de la base de datos
+     * @param id id del registro a eliminar
+     * @return numero de filas afectadas
+     */
     public static int eliminarPersona(String id) {
         String sql = "DELETE FROM personas WHERE id_persona=?";
         try (Connection conexion = ConnectionModel.conectar();

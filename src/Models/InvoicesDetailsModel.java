@@ -7,7 +7,16 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * InvoicesDetailsModel: Clase que gestiona todos los procesos relacionados con los detalles de facturas
+ * @author TernuVet-DevTeam
+ * @version 1.0
+ */
 public class InvoicesDetailsModel {
+    /**
+     * Carga todos los detalles de las facturas registrados en la base de datos
+     * @return una lista de listas de los detalles de las facturas
+     */
     public static List<List<String>> cargarListaDetallesFacturas() {
         List<List<String>> listaFacturas = new ArrayList<>();
         String sql = "SELECT * FROM detalle_facturas";
@@ -33,6 +42,11 @@ public class InvoicesDetailsModel {
 
         return listaFacturas;
     }
+
+    /**
+     * Carga todas las facturas registradas en la base de datos
+     * @return una lista de listas de las facturas registradas en la base de datos
+     */
     public static List<List<String>> cargarListaFacturas() {
         List<List<String>> listaFacturas = new ArrayList<>();
         String sql = "SELECT * FROM facturas WHERE visibilidad_factura = 1";
@@ -58,6 +72,11 @@ public class InvoicesDetailsModel {
 
         return listaFacturas;
     }
+
+    /**
+     * Carga todos los detalles de items registrados en la base de datos
+     * @return una lista de listas de los detalles de items
+     */
     public static List<List<String>> cargarListaDetallesItems() {
         List<List<String>> listaDetallesItems = new ArrayList<>();
         String sql = "SELECT * FROM detalle_items";
@@ -81,6 +100,11 @@ public class InvoicesDetailsModel {
 
         return listaDetallesItems;
     }
+
+    /**
+     * Carga los nombres de los items disponibles
+     * @return una lista de listas de los nombres de los items disponibles
+     */
     public static List<List<String>> cargarListaNombresItems() {
         List<List<String>> listaNombresItems = new ArrayList<>();
         String sql = "SELECT p.id_producto, p.nombre_producto FROM productos p LEFT JOIN detalle_items di ON p.id_producto = di.id_producto";;
@@ -104,6 +128,11 @@ public class InvoicesDetailsModel {
         return listaNombresItems;
     }
 
+    /**
+     * Carga el detalle de una factura especificado por su id
+     * @param id del registro del detalle en la base de datos
+     * @return los datos del detalle de la factura o vacio en caso de no encontrar el id
+     */
     public static List<String> cargarDetalleFactura(String id){
         List<String> datosDetalle = new ArrayList<>();
         String sql = "SELECT * FROM detalle_facturas WHERE id_detalle_factura = ?";
@@ -128,6 +157,15 @@ public class InvoicesDetailsModel {
 
         return datosDetalle;
     }
+
+    /**
+     * Ingresa nuevos detalles de factura en la base de datos
+     * @param numeroFactura numero de factura
+     * @param idDetalleItem id del item agregado
+     * @param cantidadItem cantidad del item
+     * @param precioUnitario el precio del item
+     * @return numero de filas afectadas
+     */
     public static int ingresarNuevoDetalleFactura(String numeroFactura, String idDetalleItem, String cantidadItem, String precioUnitario){
         int retorno = 0;
         String sql = "INSERT INTO detalle_facturas (numero_factura, id_detalle_item, cantidad_item, precio_unitario_item) VALUES (?,?,?,?)";
@@ -146,6 +184,16 @@ public class InvoicesDetailsModel {
             return retorno;
         }
     }
+
+    /**
+     * Actualiza un detalle de factura existente segun su id
+     * @param id del detalle existente
+     * @param numeroFactura nuevo numero de factura
+     * @param idDetalleItem nuevo item
+     * @param cantidadItem nueva cantidad del item
+     * @param precioUnitario nuevo precio
+     * @return numero de filas afectadas
+     */
     public static int actualizarDetalle(String id, String numeroFactura, String idDetalleItem, String cantidadItem, String precioUnitario) {
         String sql = "UPDATE detalle_facturas SET numero_factura=?, id_detalle_item=(SELECT id_detalle_item FROM detalle_items WHERE id_producto=? LIMIT 1), cantidad_item=?, precio_unitario_item =? WHERE id_detalle_factura=?";
         try (Connection conexion = ConnectionModel.conectar();
@@ -161,6 +209,12 @@ public class InvoicesDetailsModel {
         }
         return 0;
     }
+
+    /**
+     * Elimina un detalle de la factura segun su id
+     * @param id del detalle
+     * @return numero de filas afectadas
+     */
     public static int eliminarDetalleFactura(String id) {
         String sql = "DELETE FROM detalle_facturas WHERE id_detalle_factura=?";
         try (Connection conexion = ConnectionModel.conectar();

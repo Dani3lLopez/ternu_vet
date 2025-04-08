@@ -7,7 +7,16 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * OwnersModel: Clase que gestiona todos los procesos relacionados con los propietarios
+ * @author TernuVet-DevTeam
+ * @version 1.0
+ */
 public class OwnersModel {
+    /**
+     * Carga todos los propietarios almacenados en la base de datos
+     * @return una lista de listas de los propietarios almacenados en la base de datos
+     */
     public static List<List<String>> cargarListaPropietarios() {
         List<List<String>> listaPropietarios = new ArrayList<>();
         String sql = "SELECT * FROM propietarios WHERE visibilidad_propietario = 1";
@@ -33,6 +42,11 @@ public class OwnersModel {
 
         return listaPropietarios;
     }
+
+    /**
+     * Carga todas las ciudades almacenadas en la base de datos
+     * @return una lista de listas de las ciudades almacenadas en la base de datos
+     */
     public static List<List<String>> cargarListaCiudades() {
         List<List<String>> listaCiudades = new ArrayList<>();
         String sql = "SELECT * FROM ciudades";
@@ -56,6 +70,12 @@ public class OwnersModel {
 
         return listaCiudades;
     }
+
+    /**
+     * Carga los datos de un propietario especificado por su id
+     * @param id id del propietario
+     * @return los datos del propietario
+     */
     public static List<String> cargarPropietario(String id){
         List<String> datosPropietario = new ArrayList<>();
         String sql = "SELECT * FROM propietarios WHERE id_propietario = ?";
@@ -80,6 +100,15 @@ public class OwnersModel {
 
         return datosPropietario;
     }
+
+    /**
+     * Registra un nuevo propietario en la base de datos
+     * @param idPersona id de la persona propietario
+     * @param idCiudad id de la ciudad
+     * @param direccion direccion del propietario
+     * @param visibilidadPropietario visibilidad del registro (true por defecto)
+     * @return numero de filas afectadas
+     */
     public static int ingresarNuevoPropietario(String idPersona, String idCiudad, String direccion, Boolean visibilidadPropietario){
         int retorno = 0;
         String sql = "INSERT INTO propietarios (id_persona, id_ciudad, direccion, visibilidad_propietario) VALUES (?,?,?,1)";
@@ -97,6 +126,16 @@ public class OwnersModel {
             return retorno;
         }
     }
+
+    /**
+     * Actualiza el registro de un propietario especifico
+     * @param id del propietario a actualizar
+     * @param idPersona nuevo id de persona
+     * @param idCiudad nueva ciudad
+     * @param direccion nueva direccion
+     * @param visibilidadPropietario nueva visibilidad
+     * @return numero de filas afectadas
+     */
     public static int actualizarPropietario(String id, String idPersona, String idCiudad, String direccion, Boolean visibilidadPropietario) {
         String sql = "UPDATE propietarios SET id_persona=?, id_ciudad=?, direccion=?, visibilidad_propietario=? WHERE id_propietario=?";
         try (Connection conexion = ConnectionModel.conectar();
@@ -112,6 +151,12 @@ public class OwnersModel {
         }
         return 0;
     }
+
+    /**
+     * Actualiza la visibilidad de un propietario (simula una eliminacion)
+     * @param id del registro a actualizar
+     * @return numero de filas afectadas
+     */
     public static int desactivarPropietario(String id) {
         String sql = "UPDATE propietarios SET visibilidad_propietario = 0 WHERE id_propietario=?";
         try (Connection conexion = ConnectionModel.conectar();

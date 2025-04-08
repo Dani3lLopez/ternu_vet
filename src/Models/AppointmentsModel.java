@@ -7,7 +7,17 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * AppointmentsModel: Clase que gestiona todas los procesos relacionados con citas, incluyendo la carga, inserción, actualización y desactivación de registros.
+ * Se comunica directamente con la base de datos utilizando JDBC.
+ * @author TernuVet-DevTeam
+ * @version 1.0
+ */
 public class AppointmentsModel {
+    /**
+     * Carga las citas almacenadas en la base de datos
+     * @return una lista de listas con los datos de las citas
+    */
     public static List<List<String>> cargarListaCitas() {
         List<List<String>> listaCitas = new ArrayList<>();
         String sql = "SELECT * FROM citas";
@@ -35,6 +45,10 @@ public class AppointmentsModel {
 
         return listaCitas;
     }
+    /**
+     * Carga los datos de todas las mascotas almacenadas en la base de datos
+     * @return una lista de listas con los datos de las mascotas
+     */
     public static List<List<String>> cargarListaMascotas() {
         List<List<String>> listaMascotas = new ArrayList<>();
         String sql = "SELECT id_mascota, nombre_mascota, color_mascota, peso_mascota, unidad_peso_mascota, genero_mascota, codigo_chip_mascota, estado_reproductivo_mascota, fecha_nacimiento_mascota, talla_mascota, fallecimiento_mascota, razon_fallecimiento FROM mascotas WHERE visibilidad_mascota = 1";
@@ -67,6 +81,10 @@ public class AppointmentsModel {
 
         return listaMascotas;
     }
+    /**
+     * Carga todos los doctores almacenados en la base de datos
+     * @return una lista de listas con los datos de los doctores
+     */
     public static List<List<String>> cargarListaDoctores() {
         List<List<String>> listaDoctores = new ArrayList<>();
         String sql = "SELECT * FROM doctores";
@@ -92,6 +110,11 @@ public class AppointmentsModel {
 
         return listaDoctores;
     }
+    /**
+    * Carga una cita especifica segun su ID
+    * @param id del ID de la cita a buscar
+     * @return  los datos de la lista o vacío en caso de no encontrar el id especificado
+    */
     public static List<String> cargarCita(String id){
         List<String> datosCita = new ArrayList<>();
         String sql = "SELECT * FROM citas WHERE id_cita = ?";
@@ -118,6 +141,17 @@ public class AppointmentsModel {
 
         return datosCita;
     }
+
+    /**
+     * Ingresa una nueva cita en la base de datos
+     * @param motivoCita motivo de la cita
+     * @param fechaCita fecha de la cita
+     * @param horaCita hora de la cita
+     * @param idMascota id de mascota que asistirá a la cita
+     * @param idDoctor id del doctor que llevará la cita
+     * @param visibilidadCita visibilidad de la cita
+     * @return numero de filas afectadas
+     */
     public static int ingresarNuevaCita(String motivoCita, String fechaCita, String horaCita, String idMascota, String idDoctor, Boolean visibilidadCita){
         int retorno = 0;
         String sql = "INSERT INTO citas (motivo_cita, fecha_cita, hora_cita, id_mascota, id_doctor, visibilidad_cita) VALUES (?,?,?,?,?,?)";
@@ -138,6 +172,18 @@ public class AppointmentsModel {
             return retorno;
         }
     }
+
+    /**
+     * Actualiza un registro existente de una cita
+     * @param id id de la cita que se actualizará
+     * @param motivoCita nuevo motivo
+     * @param fechaCita nueva fecha
+     * @param horaCita nueva hora
+     * @param idMascota nuevo id de mascota
+     * @param idDoctor nuevo id de doctor
+     * @param visibilidadCita nueva visibilidad
+     * @return numero de filas afectadas
+     */
     public static int actualizarCita(String id, String motivoCita, String fechaCita, String horaCita, String idMascota, String idDoctor, Boolean visibilidadCita) {
         String sql = "UPDATE citas SET motivo_cita=?, fecha_cita=?, hora_cita=?, id_mascota=?, id_doctor=?, visibilidad_cita=? WHERE id_cita=?";
         try (Connection conexion = ConnectionModel.conectar();
@@ -155,6 +201,12 @@ public class AppointmentsModel {
         }
         return 0;
     }
+
+    /**
+     * Actualiza la visibilidad de las citas (simula una eliminación)
+     * @param id id de la cita que se actualiza
+     * @return numero de filas afectadas
+     */
     public static int desactivarCita(String id) {
         String sql = "UPDATE citas SET visibilidad_cita = 0 WHERE id_cita=?";
         try (Connection conexion = ConnectionModel.conectar();

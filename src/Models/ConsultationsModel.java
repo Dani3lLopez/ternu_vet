@@ -7,7 +7,16 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * ConsultationsModel: Clase que gestiona todos los procesos relacionados con las consultas
+ * @author TernuVet-DevTeam
+ * @version 1.0
+ */
 public class ConsultationsModel {
+    /**
+     * Carga una lista con todas las consultas almacenadas en la base de datos
+     * @return una lista de listas con los datos de las consultas.
+     */
     public static List<List<String>> cargarListaConsultas() {
         List<List<String>> listaConsultas = new ArrayList<>();
         String sql = "SELECT * FROM consultas";
@@ -36,6 +45,11 @@ public class ConsultationsModel {
 
         return listaConsultas;
     }
+
+    /**
+     * Carga una lista con todas las mascotas almacenadas en la base de datos
+     * @return una lista de listas con los datos de las mascotas
+     */
     public static List<List<String>> cargarListaMascotas() {
         List<List<String>> listaMascotas = new ArrayList<>();
         String sql = "SELECT id_mascota, nombre_mascota, color_mascota, peso_mascota, unidad_peso_mascota, genero_mascota, codigo_chip_mascota, estado_reproductivo_mascota, fecha_nacimiento_mascota, talla_mascota, fallecimiento_mascota, razon_fallecimiento FROM mascotas WHERE visibilidad_mascota = 1";
@@ -68,6 +82,11 @@ public class ConsultationsModel {
 
         return listaMascotas;
     }
+
+    /**
+     * Carga una lista con todos los doctores almacenados en la base de datos
+     * @return una lista de listas con los datos de los doctores
+     */
     public static List<List<String>> cargarListaDoctores() {
         List<List<String>> listaDoctores = new ArrayList<>();
         String sql = "SELECT * FROM doctores";
@@ -93,6 +112,12 @@ public class ConsultationsModel {
 
         return listaDoctores;
     }
+
+    /**
+     * Carga los datos de una consulta especifica segun su id
+     * @param id identificador de la cita
+     * @return una lista con los datos de la consulta o vacia en caso de no encontrarla
+     */
     public static List<String> cargarCita(String id){
         List<String> datosCita = new ArrayList<>();
         String sql = "SELECT * FROM citas WHERE id_cita = ?";
@@ -119,6 +144,18 @@ public class ConsultationsModel {
 
         return datosCita;
     }
+
+    /**
+     * Inserta un nuevo registro de consulta en la base de datos
+     * @param fechaConsulta fecha de la consulta
+     * @param motivoConsulta motivo de la consulta
+     * @param diagnosticoConsulta diagnostico obtenido en la consulta
+     * @param notasConsulta notas del doctor en la consulta
+     * @param idMascota id de la mascota
+     * @param idDoctor id del doctor que lleva la consulta
+     * @param visibilidadConsulta visibilidad del registro de la consulta
+     * @return numero de filas afectadas
+     */
     public static int ingresarNuevaConsulta(String fechaConsulta, String motivoConsulta, String diagnosticoConsulta, String notasConsulta, String idMascota, String idDoctor, Boolean visibilidadConsulta){
         int retorno = 0;
         String sql = "INSERT INTO consultas (fecha_consulta, motivo_consulta, diagnostico_consulta, notas_consulta, id_mascota, id_doctor, visibilidad_consulta) VALUES (?,?,?,?,?,?,?)";
@@ -140,6 +177,19 @@ public class ConsultationsModel {
             return retorno;
         }
     }
+
+    /**
+     * Actualiza un registro de consulta segun su id
+     * @param id id de la consulta a actualizar
+     * @param fechaConsulta nueva fecha de consulta
+     * @param motivoConsulta nuevo motivo de consulta
+     * @param diagnosticoConsulta nuevo dignostico de consulta
+     * @param notasConsulta nuevas notas de consulta
+     * @param idMascota nueva mascota
+     * @param idDoctor nuevo id del doctor encargado de la consulta
+     * @param visibilidadConsulta nueva visibilidad para la consulta
+     * @return numero de filas afectadas
+     */
     public static int actualizarConsulta(String id, String fechaConsulta, String motivoConsulta, String diagnosticoConsulta, String notasConsulta, String idMascota, String idDoctor, Boolean visibilidadConsulta) {
         String sql = "UPDATE consultas SET fecha_consulta=?, motivo_consulta=?, diagnostico_consulta=?, notas_consulta=?, id_mascota=?, id_doctor=?, visibilidad_consulta=? WHERE id_consulta=?";
         try (Connection conexion = ConnectionModel.conectar();
@@ -158,6 +208,12 @@ public class ConsultationsModel {
         }
         return 0;
     }
+
+    /**
+     * Actualiza la visibilidad de la consulta (simula una eliminacion)
+     * @param id id de la consulta que se actualizará
+     * @return numero de filas afectadas
+     */
     public static int desactivarConsulta(String id) {
         String sql = "UPDATE citas SET visibilidad_cita = 0 WHERE id_cita=?";
         try (Connection conexion = ConnectionModel.conectar();

@@ -7,7 +7,16 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * DoctorsModel: Clase que gestiona todos los procesos relacionados con los doctores
+ * @author TernuVet-DevTeam
+ * @version 1.0
+ */
 public class DoctorsModel {
+    /**
+     * Carga una lista con todos los doctores registrados en la base de datos
+     * @return una lista de listas de los doctores
+     */
     public static List<List<String>> cargarListaDoctores() {
         List<List<String>> listaDoctores = new ArrayList<>();
         String sql = "SELECT * FROM doctores";
@@ -33,6 +42,11 @@ public class DoctorsModel {
 
         return listaDoctores;
     }
+
+    /**
+     * Carga una lista con todas las especialidades disponibles para los doctores
+     * @return una lista de listas de las especialidades disponibles
+     */
     public static List<List<String>> cargarListaEspecialidades() {
         List<List<String>> listaEspecialidades = new ArrayList<>();
         String sql = "SELECT * FROM especialidades";
@@ -55,6 +69,12 @@ public class DoctorsModel {
 
         return listaEspecialidades;
     }
+
+    /**
+     * Carga una lista con los datos de un doctor especifico segun su id
+     * @param id id del doctor
+     * @return una lista con los datos del doctor especificado segun su id
+     */
     public static List<String> cargarDoctor(String id){
         List<String> datosDoctor = new ArrayList<>();
         String sql = "SELECT * FROM doctores WHERE id_doctor = ?";
@@ -79,6 +99,15 @@ public class DoctorsModel {
 
         return datosDoctor;
     }
+
+    /**
+     * Registra nuevos doctores en la base de datos
+     * @param fechaContratacion fecha de contratacion del doctor
+     * @param fechaNacimiento fecha de nacimiento del doctor
+     * @param idPersona id de la persona registrada en la base de datos
+     * @param idEspecialidad id de la especialidad que posee el doctor
+     * @return numero de filas afectadas
+     */
     public static int ingresarNuevoDoctor(String fechaContratacion, String fechaNacimiento, String idPersona, String idEspecialidad){
         int retorno = 0;
         String sql = "INSERT INTO doctores (fecha_contratacion_doctor, fecha_nacimiento_doctor, id_persona, id_especialidad) VALUES (?,?,?,?)";
@@ -97,6 +126,16 @@ public class DoctorsModel {
             return retorno;
         }
     }
+
+    /**
+     * Actualiza el registro de un doctor especificado por su id
+     * @param id id del registro del doctor
+     * @param fechaContratacion nueva fecha de contratacion
+     * @param fechaNacimiento nueva fecha de nacimiento
+     * @param idPersona nuevo id de persona
+     * @param idEspecialidad nueva especialidad para el doctor
+     * @return numero de filas afectadas
+     */
     public static int actualizarDoctor(String id, String fechaContratacion, String fechaNacimiento, String idPersona, String idEspecialidad) {
         String sql = "UPDATE doctores SET fecha_contratacion_doctor=?, fecha_nacimiento_doctor=?, id_persona=?, id_especialidad=? WHERE id_doctor=?";
         try (Connection conexion = ConnectionModel.conectar();
