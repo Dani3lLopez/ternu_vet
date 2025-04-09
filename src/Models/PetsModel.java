@@ -89,7 +89,7 @@ public class PetsModel {
             if (unidadPesoMascota != null) {
                 ps.setString(9, unidadPesoMascota);
             }
-            // para obtener el numero de las filas afectadas
+            // para obtener el número de las filas afectadas
             retorno = ps.executeUpdate();
             return retorno;
         } catch (SQLException e) {

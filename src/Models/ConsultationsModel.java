@@ -122,9 +122,9 @@ public class ConsultationsModel {
     }
 
     /**
-     * Carga los datos de una consulta especifica segun su id
+     * Carga los datos de una consulta específica según su id
      * @param id identificador de la cita
-     * @return una lista con los datos de la consulta o vacia en caso de no encontrarla
+     * @return una lista con los datos de la consulta o vacía en caso de no encontrarla
      */
     public static List<String> cargarCita(String id){
         List<String> datosConsulta = new ArrayList<>();
@@ -132,7 +132,7 @@ public class ConsultationsModel {
 
         try (
                 Connection conexion = ConnectionModel.conectar();
-                PreparedStatement ps = conexion.prepareStatement(sql);
+                PreparedStatement ps = conexion.prepareStatement(sql)
         ) {
             // Establece el valor del parametro (id) para la consulta
             ps.setString(1, id);
@@ -181,7 +181,7 @@ public class ConsultationsModel {
             ps.setString(5, idMascota);
             ps.setString(6, idDoctor);
             ps.setBoolean(7, visibilidadConsulta);
-            // Ejecuta la query y guarda el numero de filas afectadas
+            // Ejecuta la query y guarda el número de filas afectadas
             retorno = ps.executeUpdate();
             return retorno;
         } catch (SQLException e) {
@@ -191,7 +191,7 @@ public class ConsultationsModel {
     }
 
     /**
-     * Actualiza un registro de consulta segun su id
+     * Actualiza un registro de consulta según su id
      * @param id id de la consulta a actualizar
      * @param fechaConsulta nueva fecha de consulta
      * @param motivoConsulta nuevo motivo de consulta
