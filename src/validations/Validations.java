@@ -18,7 +18,24 @@ public class Validations {
         // Si no encuentra letras, comprueba que solo hay números y establece la
         // varaible como verdadera
         if (conteoLetras != 0) {
-            throw new FormatException("Entrada inválida: solo se permiten números positivos.");
+            throw new FormatException("Entrada inválida: solo se permiten números enteros positivos.");
+        }
+    }
+
+    public static void validarDecimales(String input) {
+        int conteoLetras = 0;
+        for (int i = 0; i < input.length(); i++) {
+
+            // Verifica si el carácter es una letra
+            if (!Character.isDigit(input.charAt(i)) && input.charAt(i) != '.') {
+                conteoLetras++;
+            }
+        }
+
+        // Si no encuentra letras, comprueba que solo hay números y establece la
+        // varaible como verdadera
+        if (conteoLetras != 0) {
+            throw new FormatException("Entrada inválida: solo se permiten números decimales positivos.");
         }
     }
 
