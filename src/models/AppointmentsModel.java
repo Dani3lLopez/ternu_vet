@@ -22,7 +22,7 @@ public class AppointmentsModel {
         public static List<List<String>> cargarListaCitas() {
             List<List<String>> listaCitas = new ArrayList<>();
             // Query para obtener los datos de la tabla "citas"
-            String sql = "SELECT * FROM citas";
+            String sql = "SELECT * FROM citas WHERE visibilidad_cita = 1";
 
             try (
                     // Se conecta con la base de datos, se realiza la query y se guardan los resultados

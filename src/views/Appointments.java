@@ -1,7 +1,11 @@
 package src.views;
 
 import src.controllers.AppointmentsController;
+import src.validations.FormatException;
+import src.validations.Validations;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Scanner;
 
@@ -26,7 +30,7 @@ public class Appointments {
 
         boolean active = true;
         while (active) {
-            System.out.println("\uD83D\uDC36 Qué haremos hoy?");
+            System.out.println("\uD83D\uDCC5 Qué haremos hoy?");
             System.out.println("1. Listar Citas");
             System.out.println("2. Registrar Citas");
             System.out.println("3. Actualizar Citas");
@@ -34,36 +38,66 @@ public class Appointments {
             System.out.println("5. Volver al menú principal");
             System.out.println(separador.repeat(50));
             System.out.print("Seleccione una opción: ");
-            int choice = scan.nextInt();
-
-            switch (choice) {
-                case 1:
-                    cargarCitas();
-                    System.out.println(separador.repeat(70));
-                    break;
-                case 2:
-                    registrarCita();
-                    break;
-                case 3:
-                    cargarCitas();
-                    System.out.print("Ingrese el número de registro a actualizar: ");
-                    int r = scan.nextInt();
-                    scan.nextLine();
-                    actualizarCita(r);
-                    break;
-                case 4:
-                    cargarCitas();
-                    System.out.print("Ingrese el número de registro a eliminar: ");
-                    int registro = scan.nextInt();
-                    scan.nextLine();
-                    desactivarCita(registro);
-                    break;
-                case 5:
-                    active = false;
-                    System.out.println("Cerrando menú...");
-                    break;
-                default:
-                    System.out.println("El valor ingresado no corresponde a una opción de menú");
+            String choice = scan.nextLine().trim();
+            if(!choice.isEmpty()){
+                try{
+                    Validations.validarRangoNumeros(choice, 1, 5);
+                    switch (Integer.parseInt(choice)) {
+                        case 1:
+                            cargarCitas();
+                            break;
+                        case 2:
+                            registrarCita();
+                            System.out.println(separador.repeat(50));
+                            break;
+                        case 3:
+                            cargarCitas();
+                            String r = "";
+                            while(true){
+                                System.out.print("Ingrese el número de registro a actualizar: ");
+                                r = scan.nextLine().trim();
+                                try{
+                                    Validations.validarNumeros(r);
+                                    break;
+                                }catch(FormatException e){
+                                    System.out.println(e.getMessage());
+                                }
+                            }
+                            if(r.isEmpty()){
+                                break;
+                            }else{
+                                actualizarCita(Integer.parseInt(r));
+                                System.out.println(separador.repeat(50));
+                                break;
+                            }
+                        case 4:
+                            cargarCitas();
+                            String registro = "";
+                            while(true){
+                                System.out.print("Ingrese el número de registro a eliminar: ");
+                                registro = scan.nextLine().trim();
+                                try {
+                                    Validations.validarNumeros(registro);
+                                    break;
+                                }catch(FormatException e){
+                                    System.out.println(e.getMessage());
+                                }
+                            }
+                            if(registro.isEmpty()){
+                                break;
+                            }else{
+                                desactivarCita(Integer.parseInt(registro));
+                                System.out.println(separador.repeat(50));
+                                break;
+                            }
+                        case 5:
+                            active = false;
+                            System.out.println("Cerrando menú...");
+                            break;
+                    }
+                }catch(FormatException e){
+                    System.out.println(e.getMessage());
+                }
             }
         }
     }
@@ -135,64 +169,103 @@ public class Appointments {
         }
         System.out.println(separador);
         // Solicita al usuario seleccionar un doctor
-        System.out.print("Seleccione al doctor/a: ");
-        int valor = scan.nextInt();
-        scan.nextLine();
-
-        if (valor > 0 && valor <= appointment.listaDoctores().size()) {
-            String id = appointment.capturarIdListaDoctores(valor);
-            appointment.setIdDoctor(id);
-
-            System.out.println(separador);
-            // Muestra la lista de mascotas para elegir
-            System.out.printf("| %-5s | %-50s |\n", "No.", "Mascota");
-            System.out.println(separador);
-
-            for (int c = 0; c < appointment.listaMascotas().size(); c++) {
-                List<String> mascota = appointment.listaMascotas().get(c);
-                System.out.printf("| %-5d | %-50s |\n", (c + 1), mascota.get(1));
+        String valor = "";
+        while(true){
+            System.out.print("Seleccione al doctor/a *: ");
+            valor = scan.nextLine().trim();
+            try{
+                Validations.validarCampoObligatorio(valor);
+                Validations.validarRangoNumeros(valor, 1, appointment.listaDoctores().size());
+                break;
+            }catch(FormatException e){
+                System.out.println(e.getMessage());
             }
+        }
 
-            System.out.println(separador);
-            // Selecciona una mascota
-            System.out.print("Seleccione la mascota: ");
-            int v = scan.nextInt();
-            scan.nextLine();
+        String id = appointment.capturarIdListaDoctores(Integer.parseInt(valor));
+        appointment.setIdDoctor(id);
 
-            if (v > 0 && v <= appointment.listaMascotas().size()) {
-                // Asigna el id de la mascota seleccionada
-                String n = appointment.capturarIdListaMascotas(v);
-                appointment.setIdMascota(n);
+        System.out.println(separador);
+        // Muestra la lista de mascotas para elegir
+        System.out.printf("| %-5s | %-50s |\n", "No.", "Mascota");
+        System.out.println(separador);
 
-                // Solicita al usuario ingresar el motivo de la cita
-                System.out.println("Motivo de la cita: ");
-                String motivoCita = scan.nextLine();
-                appointment.setMotivoCita(motivoCita);
+        for (int c = 0; c < appointment.listaMascotas().size(); c++) {
+            List<String> mascota = appointment.listaMascotas().get(c);
+            System.out.printf("| %-5d | %-50s |\n", (c + 1), mascota.get(1));
+        }
 
-                // Se solicita la fecha de la cita
-                System.out.println("Fecha de cita (YYYY-MM-DD): ");
-                String fechaCita = scan.nextLine();
-                appointment.setFechaCita(fechaCita);
+        System.out.println(separador);
 
-                // Se solicita la hora de lo cita
-                System.out.println("Hora de cita (HH-MM-SS): ");
-                String horaCita = scan.nextLine();
-                appointment.setHoraCita(horaCita);
-
-                Boolean visibilidad = true;
-                appointment.setVisibilidadCita(visibilidad);
-
-                // Llama al controlador para registrar la nueva cita
-                int resultado = appointment.registrarCita();
-
-                if (resultado == 1) {
-                    System.out.println("Cita registrada con éxito.");
-                } else {
-                    System.out.println("Ha ocurrido un error al registrar la cita.");
-                }
-            } else {
-                System.out.println("Selección de persona inválida.");
+        String v = "";
+        // Selecciona una mascota
+        while(true){
+            System.out.print("Seleccione la mascota *: ");
+            v = scan.nextLine().trim();
+            try{
+                Validations.validarCampoObligatorio(v);
+                Validations.validarRangoNumeros(v, 1, appointment.listaMascotas().size());
+                break;
+            }catch(FormatException e){
+                System.out.println(e.getMessage());
             }
+        }
+        String n = appointment.capturarIdListaMascotas(Integer.parseInt(v));
+        appointment.setIdMascota(n);
+
+        // Solicita al usuario ingresar el motivo de la cita
+        String motivoCita = "";
+        while(true){
+            System.out.print("Motivo de la cita *: ");
+            motivoCita = scan.nextLine().trim();
+            try{
+                Validations.validarCampoObligatorio(motivoCita);
+                break;
+            }catch(FormatException e){
+                System.out.println(e.getMessage());
+            }
+        }
+        appointment.setMotivoCita(motivoCita);
+
+        String fechaCita = "";
+        while(true){
+            System.out.print("Fecha de la cita *: ");
+            fechaCita = scan.nextLine().trim();
+            try{
+                Validations.validarCampoObligatorio(fechaCita);
+                Validations.validarRangoFechas(fechaCita, LocalDate.now(), LocalDate.now().plusYears(1));
+                break;
+            }catch (FormatException e){
+                System.out.println(e.getMessage());
+            }
+        }
+        appointment.setFechaCita(fechaCita);
+
+        // Se solicita la hora de lo cita
+        String horaCita = "";
+        while(true){
+            System.out.print("Hora de la cita *: ");
+            horaCita = scan.nextLine().trim();
+            try{
+                Validations.validarCampoObligatorio(horaCita);
+                Validations.validarRangoHoras(horaCita, LocalTime.of(8, 0, 0), LocalTime.of(16, 0, 0));
+                break;
+            }catch (FormatException e){
+                System.out.println(e.getMessage());
+            }
+        }
+        appointment.setHoraCita(horaCita);
+
+        Boolean visibilidad = true;
+        appointment.setVisibilidadCita(visibilidad);
+
+        // Llama al controlador para registrar la nueva cita
+        int resultado = appointment.registrarCita();
+
+        if (resultado == 1) {
+            System.out.println("Cita registrada con éxito.");
+        } else {
+            System.out.println("Ha ocurrido un error al registrar la cita.");
         }
     }
 
@@ -202,11 +275,6 @@ public class Appointments {
      * El parametro es el indice de la cita a actualizar
      */
     public void actualizarCita(int r) {
-        String idCita = appointment.capturarIdLista(r);
-        if (idCita == null) {
-            System.out.println("Registro extraño");
-            return;
-        }
         // Carga los datos actuales de la cita
         List<String> cita = appointment.cargarDatosCita(r);
         if (cita.isEmpty()) {
@@ -229,17 +297,22 @@ public class Appointments {
         }
         System.out.println(separador);
 
-        // Se solicita el nuevo doctor, o se puede dejar vacio si es el mismo
-        System.out.print("Nuevo doctor: ");
-        String np = scan.nextLine();
-        String nuevoIdDoctor = cita.get(5); // ID actual del doctor
-
-        if (!np.isEmpty()) {
-            int idNuevo = Integer.parseInt(np);
-            if (idNuevo > 0 && idNuevo <= doctores.size()) {
-                nuevoIdDoctor = doctores.get(idNuevo - 1).get(0);
-            } else {
-                System.out.println("Doctor no válido.");
+        String np = "";
+        String nuevoIdDoctor = "";
+        while(true){
+            System.out.print("Nuevo doctor: ");
+            np = scan.nextLine().trim();
+            if(np.isEmpty()){
+                nuevoIdDoctor = cita.get(5);
+                break;
+            }else{
+                try{
+                    Validations.validarRangoNumeros(np, 1, doctores.size());
+                    nuevoIdDoctor = doctores.get(Integer.parseInt(np) - 1).get(0);
+                    break;
+                }catch(FormatException e){
+                    System.out.println(e.getMessage());
+                }
             }
         }
 
@@ -254,17 +327,22 @@ public class Appointments {
         }
         System.out.println(separador);
 
-        // Permite al usuario seleccionar la nueva mascota, o dejar vacio para mantener la actual
-        System.out.print("Nueva mascota: ");
-        String nm = scan.nextLine();
-        String nuevoIdMascota = cita.get(4);
-
-        if (!nm.isEmpty()) {
-            int idNuevaMascota = Integer.parseInt(nm);
-            if (idNuevaMascota > 0 && idNuevaMascota <= mascotas.size()) {
-                nuevoIdMascota = mascotas.get(idNuevaMascota - 1).get(0);
-            } else {
-                System.out.println("Mascota no válida.");
+        String nm = "";
+        String nuevoIdMascota = "";
+        while(true){
+            System.out.print("Nueva mascota: ");
+            nm = scan.nextLine().trim();
+            if(nm.isEmpty()){
+                nuevoIdMascota = cita.get(4);
+                break;
+            }else{
+                try{
+                    Validations.validarRangoNumeros(nm, 1, mascotas.size());
+                    nuevoIdMascota = mascotas.get(Integer.parseInt(nm) - 1).get(0);
+                    break;
+                }catch(FormatException e){
+                    System.out.println(e.getMessage());
+                }
             }
         }
 
@@ -272,14 +350,41 @@ public class Appointments {
         System.out.print("Nuevo motivo de cita: ");
         String nuevoMotivo = scan.nextLine();
         if (nuevoMotivo.isEmpty()) nuevoMotivo = cita.get(1);
-        //Solicita la nueva fecha de la cita, se puede dejar la actual
-        System.out.print("Nueva fecha de cita: ");
-        String nuevaFecha = scan.nextLine();
-        if (nuevaFecha.isEmpty()) nuevaFecha = cita.get(2);
-        //Solicita la nueva hora de la cita, se puede dejar la actual
-        System.out.print("Nueva hora de cita: ");
-        String nuevaHora = scan.nextLine();
-        if (nuevaHora.isEmpty()) nuevaHora = cita.get(3);
+
+        String nuevaFecha = "";
+        while(true){
+            System.out.print("Nueva fecha de cita: ");
+            nuevaFecha = scan.nextLine().trim();
+            if(nuevaFecha.isEmpty()){
+                nuevaFecha = cita.get(2);
+                break;
+            }else{
+                try{
+                    Validations.validarRangoFechas(nuevaFecha, LocalDate.now(), LocalDate.now().plusYears(1));
+                    break;
+                }catch(FormatException e){
+                    System.out.println(e.getMessage());
+                }
+            }
+        }
+
+        String nuevaHora = "";
+        while(true){
+            //Solicita la nueva hora de la cita, se puede dejar la actual
+            System.out.print("Nueva hora de cita: ");
+            nuevaHora = scan.nextLine().trim();
+            if(nuevaHora.isEmpty()){
+                nuevaHora = cita.get(3);
+                break;
+            }else{
+                try{
+                    Validations.validarRangoHoras(nuevaHora, LocalTime.of(8, 0, 0), LocalTime.of(16, 0, 0));
+                    break;
+                }catch(FormatException e){
+                    System.out.println(e.getMessage());
+                }
+            }
+        }
 
         Boolean visibilidad = true;
 
