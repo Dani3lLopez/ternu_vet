@@ -1,7 +1,10 @@
 package src.Views;
 
 import src.Controllers.PeopleController;
+import src.validations.FormatException;
+import src.validations.Validations;
 
+import java.text.Format;
 import java.util.List;
 import java.util.Scanner;
 
@@ -38,39 +41,67 @@ public class People {
             System.out.print("Seleccione una opción: ");
 
             // Guarda la opcion seleccionada por el usuario
-            int choice = scan.nextInt();
-
-            // Se llaman a los metodos correspondientes con base a la opcion seleccionada por el usuario.
-            // Ademas, si se requeiren ciertos parametros, se solicitan al usuario
-
-            switch (choice){
-                case 1:
-                    cargarPersonas();
-                    break;
-                case 2:
-                    registrarPersona();
-                    break;
-                case 3:
-                    cargarPersonas();
-                    System.out.print("Ingrese el número de registro a actualizar: ");
-                    int r = scan.nextInt();
-                    scan.nextLine();
-                    actualizarPersona(r);
-                    break;
-                case 4:
-                    cargarPersonas();
-                    System.out.print("Ingrese el número de registro a eliminar: ");
-                    int registro = scan.nextInt();
-                    scan.nextLine();
-                    eliminarPersona(registro);
-                    break;
-                case 5:
-                    // Vuelve al menu principal
-                    active = false;
-                    System.out.println("Cerrando menú...");
-                    break;
-                default:
-                    System.out.println("El valor ingresado no corresponde a una opción de menú");
+            String choice = scan.nextLine().trim();
+            try{
+                // Se llaman a los metodos correspondientes con base a la opcion seleccionada por el usuario.
+                // Ademas, si se requeiren ciertos parametros, se solicitan al usuario
+                Validations.validarRangoNumeros(choice, 1, 5);
+                switch (Integer.parseInt(choice)){
+                    case 1:
+                        cargarPersonas();
+                        break;
+                    case 2:
+                        registrarPersona();
+                        System.out.println("-".repeat(50));
+                        break;
+                    case 3:
+                        cargarPersonas();
+                        String r = "";
+                        while(true){
+                            System.out.print("Ingrese el número de registro a actualizar: ");
+                            r = scan.nextLine().trim();
+                            try{
+                                Validations.validarNumeros(r);
+                                break;
+                            }catch(FormatException e){
+                                System.out.println(e.getMessage());
+                            }
+                        }
+                        if(r.isEmpty()){
+                            break;
+                        }else{
+                            actualizarPersona(Integer.parseInt(r));
+                            System.out.println("-".repeat(50));
+                            break;
+                        }
+                    case 4:
+                        cargarPersonas();
+                        String registro = "";
+                        while(true){
+                            System.out.print("Ingrese el número de registro a actualizar: ");
+                            registro = scan.nextLine().trim();
+                            try{
+                                Validations.validarNumeros(registro);
+                                break;
+                            }catch(FormatException e){
+                                System.out.println(e.getMessage());
+                            }
+                        }
+                        if(registro.isEmpty()){
+                            break;
+                        }else{
+                            eliminarPersona(Integer.parseInt(registro));
+                            System.out.println("-".repeat(50));
+                            break;
+                        }
+                    case 5:
+                        // Vuelve al menu principal
+                        active = false;
+                        System.out.println("Cerrando menú...");
+                        break;
+                }
+            }catch (FormatException e){
+                System.out.println(e.getMessage());
             }
         }
     }
@@ -103,21 +134,85 @@ public class People {
      * Solicita al usuario los datos de la nueva persona
      *  Registra los datos a traves del controlador
      */
-    public void registrarPersona(){
-        System.out.println("Nombres: ");
-        String nombre = scan.nextLine();
+    public void registrarPersona() {
+        String nombre = "";
+        while (true) {
+            System.out.print("Nombres *: ");
+            nombre = scan.nextLine().trim();
+            try {
+                Validations.validarCampoObligatorio(nombre);
+                break;
+            } catch (FormatException e) {
+                System.out.println(e.getMessage());
+            }
+        }
         person.setNombrePersona(nombre);
-        System.out.println("Apellidos: ");
-        String apellido = scan.nextLine();
+
+        String apellido = "";
+        while (true) {
+            System.out.print("Apellidos *: ");
+            apellido = scan.nextLine().trim();
+            try {
+                Validations.validarCampoObligatorio(apellido);
+                break;
+            } catch (FormatException e) {
+                System.out.println(e.getMessage());
+            }
+        }
         person.setApellidoPersona(apellido);
-        System.out.println("Telefono: ");
-        String telefono = scan.nextLine();
-        person.setTelefonoPersona(telefono);
-        System.out.println("Correo Electronico: ");
-        String correo = scan.nextLine();
+
+        String telefono = "";
+        while (true) {
+            System.out.print("Telefono: ");
+            telefono = scan.nextLine().trim();
+            if (telefono.isEmpty()) {
+                telefono = null;
+                break;
+            } else {
+                try {
+                    Validations.validarNumeroTelefono(telefono);
+                    break;
+                } catch (FormatException e) {
+                    System.out.println(e.getMessage());
+                }
+            }
+            person.setTelefonoPersona(telefono);
+        }
+
+        String correo = "";
+        while(true) {
+            System.out.print("Correo Electronico: ");
+            correo = scan.nextLine().trim();
+            if(correo.isEmpty()){
+                correo = null;
+                break;
+            }else{
+                try{
+                    Validations.validarEmail(correo);
+                    break;
+                }catch (FormatException e){
+                    System.out.println(e.getMessage());
+                }
+            }
+        }
         person.setEmailPersona(correo);
-        System.out.println("Identificacion (DUI): ");
-        String dui = scan.nextLine();
+
+        String dui = "";
+        while (true) {
+            System.out.print("Identificacion (DUI): ");
+            dui = scan.nextLine().trim();
+            if(dui.isEmpty()){
+                dui = null;
+                break;
+            }else{
+                try{
+                    Validations.validarDUI(dui);
+                    break;
+                }catch (FormatException e){
+                    System.out.println(e.getMessage());
+                }
+            }
+        }
         person.setDuiPersona(dui);
 
         // Llama al controlador para registrar a la persona
@@ -136,23 +231,67 @@ public class People {
     public void actualizarPersona(int r){
         List<String> persona = person.cargarDatosPersona(r);
         System.out.print("Nuevo Nombre: ");
-        String nombre = scan.nextLine();
+        String nombre = scan.nextLine().trim();
         if (nombre.isEmpty()) nombre = persona.get(1);
+
         System.out.print("Nuevo Apellido: ");
-        String apellido = scan.nextLine();
+        String apellido = scan.nextLine().trim();
         if (apellido.isEmpty()) apellido = persona.get(2);
-        System.out.print("Nuevo Teléfono: ");
-        String telefono = scan.nextLine();
-        if (telefono.isEmpty()) telefono = persona.get(3);
-        System.out.print("Nuevo Email: ");
-        String email = scan.nextLine();
-        if (email.isEmpty()) email = persona.get(4);
-        System.out.print("Nuevo DUI: ");
-        String dui = scan.nextLine();
-        if (dui.isEmpty()) dui = persona.get(5);
+
+        String telefono = "";
+        while(true){
+            System.out.print("Nuevo Teléfono: ");
+            telefono = scan.nextLine().trim();
+            if (telefono.isEmpty()){
+                telefono = persona.get(3);
+                break;
+            }else{
+                try{
+                    Validations.validarNumeroTelefono(telefono);
+                    break;
+                }catch (FormatException e){
+                    System.out.println(e.getMessage());
+                }
+            }
+        }
+
+        String email = "";
+        while(true){
+            System.out.print("Nuevo Email: ");
+            email = scan.nextLine().trim();
+            if (email.isEmpty()){
+                email = persona.get(4);
+                break;
+            }else{
+                try{
+                    Validations.validarEmail(email);
+                    break;
+                }catch (FormatException e){
+                    System.out.println(e.getMessage());
+                }
+            }
+        }
+
+        String dui = "";
+        while (true){
+            System.out.print("Nuevo DUI: ");
+            dui = scan.nextLine().trim();
+            if (dui.isEmpty()){
+                dui = persona.get(5);
+            }else{
+                try{
+                    Validations.validarDUI(dui);
+                    break;
+                }catch (FormatException e){
+                    System.out.println(e.getMessage());
+                }
+            }
+        }
+
         // LLama al controlador para realizar la actualizacion
         person.actualizarPersona(r, nombre, apellido, telefono, email, dui);
     }
+
     /*
      * Elimina a una persona con base a su indice en la lista
      */
