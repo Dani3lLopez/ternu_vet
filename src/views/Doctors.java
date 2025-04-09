@@ -2,7 +2,10 @@ package src.views;
 
 import src.controllers.DoctorsController;
 import src.controllers.PeopleController;
+import src.validations.FormatException;
+import src.validations.Validations;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Scanner;
 
@@ -26,6 +29,7 @@ public class Doctors {
         Scanner scan = new Scanner(System.in);
         String separador = "-";
 
+        String choice ="";
         boolean active = true;
         while (active){
             System.out.println("\uD83D\uDC8A Qué haremos hoy?");
@@ -35,34 +39,51 @@ public class Doctors {
             System.out.println("4. Volver al menú principal");
             System.out.println(separador.repeat(50));
             System.out.print("Seleccione una opción: ");
-
             // Guarda la opcion seleccionada por el usuario
-            int choice = scan.nextInt();
+            choice = scan.nextLine().trim();
+            if(!choice.isEmpty()) {
+                try{
+                    Validations.validarRangoNumeros(choice, 1, 4);
+                    // Se llaman a los metodos correspondientes con base a la opcion seleccionada por el usuario.
+                    // Ademas, si se requeiren ciertos parametros, se solicitan al usuario
+                }catch(FormatException e){
+                    System.out.println(e.getMessage());
+                }
 
-            // Se llaman a los metodos correspondientes con base a la opcion seleccionada por el usuario.
-            // Ademas, si se requeiren ciertos parametros, se solicitan al usuario
-            switch (choice){
-                case 1:
-                    cargarDoctores();
-                    System.out.println(separador.repeat(70));
-                    break;
-                case 2:
-                    registrarDoctor();
-                    break;
-                case 3:
-                    cargarDoctores();
-                    System.out.print("Ingrese el número de registro a actualizar: ");
-                    int r = scan.nextInt();
-                    scan.nextLine();
-                    actualizarDoctor(r);
-                    break;
-                case 4:
-                    // Vuelve al menu principal
-                    active = false;
-                    System.out.println("Cerrando menú...");
-                    break;
-                default:
-                    System.out.println("El valor ingresado no corresponde a una opción de menú");
+                switch (Integer.parseInt(choice)){
+                    case 1:
+                        cargarDoctores();
+                        break;
+                    case 2:
+                        registrarDoctor();
+                        System.out.println(separador.repeat(50));
+                        break;
+                    case 3:
+                        cargarDoctores();
+                        String r = "";
+                        while(true){
+                            System.out.print("Ingrese el número de registro a actualizar: ");
+                            r = scan.nextLine().trim();
+                            try{
+                                Validations.validarNumeros(r);
+                                break;
+                            }catch(FormatException e){
+                                System.out.println(e.getMessage());
+                            }
+                        }
+                        if(!r.isEmpty()){
+                            actualizarDoctor(Integer.parseInt(r));
+                            System.out.println(separador.repeat(50));
+                            break;
+                        }else{
+                            break;
+                        }
+                    case 4:
+                        // Vuelve al menu principal
+                        active = false;
+                        System.out.println("Cerrando menú...");
+                        break;
+                }
             }
         }
     }
@@ -119,50 +140,86 @@ public class Doctors {
         }
         System.out.println(separador);
 
-        System.out.print("Seleccione al doctor/a: ");
-        int valor = scan.nextInt();
-        scan.nextLine();
-
-        if (valor > 0 && valor <= person.listaPersonas().size()) {
-            String id = person.capturarIdLista(valor);
-            doc.setIdPersona(id);
-
-            System.out.println(separador);
-            System.out.printf("| %-5s | %-50s |\n", "No.", "Especialidad");
-            System.out.println(separador);
-
-            for (int c = 0; c < doc.listaEspecialidades().size(); c++) {
-                List<String> doctor = doc.listaEspecialidades().get(c);
-                System.out.printf("| %-5d | %-50s |\n", (c + 1), doctor.get(1));
+        String valor = "";
+        while(true){
+            System.out.print("Seleccione al doctor/a *: ");
+            valor = scan.nextLine().trim();
+            try{
+                Validations.validarCampoObligatorio(valor);
+                Validations.validarRangoNumeros(valor, 1, person.listaPersonas().size());
+                break;
+            }catch (FormatException e){
+                System.out.println(e.getMessage());
             }
-            System.out.println(separador);
+        }
 
-            System.out.print("Seleccione la especialidad: ");
-            int v = scan.nextInt();
-            scan.nextLine();
+        String id = person.capturarIdLista(Integer.parseInt(valor));
+        doc.setIdPersona(id);
 
-            if (v > 0 && v <= doc.listaEspecialidades().size()) {
-                String n = doc.capturarIdListaEspecialidad(v);
-                doc.setIdEspecialidad(n);
+        System.out.println(separador);
+        System.out.printf("| %-5s | %-50s |\n", "No.", "Especialidad");
+        System.out.println(separador);
 
-                System.out.println("Fecha de nacimiento (YYYY-MM-DD): ");
-                String fechaNacimiento = scan.nextLine();
-                doc.setFechaNacimientoDoctor(fechaNacimiento);
+        for (int c = 0; c < doc.listaEspecialidades().size(); c++) {
+            List<String> doctor = doc.listaEspecialidades().get(c);
+            System.out.printf("| %-5d | %-50s |\n", (c + 1), doctor.get(1));
+        }
+        System.out.println(separador);
+        String v = "";
+        while(true){
+            System.out.print("Seleccione la especialidad *: ");
+            v = scan.nextLine().trim();
+            try{
+                Validations.validarCampoObligatorio(v);
+                Validations.validarRangoNumeros(v, 1, doc.listaEspecialidades().size());
+                break;
+            }catch (FormatException e){
+                System.out.println(e.getMessage());
+            }
+        }
 
-                System.out.println("Fecha de contratacion (YYYY-MM-DD): ");
-                String fechaContratacion = scan.nextLine();
-                doc.setFechaContratacionDoctor(fechaContratacion);
-                // Llama al controlador para registrar a la persona
-                int resultado = doc.RegistrarDoctor();
+        String n = doc.capturarIdListaEspecialidad(Integer.parseInt(v));
+        doc.setIdEspecialidad(n);
 
-                if (resultado == 1) {
-                    System.out.println("Doctor registrado con éxito.");
-                } else {
-                    System.out.println("Ha ocurrido un error al registrar el doctor.");
+        String fechaNacimiento = "";
+        while(true){
+            System.out.print("Fecha de nacimiento: ");
+            fechaNacimiento = scan.nextLine().trim();
+            if(fechaNacimiento.isEmpty()){
+                fechaNacimiento = null;
+                break;
+            }else{
+                try{
+                    Validations.validarRangoFechas(fechaNacimiento, LocalDate.now().minusYears(100), LocalDate.now());
+                    break;
+                }catch (FormatException e){
+                    System.out.println(e.getMessage());
                 }
-            } else {
-                System.out.println("Selección de persona inválida.");
             }
+        }
+        doc.setFechaNacimientoDoctor(fechaNacimiento);
+
+        String fechaContratacion = "";
+        while(true){
+            System.out.print("Fecha de contratacion *: ");
+            fechaContratacion = scan.nextLine().trim();
+            try{
+                Validations.validarCampoObligatorio(fechaContratacion);
+                Validations.validarRangoFechas(fechaContratacion, LocalDate.now().minusYears(20), LocalDate.now());
+                break;
+            }catch (FormatException e){
+                System.out.println(e.getMessage());
+            }
+        }
+        doc.setFechaContratacionDoctor(fechaContratacion);
+
+        // Llama al controlador para registrar a la persona
+        int resultado = doc.RegistrarDoctor();
+
+        if (resultado == 1) {
+            System.out.println("Doctor registrado con éxito.");
+        } else {
+            System.out.println("Ha ocurrido un error al registrar el doctor.");
         }
     }
 
@@ -191,15 +248,21 @@ public class Doctors {
         }
         System.out.println(separador);
 
-        System.out.print("Nuevo doctor: ");
-        String np = scan.nextLine();
-        String nid = doctor.get(3);
-        if (!np.isEmpty()) {
-            int idNuevo = Integer.parseInt(np);
-            if (idNuevo > 0 && idNuevo <= person.listaPersonas().size()) {
-                nid = person.capturarIdLista(idNuevo);
-            } else {
-                System.out.println("Persona no valida.");
+        String valor = "";
+        String idPersona = doctor.get(3);
+        while(true){
+            System.out.print("Seleccione al nuevo doctor/a: ");
+            valor = scan.nextLine().trim();
+            if(!valor.isEmpty()){
+                try{
+                    Validations.validarRangoNumeros(valor, 1, person.listaPersonas().size());
+                    idPersona = person.capturarIdLista((Integer.parseInt(valor)));
+                    break;
+                }catch (FormatException e){
+                    System.out.println(e.getMessage());
+                }
+            }else{
+                break;
             }
         }
 
@@ -210,30 +273,58 @@ public class Doctors {
             System.out.println((c + 1) + ". " + especialidad.get(1));
         }
 
-        System.out.print("Nueva especialidad: ");
-        String ne = scan.nextLine();
+        String ne = "";
         String nide = doctor.get(4);
-        if (!ne.isEmpty()) {
-            int idNuevo = Integer.parseInt(ne);
-            if (idNuevo > 0 && idNuevo <= doc.listaEspecialidades().size()) {
-                nide = doc.capturarIdListaEspecialidad(idNuevo);
-            } else {
-                System.out.println("Especialidad no valida.");
+        while(true){
+            System.out.print("Seleccione la nueva especialidad: ");
+            ne = scan.nextLine().trim();
+            if(!ne.isEmpty()){
+                try{
+                    Validations.validarRangoNumeros(ne, 1, doc.listaEspecialidades().size());
+                    nide = doc.capturarIdListaEspecialidad((Integer.parseInt(ne)));
+                    break;
+                }catch (FormatException e){
+                    System.out.println(e.getMessage());
+                }
+            }else{
+                break;
             }
         }
 
-        System.out.print("Nueva fecha de nacimiento (YYYY-MM-DD): ");
-        String nuevaFechaNacimiento = scan.nextLine();
-        if (nuevaFechaNacimiento.isEmpty()) {
-            nuevaFechaNacimiento = doctor.get(2);
+        String nuevaFechaNacimiento = "";
+        while(true){
+            System.out.print("Nueva fecha de nacimiento: ");
+            nuevaFechaNacimiento = scan.nextLine().trim();
+            if(nuevaFechaNacimiento.isEmpty()){
+                nuevaFechaNacimiento = doctor.get(2);
+                break;
+            }else{
+                try{
+                    Validations.validarRangoFechas(nuevaFechaNacimiento, LocalDate.now().minusYears(100), LocalDate.now());
+                    break;
+                }catch (FormatException e){
+                    System.out.println(e.getMessage());
+                }
+            }
         }
 
-        System.out.print("Nueva fecha de contratacion (YYYY-MM-DD): ");
-        String nuevaFechaContratacion = scan.nextLine();
-        if (nuevaFechaContratacion.isEmpty()) {
-            nuevaFechaContratacion = doctor.get(1);
+        String nuevaFechaContratacion = "";
+        while(true){
+            System.out.print("Nueva fecha de contratacion: ");
+            nuevaFechaContratacion = scan.nextLine().trim();
+            if(nuevaFechaContratacion.isEmpty()){
+                nuevaFechaContratacion = doctor.get(1);
+                break;
+            }else{
+                try{
+                    Validations.validarRangoFechas(nuevaFechaContratacion, LocalDate.now().minusYears(20), LocalDate.now());
+                    break;
+                }catch (FormatException e){
+                    System.out.println(e.getMessage());
+                }
+            }
         }
 
-        doc.actualizarDoctor(r, nuevaFechaContratacion, nuevaFechaNacimiento, nid, nide);
+        doc.actualizarDoctor(r, nuevaFechaContratacion, nuevaFechaNacimiento, idPersona, nide);
     }
 }

@@ -1,6 +1,7 @@
 package src.validations;
 
 import java.time.LocalDate;
+import java.util.Base64;
 
 public class Validations {
     // Verifica que lo ingresado sean solo números
@@ -9,7 +10,7 @@ public class Validations {
         for (int i = 0; i < input.length(); i++) {
 
             // Verifica si el carácter es una letra
-            if (Character.isAlphabetic(input.charAt(i))) {
+            if (!Character.isDigit(input.charAt(i))) {
                 conteoLetras++;
             }
         }
@@ -17,7 +18,7 @@ public class Validations {
         // Si no encuentra letras, comprueba que solo hay números y establece la
         // varaible como verdadera
         if (conteoLetras != 0) {
-            throw new FormatException("Entrada inválida: solo se permiten números.");
+            throw new FormatException("Entrada inválida: solo se permiten números positivos.");
         }
     }
 
@@ -156,6 +157,10 @@ public class Validations {
         if(!validacion) {
             throw new FormatException("Entrada inválida: formato de DUI (XXXXXXXX-X) incorrecto.");
         }
+    }
+
+    public static String encriptarContra(String contra){
+        return Base64.getEncoder().encodeToString(contra.getBytes());
     }
 
 }

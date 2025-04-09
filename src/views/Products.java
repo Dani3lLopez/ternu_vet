@@ -1,6 +1,8 @@
 package src.views;
 
 import src.controllers.ProductsController;
+import src.validations.FormatException;
+import src.validations.Validations;
 
 import java.util.List;
 import java.util.Scanner;
@@ -27,70 +29,75 @@ public class Products {
 
             // Válida que se seleccione una opción aceptable
             String choice;
-            while (true) {
-                System.out.print("Seleccione una opción: ");
-                choice = scan.nextLine().trim();
-                boolean validarMenu = validarOpciones(choice);
-                if (!validarMenu) {
-                    System.out.println("Opción inválida");
-                } else {
-                    break;
+            System.out.print("Seleccione una opción: ");
+            choice = scan.nextLine().trim();
+            if(!choice.isEmpty()){
+                try{
+                    Validations.validarRangoNumeros(choice, 1, 5);
+                    switch (Integer.parseInt(choice)) {
+                        case 1:
+                            cargarProductos();
+                            break;
+                        case 2:
+                            actual.registrarProducto();
+                            System.out.println("-".repeat(50));
+                            break;
+                        case 3:
+                            actual.cargarProductos();
+                            String registroActualizar;
+
+                            // Pide que se ingrese el número de registro, hasta que sea uno válido
+                            while (true) {
+                                System.out.print("Ingrese el número de registro a actualizar: ");
+                                registroActualizar = scan.nextLine().trim();
+                                try{
+                                    Validations.validarNumeros(registroActualizar);
+                                    break;
+                                }catch (FormatException e){
+                                    System.out.println(e.getMessage());
+                                }
+                            }
+
+                            if(registroActualizar.isEmpty()){
+                                break;
+                            }else{
+                                // Actualiza el producto seleccionado
+                                actual.actualizarProducto(Integer.parseInt(registroActualizar));
+                                System.out.println("-".repeat(50));
+                                break;
+                            }
+                        case 4:
+                            actual.cargarProductos();
+                            String registroEliminar;
+
+                            // Solicita un número de registro válido
+                            while (true) {
+                                System.out.print("Ingrese el número de registro a eliminar: ");
+                                registroEliminar = scan.nextLine().trim();
+                                try{
+                                    Validations.validarNumeros(registroEliminar);
+                                    break;
+                                }catch (FormatException e){
+                                    System.out.println(e.getMessage());
+                                }
+                            }
+
+                            if(registroEliminar.isEmpty()){
+                                break;
+                            }else{
+                                // Elimina el producto que se selecciono
+                                actual.eliminarProducto(Integer.parseInt(registroEliminar));
+                                System.out.println("-".repeat(50));
+                                break;
+                            }
+                        case 5:
+                            active = false;
+                            System.out.println("Cerrando menú...");
+                            break;
+                    }
+                }catch (FormatException e){
+                    System.out.println(e.getMessage());
                 }
-            }
-
-            switch (Integer.parseInt(choice)) {
-                case 1:
-                    actual.cargarProductos();
-                    break;
-                case 2:
-                    actual.registrarProducto();
-                    break;
-                case 3:
-                    actual.cargarProductos();
-                    String registroActualizar;
-
-                    // Pide que se ingrese el número de registro, hasta que sea uno válido
-                    while (true) {
-                        System.out.print("Ingrese el número de registro a actualizar: ");
-                        registroActualizar = scan.nextLine().trim();
-                        boolean validacion = validarOpciones(registroActualizar);
-                        if (!validacion) {
-                            System.out.println("El valor ingresado es inválido");
-                        } else {
-                            break;
-                        }
-                    }
-
-                    // Actualiza el producto seleccionado
-                    actual.actualizarProducto(Integer.parseInt(registroActualizar));
-                    System.out.println("-".repeat(50));
-                    break;
-                case 4:
-                    actual.cargarProductos();
-                    String registroEliminar;
-
-                    // Solicita un número de registro válido
-                    while (true) {
-                        System.out.print("Ingrese el número de registro a eliminar: ");
-                        registroEliminar = scan.nextLine().trim();
-                        boolean validacion = validarOpciones(registroEliminar);
-                        if (!validacion) {
-                            System.out.println("El valor ingresado es inválido");
-                        } else {
-                            break;
-                        }
-                    }
-
-                    // Elimina el producto que se selecciono
-                    actual.eliminarProducto(Integer.parseInt(registroEliminar));
-                    System.out.println("-".repeat(50));
-                    break;
-                case 5:
-                    active = false;
-                    System.out.println("Cerrando menú...");
-                    break;
-                default:
-                    System.out.println("El valor ingresado no corresponde a una opción de menú");
             }
         }
     }
@@ -136,10 +143,11 @@ public class Products {
         while (true) {
             System.out.print("Nombre del producto *: ");
             nombreProducto = scan.nextLine().trim();
-            if (nombreProducto.equals("")) {
-                System.out.println("El nombre del producto no puede estar vacío");
-            } else {
+            try{
+                Validations.validarCampoObligatorio(nombreProducto);
                 break;
+            }catch (FormatException e){
+                System.out.println(e.getMessage());
             }
         }
         product.setNombreProducto(nombreProducto); // Establece el nombre del producto
@@ -158,20 +166,13 @@ public class Products {
         while (true) {
             System.out.print("Ingrese el precio del producto *: ");
             String input = scan.nextLine().trim();
-            if (input.equals("")) {
-                System.out.println("El precio del producto no puede estar vacío");
-            } else {
-                boolean validacion = validarOpciones(input);
-                if (validacion) {
-                    precioProducto = Double.parseDouble(input);
-                    if (precioProducto <= 0) {
-                        System.out.println("El valor ingresado es inválido");
-                    } else {
-                        break;
-                    }
-                } else {
-                    System.out.println("El valor ingresado es inválido");
-                }
+            try{
+                Validations.validarCampoObligatorio(input);
+                Validations.validarNumeros(input);
+                precioProducto = Double.parseDouble(input);
+                break;
+            }catch (FormatException e){
+                System.out.println(e.getMessage());
             }
         }
         product.setPrecioProducto(precioProducto);
@@ -187,12 +188,12 @@ public class Products {
                 stockProducto = 0;
                 break;
             } else {
-                boolean validacion = validarOpciones(input);
-                if (validacion) {
+                try{
+                    Validations.validarNumeros(input);
                     stockProducto = Integer.parseInt(input);
                     break;
-                } else {
-                    System.out.println("El valor ingresado es inválido");
+                }catch (FormatException e){
+                    System.out.println(e.getMessage());
                 }
             }
         }
@@ -209,19 +210,19 @@ public class Products {
                 pesoProducto = 0;
                 break;
             } else {
-                boolean validacion = validarOpciones(input);
-                if (validacion) {
+                try{
+                    Validations.validarNumeros(input);
                     pesoProducto = Double.parseDouble(input);
                     break;
-                } else {
-                    System.out.println("El valor ingresado es inválidoj");
+                }catch (FormatException e){
+                    System.out.println(e.getMessage());
                 }
             }
         }
         product.setPesoProducto(pesoProducto);
 
         // Muestra un menú de todas las unidades de medida posibles para el producto
-        String unidadMedidaProducto;
+        String unidadMedidaProducto = "";
         System.out.println("Ingrese la unidad de medida del producto: ");
         System.out.println("1. kg");
         System.out.println("2. g");
@@ -234,32 +235,32 @@ public class Products {
             System.out.print("Opción seleccionada: ");
             String input = scan.nextLine().trim();
             if (input.equals("")) {
-                unidadMedidaProducto = null;
+                unidadMedidaProducto = "ml";
                 break;
             } else {
-                boolean validacion = validarOpciones(input);
-                if (validacion) {
+                try{
+                    Validations.validarRangoNumeros(input, 1, 5);
                     int opcionUniProducto = Integer.parseInt(input);
-                    if (opcionUniProducto == 1) {
-                        unidadMedidaProducto = "kg";
-                        break;
-                    } else if (opcionUniProducto == 2) {
-                        unidadMedidaProducto = "g";
-                        break;
-                    } else if (opcionUniProducto == 3) {
-                        unidadMedidaProducto = "lb";
-                        break;
-                    } else if (opcionUniProducto == 4) {
-                        unidadMedidaProducto = "ml";
-                        break;
-                    } else if (opcionUniProducto == 5) {
-                        unidadMedidaProducto = "L";
-                        break;
-                    } else {
-                        System.out.println("Opción no valida");
+                    switch (opcionUniProducto) {
+                        case 1:
+                            unidadMedidaProducto = "kg";
+                            break;
+                        case 2:
+                            unidadMedidaProducto = "g";
+                            break;
+                        case 3:
+                            unidadMedidaProducto = "lb";
+                            break;
+                        case 4:
+                            unidadMedidaProducto = "ml";
+                            break;
+                        case 5:
+                            unidadMedidaProducto = "L";
+                            break;
                     }
-                } else {
-                    System.out.println("El valor ingresado es inválido");
+                    break;
+                }catch (FormatException e){
+                    System.out.println(e.getMessage());
                 }
             }
         }
@@ -278,11 +279,16 @@ public class Products {
     public void actualizarProducto(int registro) {
         List<String> producto = product.cargarDatosProducto(registro);
 
+        if (producto.isEmpty()) {
+            System.out.println("No se encontró el registro especificado");
+            return;
+        }
+
         String nombreProducto;
 
         // Valida que se ingrese un nombre, de lo contrario mantiene el que ya estaba
         while (true) {
-            System.out.print("Nombre del producto *: ");
+            System.out.print("Nuevo nombre del producto: ");
             nombreProducto = scan.nextLine().trim();
             if (nombreProducto.equals("")) {
                 nombreProducto = producto.get(1);
@@ -293,7 +299,7 @@ public class Products {
         }
 
         String descripcionProducto;
-        System.out.print("Ingrese la descripcion del producto: ");
+        System.out.print("Nueva descripción del producto: ");
         descripcionProducto = scan.nextLine().trim();
         if (descripcionProducto.equals("")) {
             descripcionProducto = producto.get(2);
@@ -303,22 +309,18 @@ public class Products {
 
         // Aegura que se ingrese un precio y que sean números positivos
         while (true) {
-            System.out.print("Ingrese el precio del producto *: ");
+            System.out.print("Ingrese el nuevo precio del producto: ");
             String input = scan.nextLine().trim();
             if (input.equals("")) {
                 precioProducto = Double.parseDouble(producto.get(3));
                 break;
             } else {
-                boolean validacion = validarOpciones(input);
-                if (validacion) {
+                try{
+                    Validations.validarNumeros(input);
                     precioProducto = Double.parseDouble(input);
-                    if (precioProducto <= 0) {
-                        System.out.println("El valor ingresado es inválido");
-                    } else {
-                        break;
-                    }
-                } else {
-                    System.out.println("El valor ingresado es inválido");
+                    break;
+                }catch (FormatException e){
+                    System.out.println(e.getMessage());
                 }
             }
         }
@@ -334,12 +336,12 @@ public class Products {
                 stockProducto = Integer.parseInt(producto.get(4));
                 break;
             } else {
-                boolean validacion = validarOpciones(input);
-                if (validacion) {
+                try{
+                    Validations.validarNumeros(input);
                     stockProducto = Integer.parseInt(input);
                     break;
-                } else {
-                    System.out.println("El valor ingresado es inválido");
+                }catch (FormatException e){
+                    System.out.println(e.getMessage());
                 }
             }
         }
@@ -354,19 +356,19 @@ public class Products {
                 pesoProducto = Double.parseDouble(producto.get(5));
                 break;
             } else {
-                boolean validacion = validarOpciones(input);
-                if (validacion) {
+                try{
+                    Validations.validarNumeros(input);
                     pesoProducto = Double.parseDouble(input);
                     break;
-                } else {
-                    System.out.println("El valor ingresado es inválidoj");
+                }catch (FormatException e){
+                    System.out.println(e.getMessage());
                 }
             }
         }
 
         // Muestra todas las opciones posibles para actualizar la unidad de medida del
         // producto
-        String unidadMedidaProducto;
+        String unidadMedidaProducto = "";
         System.out.println("Ingrese la unidad medida del producto: ");
         System.out.println("1. kg");
         System.out.println("2. g");
@@ -382,29 +384,29 @@ public class Products {
                 unidadMedidaProducto = producto.get(6);
                 break;
             } else {
-                boolean validacion = validarOpciones(input);
-                if (validacion) {
+                try{
+                    Validations.validarRangoNumeros(input, 1, 5);
                     int opcionUniProducto = Integer.parseInt(input);
-                    if (opcionUniProducto == 1) {
-                        unidadMedidaProducto = "kg";
-                        break;
-                    } else if (opcionUniProducto == 2) {
-                        unidadMedidaProducto = "g";
-                        break;
-                    } else if (opcionUniProducto == 3) {
-                        unidadMedidaProducto = "lb";
-                        break;
-                    } else if (opcionUniProducto == 4) {
-                        unidadMedidaProducto = "ml";
-                        break;
-                    } else if (opcionUniProducto == 5) {
-                        unidadMedidaProducto = "L";
-                        break;
-                    } else {
-                        System.out.println("Opción no valida");
+                    switch (opcionUniProducto) {
+                        case 1:
+                            unidadMedidaProducto = "kg";
+                            break;
+                        case 2:
+                            unidadMedidaProducto = "g";
+                            break;
+                        case 3:
+                            unidadMedidaProducto = "lb";
+                            break;
+                        case 4:
+                            unidadMedidaProducto = "ml";
+                            break;
+                        case 5:
+                            unidadMedidaProducto = "L";
+                            break;
                     }
-                } else {
-                    System.out.println("El valor ingresado es inválido");
+                    break;
+                }catch (FormatException e){
+                    System.out.println(e.getMessage());
                 }
             }
         }
@@ -416,26 +418,5 @@ public class Products {
     // Método para poder eleminar productos
     public void eliminarProducto(int registro) {
         product.eliminarProducto(registro);
-    }
-
-    // Método estático que permite asegurar que se ingresen datos númericos válidos
-    public static boolean validarOpciones(String input) {
-        boolean validarNumero = false;
-        int conteoLetras = 0;
-        for (int i = 0; i < input.length(); i++) {
-            if (Character.isAlphabetic(input.charAt(i))) {
-                conteoLetras++;
-            }
-        }
-
-        if (conteoLetras == 0) {
-            validarNumero = true;
-        }
-
-        if (input.isEmpty()) {
-            validarNumero = false;
-        }
-
-        return validarNumero;
     }
 }

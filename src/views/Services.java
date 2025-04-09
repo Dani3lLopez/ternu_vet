@@ -1,6 +1,8 @@
 package src.views;
 
 import src.controllers.ServicesController;
+import src.validations.FormatException;
+import src.validations.Validations;
 
 import java.util.List;
 import java.util.Scanner;
@@ -27,71 +29,73 @@ public class Services {
 
             // Este válida la opción seleccionada
             String choice;
-            while (true) {
+            try{
                 System.out.print("Seleccione una opción: ");
                 choice = scan.nextLine().trim();
-                boolean validarMenu = validarOpciones(choice);
-                if (!validarMenu) {
-                    System.out.println("Opción inválida");
-                } else {
-                    break;
+                if (!choice.isEmpty()) {
+                    Validations.validarRangoNumeros(choice, 1, 5);
+                    switch (Integer.parseInt(choice)) {
+                        case 1:
+                            actual.cargarServicios();
+                            break;
+                        case 2:
+                            actual.registrarServicio();
+                            break;
+                        case 3:
+                            actual.cargarServicios();
+                            String registroActualizar;
+
+                            // Estebucle solicita un número de registro hasta que se ingrese uno válido
+                            while (true) {
+                                System.out.print("Ingrese el número de registro a actualizar: ");
+                                registroActualizar = scan.nextLine().trim();
+                                try{
+                                    Validations.validarNumeros(registroActualizar);
+                                    break;
+                                }catch (FormatException e){
+                                    System.out.println(e.getMessage());
+                                }
+                            }
+                            if(registroActualizar.isEmpty()){
+                                break;
+                            }else{
+                                // Actualizada el servicio que se seleccionó
+                                actual.actualizarServicio(Integer.parseInt(registroActualizar));
+                                System.out.println("-".repeat(50));
+                                break;
+                            }
+                        case 4:
+                            actual.cargarServicios();
+                            String registroEliminar;
+
+                            // Este bucle al igual que el anterior solicita el número de registro hasta que
+                            // sea válido
+                            while (true) {
+                                System.out.print("Ingrese el número de registro a eliminar: ");
+                                registroEliminar = scan.nextLine().trim();
+                                try{
+                                    Validations.validarNumeros(registroEliminar);
+                                    break;
+                                }catch (FormatException e){
+                                    System.out.println(e.getMessage());
+                                }
+                            }
+                            if(registroEliminar.isEmpty()){
+                                break;
+                            }else{
+                                // Elimina el servicio que fue seleccionado
+                                actual.eliminarServicio(Integer.parseInt(registroEliminar));
+                                System.out.println("-".repeat(50));
+                                break;
+                            }
+                        case 5:
+                            active = false;
+                            System.out.println("Cerrando menú...");
+                            break;
+                    }
                 }
-            }
-
-            switch (Integer.parseInt(choice)) {
-                case 1:
-                    actual.cargarServicios();
-                    break;
-                case 2:
-                    actual.registrarServicio();
-                    break;
-                case 3:
-                    actual.cargarServicios();
-                    String registroActualizar;
-
-                    // Estebucle solicita un número de registro hasta que se ingrese uno válido
-                    while (true) {
-                        System.out.print("Ingrese el número de registro a actualizar: ");
-                        registroActualizar = scan.nextLine().trim();
-                        boolean validacion = validarOpciones(registroActualizar);
-                        if (!validacion) {
-                            System.out.println("El valor ingresado es inválido");
-                        } else {
-                            break;
-                        }
-                    }
-
-                    // Actualizada el servicio que se seleccionó
-                    actual.actualizarServicio(Integer.parseInt(registroActualizar));
-                    System.out.println("-".repeat(50));
-                    break;
-                case 4:
-                    actual.cargarServicios();
-                    String registroEliminar;
-
-                    // Este bucle al igual que el anterior solicita el número de registro hasta que
-                    // sea válido
-                    while (true) {
-                        System.out.print("Ingrese el número de registro a eliminar: ");
-                        registroEliminar = scan.nextLine().trim();
-                        boolean validacion = validarOpciones(registroEliminar);
-                        if (!validacion) {
-                            System.out.println("El valor ingresado es inválido");
-                        } else {
-                            break;
-                        }
-                    }
-
-                    // Elimina el servicio que fue seleccionado
-                    actual.eliminarServicio(Integer.parseInt(registroEliminar));
-                    System.out.println("-".repeat(50));
-                    break;
-                case 5:
-                    active = false;
-                    System.out.println("Cerrando menú...");
-                    break;
-                default:
-                    System.out.println("El valor ingresado no corresponde a una opción de menú");
+            }catch (FormatException e){
+                System.out.println(e.getMessage());
             }
         }
     }
@@ -133,10 +137,11 @@ public class Services {
         while (true) {
             System.out.print("Ingrese el nombre del servicio *: ");
             nombreServicio = scan.nextLine().trim();
-            if (nombreServicio.equals("")) {
-                System.out.println("El nombre del servicio no puede estar vacío");
-            } else {
+            try{
+                Validations.validarCampoObligatorio(nombreServicio);
                 break;
+            }catch (FormatException e){
+                System.out.println(e.getMessage());
             }
         }
         service.setNombreServicio(nombreServicio);
@@ -157,16 +162,13 @@ public class Services {
         while (true) {
             System.out.print("Ingrese el precio del servicio *: ");
             String input = scan.nextLine().trim();
-            boolean validacion = validarOpciones(input);
-            if (validacion) {
+            try{
+                Validations.validarCampoObligatorio(input);
+                Validations.validarNumeros(input);
                 precioServicio = Double.parseDouble(input);
-                if (precioServicio <= 0) {
-                    System.out.println("El valor ingresado es inválido");
-                } else {
-                    break;
-                }
-            } else {
-                System.out.println("El valor ingresado es inválido");
+                break;
+            }catch (FormatException e){
+                System.out.println(e.getMessage());
             }
         }
         service.setPrecioServicio(precioServicio);
@@ -184,24 +186,24 @@ public class Services {
     public void actualizarServicio(int registro) {
         List<String> servicio = service.cargarDatosServicio(registro);
 
+        if (servicio.isEmpty()) {
+            System.out.println("No se encontró el registro especificado");
+            return;
+        }
+
         String nombreServicio;
 
         // Asegura que sí se ingrese un nuevo nombre
-        while (true) {
-            System.out.print("Ingrese el nuevo nombre del servicio: ");
-            nombreServicio = scan.nextLine().trim();
-            if (nombreServicio.equals("")) {
-                nombreServicio = servicio.get(1);
-                break;
-            } else {
-                break;
-            }
+        System.out.print("Ingrese el nuevo nombre del servicio: ");
+        nombreServicio = scan.nextLine().trim();
+        if (nombreServicio.isEmpty()) {
+            nombreServicio = servicio.get(1);
         }
 
         String descripcionServicio;
         System.out.print("Ingrese la nueva descripción del servicio: ");
         descripcionServicio = scan.nextLine().trim();
-        if (descripcionServicio.equals("")) {
+        if (descripcionServicio.isEmpty()) {
             descripcionServicio = servicio.get(2);
         }
 
@@ -211,20 +213,16 @@ public class Services {
         while (true) {
             System.out.print("Ingrese el nuevo precio del servicio: ");
             String input = scan.nextLine().trim();
-            if (input.equals("")) {
+            if (input.isEmpty()) {
                 precioServicio = Double.parseDouble(servicio.get(3));
                 break;
             } else {
-                boolean validacion = validarOpciones(input);
-                if (validacion) {
+                try{
+                    Validations.validarNumeros(input);
                     precioServicio = Double.parseDouble(input);
-                    if (precioServicio <= 0) {
-                        System.out.println("El valor ingresado es inválido");
-                    } else {
-                        break;
-                    }
-                } else {
-                    System.out.println("El valor ingresado es inválido");
+                    break;
+                }catch (FormatException e){
+                    System.out.println(e.getMessage());
                 }
             }
         }
@@ -234,27 +232,5 @@ public class Services {
     // Otro método, este permite eliminar un servicio
     public void eliminarServicio(int registro) {
         service.eliminarServicio(registro);
-    }
-
-    // Método estático para validar si se ingresa una opción numérica correcta
-    public static boolean validarOpciones(String input) {
-        boolean validarNumero = false;
-        int conteoLetras = 0;
-        for (int i = 0; i < input.length(); i++) {
-            if (Character.isAlphabetic(input.charAt(i))) {
-                conteoLetras++;
-            }
-        }
-
-        if (conteoLetras == 0) {
-            validarNumero = true;
-        }
-
-        // Si no se ingresada nada, se considera como invalido
-        if (input.isEmpty()) {
-            validarNumero = false;
-        }
-
-        return validarNumero;
     }
 }
