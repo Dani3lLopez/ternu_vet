@@ -18,7 +18,7 @@ public class ConnectionModel {
         // URL, usuario y contraseña de conexion a la base de datos
         String url = "jdbc:mariadb://localhost:3306/db_vet_ternurita";
         String user = "root";
-        String pass = "1234";
+        String pass = "2806";
 
         try {
             //Intenta cargar el controlador JDBC de MariaDB
