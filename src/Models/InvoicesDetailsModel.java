@@ -107,7 +107,7 @@ public class InvoicesDetailsModel {
      */
     public static List<List<String>> cargarListaNombresItems() {
         List<List<String>> listaNombresItems = new ArrayList<>();
-        String sql = "SELECT p.id_producto, p.nombre_producto FROM productos p LEFT JOIN detalle_items di ON p.id_producto = di.id_producto";;
+        String sql = "SELECT p.id_producto, p.nombre_producto FROM productos p LEFT JOIN detalle_items di ON p.id_producto = di.id_producto";
 
         try (
                 Connection conexion = ConnectionModel.conectar();
@@ -139,7 +139,7 @@ public class InvoicesDetailsModel {
 
         try (
                 Connection conexion = ConnectionModel.conectar();
-                PreparedStatement ps = conexion.prepareStatement(sql);
+                PreparedStatement ps = conexion.prepareStatement(sql)
         ) {
             ps.setString(1, id);
             ResultSet rs = ps.executeQuery();

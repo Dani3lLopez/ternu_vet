@@ -65,9 +65,9 @@ public class PeopleModel {
         // Manejo de cierre de recursos automatico
         try (
                 Connection conexion = ConnectionModel.conectar();
-                PreparedStatement ps = conexion.prepareStatement(sql);
+                PreparedStatement ps = conexion.prepareStatement(sql)
         ) {
-            // Establece  el valor del parametro (id) para la consulta
+            // Establece el valor del parametro (id) para la consulta
             ps.setString(1, id);
             // Realzia la consulta y obtiene el resultado
             ResultSet rs = ps.executeQuery();
@@ -115,7 +115,7 @@ public class PeopleModel {
             ps.setString(4, email);
             ps.setString(5, dui);
 
-            // Ejecuta la query y guarda el numero de filas afectadas
+            // Ejecuta la query y guarda el número de filas afectadas
             retorno = ps.executeUpdate();
             return retorno;
         } catch (SQLException e) {
@@ -169,7 +169,7 @@ public class PeopleModel {
              PreparedStatement ps = conexion.prepareStatement(sql)) {
             // Establece el parametro para la querry con el ID
             ps.setString(1, id);
-            // Realiza la eliminación de la persona y devuelve el numero de filas. Se espera 1 si hubo exito
+            // Realiza la eliminación de la persona y devuelve el número de filas. Se espera 1 si hubo exito
             return ps.executeUpdate();
         } catch (SQLException e) {
             // En caso de error, se informa y retorna 0

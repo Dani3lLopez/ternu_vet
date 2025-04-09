@@ -87,7 +87,7 @@ public class OwnersModel {
 
         try (
                 Connection conexion = ConnectionModel.conectar();
-                PreparedStatement ps = conexion.prepareStatement(sql);
+                PreparedStatement ps = conexion.prepareStatement(sql)
         ) {
             ps.setString(1, id);
             ResultSet rs = ps.executeQuery();
@@ -133,7 +133,7 @@ public class OwnersModel {
     }
 
     /**
-     * Actualiza el registro de un propietario especifico
+     * Actualiza el registro de un propietario específico
      * @param id del propietario a actualizar
      * @param idPersona nuevo id de persona
      * @param idCiudad nueva ciudad

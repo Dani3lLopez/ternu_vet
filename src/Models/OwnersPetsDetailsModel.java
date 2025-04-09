@@ -112,7 +112,7 @@ public class OwnersPetsDetailsModel {
     }
 
     /**
-     * Carga un detalle de propietario y su mascota especifico segun su id
+     * Carga un detalle de propietario y su mascota especifico según su id
      * @param id id del detalle
      * @return los datos del detalle especificado o vacio en caso de no encontrar el registro
      */
@@ -122,7 +122,7 @@ public class OwnersPetsDetailsModel {
 
         try (
                 Connection conexion = ConnectionModel.conectar();
-                PreparedStatement ps = conexion.prepareStatement(sql);
+                PreparedStatement ps = conexion.prepareStatement(sql)
         ) {
             ps.setString(1, id);
             ResultSet rs = ps.executeQuery();
@@ -189,7 +189,7 @@ public class OwnersPetsDetailsModel {
     }
 
     /**
-     * Elimina un detalle especifico segun su id
+     * Elimina un detalle específico segun su id
      * @param id del detalle que se eliminará
      * @return numero de filas afectadas
      */

@@ -80,9 +80,9 @@ public class DoctorsModel {
     }
 
     /**
-     * Carga una lista con los datos de un doctor especifico segun su id
+     * Carga una lista con los datos de un doctor específico según su id
      * @param id id del doctor
-     * @return una lista con los datos del doctor especificado segun su id
+     * @return una lista con los datos del doctor especificado según su id
      */
     public static List<String> cargarDoctor(String id){
         List<String> datosDoctor = new ArrayList<>();
@@ -90,7 +90,7 @@ public class DoctorsModel {
 
         try (
                 Connection conexion = ConnectionModel.conectar();
-                PreparedStatement ps = conexion.prepareStatement(sql);
+                PreparedStatement ps = conexion.prepareStatement(sql)
         ) {
             // Establece el valor del parametro (id) para la consulta
             ps.setString(1, id);
@@ -132,7 +132,7 @@ public class DoctorsModel {
             ps.setString(2, fechaNacimiento);
             ps.setString(3, idPersona);
             ps.setString(4, idEspecialidad);
-            // Ejecuta la query y guarda el numero de filas afectadas
+            // Ejecuta la query y guarda el número de filas afectadas
             retorno = ps.executeUpdate();
             return retorno;
         } catch (SQLException e) {

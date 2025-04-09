@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * AppointmentsModel: Clase que gestiona todas los procesos relacionados con citas, incluyendo la carga, inserción, actualización y desactivación de registros.
+ * AppointmentsModel: Clase que gestiona todos los procesos relacionados con citas, incluyendo la carga, inserción, actualización y desactivación de registros.
  * Se comunica directamente con la base de datos utilizando JDBC.
  * @author TernuVet-DevTeam
  * @version 1.0
@@ -125,10 +125,10 @@ public class AppointmentsModel {
         }
 
         /**
-         * Carga una cita especifica segun su ID
+         * Carga una cita específica según su ID
          *
          * @param id del ID de la cita a buscar
-         * @return los datos de la lista o vacío en caso de no encontrar el id especificado
+         * @return los datos de la lista o vacío en caso de no encontrar el id
          */
         public static List<String> cargarCita(String id) {
             List<String> datosCita = new ArrayList<>();
@@ -137,7 +137,7 @@ public class AppointmentsModel {
 
             try (
                     Connection conexion = ConnectionModel.conectar();
-                    PreparedStatement ps = conexion.prepareStatement(sql);
+                    PreparedStatement ps = conexion.prepareStatement(sql)
             ) {
                 // Establece el valor del parametro (id) para la consulta
                 ps.setString(1, id);
@@ -187,7 +187,7 @@ public class AppointmentsModel {
                 ps.setString(5, idDoctor);
                 ps.setBoolean(6, visibilidadCita);
 
-                // Ejecuta la query y guarda el numero de filas afectadas
+                // Ejecuta la query y guarda el número de filas afectadas
                 retorno = ps.executeUpdate();
                 return retorno;
             } catch (SQLException e) {
