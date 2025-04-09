@@ -28,10 +28,10 @@ public class People {
         Scanner scan = new Scanner(System.in);
         String separador = "-";
 
+        // Opciones del menu
         boolean active = true;
         while (active){
-            // Opciones del menu
-            System.out.println("\uD83D\uDC36 Qué haremos hoy?");
+            System.out.println("\uD83E\uDDD1 Qué haremos hoy?");
             System.out.println("1. Listar Personas");
             System.out.println("2. Registrar Persona");
             System.out.println("3. Actualizar Persona");
@@ -42,66 +42,68 @@ public class People {
 
             // Guarda la opcion seleccionada por el usuario
             String choice = scan.nextLine().trim();
-            try{
-                // Se llaman a los metodos correspondientes con base a la opcion seleccionada por el usuario.
-                // Ademas, si se requeiren ciertos parametros, se solicitan al usuario
-                Validations.validarRangoNumeros(choice, 1, 5);
-                switch (Integer.parseInt(choice)){
-                    case 1:
-                        cargarPersonas();
-                        break;
-                    case 2:
-                        registrarPersona();
-                        System.out.println("-".repeat(50));
-                        break;
-                    case 3:
-                        cargarPersonas();
-                        String r = "";
-                        while(true){
-                            System.out.print("Ingrese el número de registro a actualizar: ");
-                            r = scan.nextLine().trim();
-                            try{
-                                Validations.validarNumeros(r);
-                                break;
-                            }catch(FormatException e){
-                                System.out.println(e.getMessage());
-                            }
-                        }
-                        if(r.isEmpty()){
+            if(!choice.isEmpty()){
+                try{
+                    // Se llaman a los metodos correspondientes con base a la opcion seleccionada por el usuario.
+                    // Ademas, si se requeiren ciertos parametros, se solicitan al usuario
+                    Validations.validarRangoNumeros(choice, 1, 5);
+                    switch (Integer.parseInt(choice)){
+                        case 1:
+                            cargarPersonas();
                             break;
-                        }else{
-                            actualizarPersona(Integer.parseInt(r));
+                        case 2:
+                            registrarPersona();
                             System.out.println("-".repeat(50));
                             break;
-                        }
-                    case 4:
-                        cargarPersonas();
-                        String registro = "";
-                        while(true){
-                            System.out.print("Ingrese el número de registro a actualizar: ");
-                            registro = scan.nextLine().trim();
-                            try{
-                                Validations.validarNumeros(registro);
-                                break;
-                            }catch(FormatException e){
-                                System.out.println(e.getMessage());
+                        case 3:
+                            cargarPersonas();
+                            String r = "";
+                            while(true){
+                                System.out.print("Ingrese el número de registro a actualizar: ");
+                                r = scan.nextLine().trim();
+                                try{
+                                    Validations.validarNumeros(r);
+                                    break;
+                                }catch(FormatException e){
+                                    System.out.println(e.getMessage());
+                                }
                             }
-                        }
-                        if(registro.isEmpty()){
+                            if(r.isEmpty()){
+                                break;
+                            }else{
+                                actualizarPersona(Integer.parseInt(r));
+                                System.out.println("-".repeat(50));
+                                break;
+                            }
+                        case 4:
+                            cargarPersonas();
+                            String registro = "";
+                            while(true){
+                                System.out.print("Ingrese el número de registro a actualizar: ");
+                                registro = scan.nextLine().trim();
+                                try{
+                                    Validations.validarNumeros(registro);
+                                    break;
+                                }catch(FormatException e){
+                                    System.out.println(e.getMessage());
+                                }
+                            }
+                            if(registro.isEmpty()){
+                                break;
+                            }else{
+                                eliminarPersona(Integer.parseInt(registro));
+                                System.out.println("-".repeat(50));
+                                break;
+                            }
+                        case 5:
+                            // Vuelve al menu principal
+                            active = false;
+                            System.out.println("Cerrando menú...");
                             break;
-                        }else{
-                            eliminarPersona(Integer.parseInt(registro));
-                            System.out.println("-".repeat(50));
-                            break;
-                        }
-                    case 5:
-                        // Vuelve al menu principal
-                        active = false;
-                        System.out.println("Cerrando menú...");
-                        break;
+                    }
+                }catch (FormatException e){
+                    System.out.println(e.getMessage());
                 }
-            }catch (FormatException e){
-                System.out.println(e.getMessage());
             }
         }
     }
