@@ -177,7 +177,7 @@ public class Pets {
                 break;
             }else{
                 try{
-                    Validations.validarNumeros(input);
+                    Validations.validarDecimales(input);
                     pesoMascota = Double.parseDouble(input);
                     break;
                 }catch(FormatException e){
@@ -403,7 +403,7 @@ public class Pets {
                 break;
             } else {
                 try{
-                    Validations.validarNumeros(input);
+                    Validations.validarDecimales(input);
                     pesoMascota = Double.parseDouble(input);
                     break;
                 }catch(FormatException e){

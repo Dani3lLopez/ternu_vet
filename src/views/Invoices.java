@@ -1,6 +1,8 @@
 package src.views;
 
 import src.controllers.InvoicesController;
+import src.validations.FormatException;
+import src.validations.Validations;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -36,29 +38,43 @@ public class Invoices {
             System.out.println("4. Volver al menú principal");
             System.out.println(separador.repeat(50));
             System.out.print("Seleccione una opción: ");
-            int choice = scan.nextInt();
-
-            switch (choice){
-                case 1:
-                    cargarFacturas();
-                    System.out.println(separador.repeat(70));
-                    break;
-                case 2:
-                    crearFactura();
-                    break;
-                case 3:
-                    cargarFacturas();
-                    System.out.print("Ingrese el número de registro a eliminar: ");
-                    int registro = scan.nextInt();
-                    scan.nextLine();
-                    desactivarFactura(registro);
-                    break;
-                case 4:
-                    active = false;
-                    System.out.println("Cerrando menú...");
-                    break;
-                default:
-                    System.out.println("El valor ingresado no corresponde a una opción de menú");
+            String choice = scan.nextLine().trim();
+            if(!choice.isEmpty()) {
+                try{
+                    Validations.validarRangoNumeros(choice, 1, 4);
+                    switch (Integer.parseInt(choice)){
+                        case 1:
+                            cargarFacturas();
+                            break;
+                        case 2:
+                            crearFactura();
+                            System.out.println(separador.repeat(50));
+                            break;
+                        case 3:
+                            cargarFacturas();
+                            String registro = "";
+                            try{
+                                System.out.print("Ingrese el número de registro a eliminar: ");
+                                registro = scan.nextLine().trim();
+                                Validations.validarNumeros(registro);
+                            }catch (FormatException e){
+                                System.out.println(e.getMessage());
+                            }
+                            if(registro.isEmpty()){
+                                break;
+                            }else{
+                                desactivarFactura(Integer.parseInt(registro));
+                                System.out.println(separador.repeat(50));
+                                break;
+                            }
+                        case 4:
+                            active = false;
+                            System.out.println("Cerrando menú...");
+                            break;
+                    }
+                }catch (FormatException e){
+                    System.out.println(e.getMessage());
+                }
             }
         }
     }
@@ -128,35 +144,38 @@ public class Invoices {
         }
         System.out.println(separador);
         // Solicita que se selecciona a un propietario
-        System.out.print("Seleccione al propietario: ");
-        int valor = scan.nextInt();
-        scan.nextLine();
-
-        if (valor > 0 && valor <= propietarios.size()) {
-            // Asigna el id del propietario seleccionado
-            String idPropietario = propietarios.get(valor - 1).get(0);
-            invoice.setIdPropietario(idPropietario);
-
-            // Establece la fecha y hora de emision de la factura (actuales a la hora de hacerlo)
-            LocalDate fecha = LocalDate.now();
-            LocalTime hora = LocalTime.now();
-            invoice.setFechaEmisionFactura(fecha.toString());
-            invoice.setHoraEmisionFactura(hora.toString());
-
-            // Se establece la visibilidad como activa de la factura
-            boolean visibilidad = true;
-            invoice.setVisibilidadFactura(visibilidad);
-
-            // Llama al controlador para crear la factura
-            int resultado = invoice.crearFactura();
-            if (resultado == 1) {
-                System.out.println("Factura creada con éxito.");
-
-            } else {
-                System.out.println("Ha ocurrido un error al crear la factura.");
+        String valor = "";
+        while(true){
+            System.out.print("Seleccione al propietario *: ");
+            valor = scan.nextLine().trim();
+            try{
+                Validations.validarCampoObligatorio(valor);
+                Validations.validarRangoNumeros(valor, 1, propietarios.size());
+                break;
+            }catch (FormatException e){
+                System.out.println(e.getMessage());
             }
+        }
+        String idPropietario = propietarios.get(Integer.parseInt(valor) - 1).get(0);
+        invoice.setIdPropietario(idPropietario);
+
+        // Establece la fecha y hora de emision de la factura (actuales a la hora de hacerlo)
+        LocalDate fecha = LocalDate.now();
+        LocalTime hora = LocalTime.now();
+        invoice.setFechaEmisionFactura(fecha.toString());
+        invoice.setHoraEmisionFactura(hora.toString());
+
+        // Se establece la visibilidad como activa de la factura
+        boolean visibilidad = true;
+        invoice.setVisibilidadFactura(visibilidad);
+
+        // Llama al controlador para crear la factura
+        int resultado = invoice.crearFactura();
+        if (resultado == 1) {
+            System.out.println("Factura creada con éxito.");
+
         } else {
-            System.out.println("Selección de persona inválida.");
+            System.out.println("Ha ocurrido un error al crear la factura.");
         }
     }
     /*

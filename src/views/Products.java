@@ -168,7 +168,7 @@ public class Products {
             String input = scan.nextLine().trim();
             try{
                 Validations.validarCampoObligatorio(input);
-                Validations.validarNumeros(input);
+                Validations.validarDecimales(input);
                 precioProducto = Double.parseDouble(input);
                 break;
             }catch (FormatException e){
@@ -211,7 +211,7 @@ public class Products {
                 break;
             } else {
                 try{
-                    Validations.validarNumeros(input);
+                    Validations.validarDecimales(input);
                     pesoProducto = Double.parseDouble(input);
                     break;
                 }catch (FormatException e){
@@ -316,7 +316,7 @@ public class Products {
                 break;
             } else {
                 try{
-                    Validations.validarNumeros(input);
+                    Validations.validarDecimales(input);
                     precioProducto = Double.parseDouble(input);
                     break;
                 }catch (FormatException e){
@@ -357,7 +357,7 @@ public class Products {
                 break;
             } else {
                 try{
-                    Validations.validarNumeros(input);
+                    Validations.validarDecimales(input);
                     pesoProducto = Double.parseDouble(input);
                     break;
                 }catch (FormatException e){
