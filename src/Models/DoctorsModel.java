@@ -19,14 +19,20 @@ public class DoctorsModel {
      */
     public static List<List<String>> cargarListaDoctores() {
         List<List<String>> listaDoctores = new ArrayList<>();
+        // Query para obtener los datos de la tabla "doctores"
         String sql = "SELECT * FROM doctores";
 
         try (
+                // Conexion con la base de datos
                 Connection conexion = ConnectionModel.conectar();
                 PreparedStatement ps = conexion.prepareStatement(sql);
+                //Realiza la query y guarda los resultados
                 ResultSet rs = ps.executeQuery()
         ) {
+
+            // Itera cada registro del ResultSet
             while (rs.next()) {
+                // Agrega los campos al la sublista de doctores
                 List<String> doctor = new ArrayList<>();
                 doctor.add(rs.getString("id_doctor"));
                 doctor.add(rs.getString("fecha_contratacion_doctor"));
@@ -34,12 +40,13 @@ public class DoctorsModel {
                 doctor.add(rs.getString("id_persona"));
                 doctor.add(rs.getString("id_especialidad"));
 
+                // Agrega al doctor a la lista general de doctores
                 listaDoctores.add(doctor);
             }
         } catch (SQLException e) {
             System.out.println("Error al leer datos: " + e.getMessage());
         }
-
+        // Lista completa de doctores
         return listaDoctores;
     }
 
@@ -49,9 +56,11 @@ public class DoctorsModel {
      */
     public static List<List<String>> cargarListaEspecialidades() {
         List<List<String>> listaEspecialidades = new ArrayList<>();
+        // Query para obtener las especialidades
         String sql = "SELECT * FROM especialidades";
 
         try (
+                // Se conecta con la base de datos, se realiza la query y se guardan los resultados
                 Connection conexion = ConnectionModel.conectar();
                 PreparedStatement ps = conexion.prepareStatement(sql);
                 ResultSet rs = ps.executeQuery()
@@ -60,7 +69,7 @@ public class DoctorsModel {
                 List<String> especialidad = new ArrayList<>();
                 especialidad.add(rs.getString("id_especialidad"));
                 especialidad.add(rs.getString("nombre_especialidad"));
-
+                // Agrega el registro a la lista
                 listaEspecialidades.add(especialidad);
             }
         } catch (SQLException e) {
@@ -83,7 +92,9 @@ public class DoctorsModel {
                 Connection conexion = ConnectionModel.conectar();
                 PreparedStatement ps = conexion.prepareStatement(sql);
         ) {
+            // Establece el valor del parametro (id) para la consulta
             ps.setString(1, id);
+            // Realzia la consulta y obtiene el resultado
             ResultSet rs = ps.executeQuery();
 
             if (rs.next()) {
@@ -94,9 +105,10 @@ public class DoctorsModel {
                 datosDoctor.add(rs.getString("id_especialidad"));
             }
         } catch (SQLException e) {
+            // Mensaje si ocurre error
             System.out.println("Error al leer datos: " + e.getMessage());
         }
-
+        // Lista con datos del doctor
         return datosDoctor;
     }
 
@@ -110,15 +122,17 @@ public class DoctorsModel {
      */
     public static int ingresarNuevoDoctor(String fechaContratacion, String fechaNacimiento, String idPersona, String idEspecialidad){
         int retorno = 0;
+        // Query para insertar un nuevo registro en la tabla "doctores" de la base de datos
         String sql = "INSERT INTO doctores (fecha_contratacion_doctor, fecha_nacimiento_doctor, id_persona, id_especialidad) VALUES (?,?,?,?)";
         try(
                 Connection conexion = ConnectionModel.conectar();
                 PreparedStatement ps = conexion.prepareStatement(sql)){
+            // Parametros de la query
             ps.setString(1, fechaContratacion);
             ps.setString(2, fechaNacimiento);
             ps.setString(3, idPersona);
             ps.setString(4, idEspecialidad);
-
+            // Ejecuta la query y guarda el numero de filas afectadas
             retorno = ps.executeUpdate();
             return retorno;
         } catch (SQLException e) {
@@ -137,7 +151,9 @@ public class DoctorsModel {
      * @return numero de filas afectadas
      */
     public static int actualizarDoctor(String id, String fechaContratacion, String fechaNacimiento, String idPersona, String idEspecialidad) {
+        // Querry para actualizar los datos del doctor
         String sql = "UPDATE doctores SET fecha_contratacion_doctor=?, fecha_nacimiento_doctor=?, id_persona=?, id_especialidad=? WHERE id_doctor=?";
+        // Manejo de cierre de recursos automatico
         try (Connection conexion = ConnectionModel.conectar();
              PreparedStatement ps = conexion.prepareStatement(sql)) {
             ps.setString(1, fechaContratacion);

@@ -7,9 +7,11 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
+        //Scanner para manejar las opciones ingresadas por el usuario
         Scanner scan = new Scanner(System.in);
         String separador = "-".repeat(50);
 
+        //Se imprime el menú hasta que el usuario eliga una opción válida o ingrese la opción de salir
         boolean active = true;
         while (active) {
             System.out.println(separador);
@@ -34,6 +36,7 @@ public class Main {
             scan.nextLine();
             System.out.println(separador);
 
+            //Dependiendo de su elección se ejecuta el menú de la opción seleccionada
             switch (choice) {
                 case 1:
                     People ppl = new People();
@@ -66,6 +69,7 @@ public class Main {
                 case 8:
                     Products product = new Products();
                     product.productMenu();
+                    break;
                 case 9:
                     Services service = new Services();
                     service.serviceMenu();
@@ -87,6 +91,7 @@ public class Main {
                     invoiceDetail.invoiceDetailMenu();
                     break;
                 default:
+                    //Se cierra el programa
                     active = false;
                     System.out.println("Cerrando el programa...");
                     break;

@@ -22,11 +22,12 @@ public class UsersModel {
         String sql = "SELECT * FROM usuarios";
 
         try (
+                // conecta a la bd y ejecuta una consulta
                 Connection conexion = ConnectionModel.conectar();
                 PreparedStatement ps = conexion.prepareStatement(sql);
-                ResultSet rs = ps.executeQuery()
-        ) {
+                ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
+                // En el bucle, pasa por cada columna y agrega el usuario creado a la lista.
                 List<String> usuario = new ArrayList<>();
                 usuario.add(rs.getString("id_usuario"));
                 usuario.add(rs.getString("nombre_usuario"));
@@ -38,6 +39,7 @@ public class UsersModel {
                 listaUsuarios.add(usuario);
             }
         } catch (SQLException e) {
+            // Si el código anterior falla, muestra estre mensaje de error
             System.out.println("Error al leer datos: " + e.getMessage());
         }
 
@@ -55,8 +57,7 @@ public class UsersModel {
         try (
                 Connection conexion = ConnectionModel.conectar();
                 PreparedStatement ps = conexion.prepareStatement(sql);
-                ResultSet rs = ps.executeQuery()
-        ) {
+                ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
                 List<String> doctor = new ArrayList<>();
                 doctor.add(rs.getString("id_doctor"));
@@ -110,7 +111,7 @@ public class UsersModel {
         String sql = "SELECT COUNT(*) FROM usuarios WHERE nombre_usuario = ?";
 
         try (Connection conexion = ConnectionModel.conectar();
-             PreparedStatement ps = conexion.prepareStatement(sql)) {
+                PreparedStatement ps = conexion.prepareStatement(sql)) {
 
             ps.setString(1, nombreUsuario);
             ResultSet rs = ps.executeQuery();
@@ -120,6 +121,7 @@ public class UsersModel {
             }
 
         } catch (SQLException e) {
+            // Si el usuario no existe, devuelve este mensaje de error
             System.out.println("Error al verificar nombre de usuario: " + e.getMessage());
         }
         return false;
@@ -136,8 +138,7 @@ public class UsersModel {
         try (
                 Connection conexion = ConnectionModel.conectar();
                 PreparedStatement ps = conexion.prepareStatement(sql);
-                ResultSet rs = ps.executeQuery()
-        ) {
+                ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
                 List<String> doctor = new ArrayList<>();
                 doctor.add(rs.getString("id_doctor"));
@@ -163,9 +164,9 @@ public class UsersModel {
     public static int ingresarNuevoUsuario(String nombreUsuario, String claveUsuario, String estadoUsuario, Boolean administrador, String idDoctor){
         int retorno = 0;
         String sql = "INSERT INTO usuarios (nombre_usuario, clave_usuario, estado_usuario, administrador, id_doctor) VALUES (?,?,?,?,?)";
-        try(
+        try (
                 Connection conexion = ConnectionModel.conectar();
-                PreparedStatement ps = conexion.prepareStatement(sql)){
+                PreparedStatement ps = conexion.prepareStatement(sql)) {
             ps.setString(1, nombreUsuario);
             ps.setString(2, claveUsuario);
             ps.setString(3, estadoUsuario);
@@ -193,7 +194,7 @@ public class UsersModel {
     public static int actualizarUsuario(String id, String nombreUsuario, String claveUsuario, String estadoUsuario, int administrador, String idDoctor) {
         String sql = "UPDATE usuarios SET nombre_usuario=?, clave_usuario=?, estado_usuario=?, administrador=?, id_doctor=? WHERE id_usuario=?";
         try (Connection conexion = ConnectionModel.conectar();
-             PreparedStatement ps = conexion.prepareStatement(sql)) {
+                PreparedStatement ps = conexion.prepareStatement(sql)) {
             ps.setString(1, nombreUsuario);
             ps.setString(2, claveUsuario);
             ps.setString(3, estadoUsuario);
@@ -215,7 +216,7 @@ public class UsersModel {
     public static int desactivarUsuario(String id) {
         String sql = "UPDATE usuarios SET estado_usuario = 'Inactivo' WHERE id_usuario=?";
         try (Connection conexion = ConnectionModel.conectar();
-             PreparedStatement ps = conexion.prepareStatement(sql)) {
+                PreparedStatement ps = conexion.prepareStatement(sql)) {
             ps.setString(1, id);
             return ps.executeUpdate();
         } catch (SQLException e) {

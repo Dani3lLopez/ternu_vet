@@ -11,13 +11,16 @@ public class ServicesController {
 
     }
 
+    // Para poder guardar los datos de un servicio, hicimos diferentes atributos
+    // privados
     private String idServicio;
     private String nombreServicio;
     private String descripcionServicio;
     private double precioServicio;
     private boolean visibilidadServicio;
-    private List<List<String>> listaServicios;
+    private List<List<String>> listaServicios; // Lista de listas para toda la información
 
+    // También, hicmos distintos getters y setters para cada atributo creado
     public String getIdServicio() {
         return idServicio;
     }
@@ -58,17 +61,22 @@ public class ServicesController {
         this.visibilidadServicio = visibilidadServicio;
     }
 
+    // Usando el modelo, carga la lista de servicios
     public void cargarListaServicios() {
         listaServicios = ServicesModel.cargarListaServicios();
     }
+
+    // Muestra la lista
     public List<List<String>> getListaServicios() {
         return listaServicios;
     }
 
+    // Con el modelo, registra un nuevo servicio
     public int registrarServicio() {
         return ServicesModel.ingresarServicio(nombreServicio, descripcionServicio, precioServicio);
     }
 
+    // Dado un registro, guarda el ID de un servicio
     public String capturarIdLista(int numero) {
         if (numero > 0 && numero <= listaServicios.size()) {
             return listaServicios.get(numero - 1).get(0);
@@ -76,14 +84,18 @@ public class ServicesController {
         return null;
     }
 
-    public List<String> cargarDatosServicio(int registro){
+    // Dado un registro, carga los datos de un servicio
+    public List<String> cargarDatosServicio(int registro) {
         String id = capturarIdLista(registro);
-        if (id != null){
+        if (id != null) {
             return ServicesModel.cargarServicio(id);
         }
         return new ArrayList<>();
     }
-    public void actualizarServicio(int registro, String nombreServicio, String descripcionServicio, double precioServicio) {
+
+    // Actualiza los datos cambiados de un servicio existente
+    public void actualizarServicio(int registro, String nombreServicio, String descripcionServicio,
+            double precioServicio) {
         String id = capturarIdLista(registro);
         if (id != null) {
             int resultado = ServicesModel.actualizarServicio(id, nombreServicio, descripcionServicio, precioServicio);
@@ -96,7 +108,9 @@ public class ServicesController {
             System.out.println("Registro inexistente.");
         }
     }
-    public void eliminarServicio(int numero){
+
+    // Dado un registo, elimina un servicio
+    public void eliminarServicio(int numero) {
         String id = this.capturarIdLista(numero);
         if (id != null) {
             int resultado = ServicesModel.eliminarServicio(id);

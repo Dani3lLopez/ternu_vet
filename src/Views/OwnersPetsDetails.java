@@ -5,14 +5,22 @@ import src.Controllers.OwnersPetsDetailsController;
 import java.util.List;
 import java.util.Scanner;
 
+/*
+ * Vista de detalles de propietarios con mascotas
+ *  Interactua con el usuario para gestionar el detalles de propietarios con mascotas
+ * Permite listar, registrar, actualizar y eliminar registros
+ * Se comunica con el controlador OwnersPetsDetailsController para realizar las opciones
+ */
 public class OwnersPetsDetails {
     Scanner scan = new Scanner(System.in);
     public OwnersPetsDetailsController detail = new OwnersPetsDetailsController();
 
+    /*
+     * Muestra el menu
+     */
     public void detailMenu() {
         Scanner scan = new Scanner(System.in);
         String separador = "-";
-
         boolean active = true;
         while (active) {
             System.out.println("\uD83D\uDC36 Qué haremos hoy?");
@@ -25,6 +33,7 @@ public class OwnersPetsDetails {
             System.out.print("Seleccione una opción: ");
             int choice = scan.nextInt();
 
+            // Se llama el metodo con base a la seleccion. Si se requieren mas parametros, se solicitan
             switch (choice) {
                 case 1:
                     cargarDetalles();
@@ -57,6 +66,11 @@ public class OwnersPetsDetails {
         }
     }
 
+    /*
+     * Carga y muestra la lista de detalles en formato de tabla
+     * Se obtienen las listas de detalles, mascotas y propietarios a traves del controlador
+     * Se muestra la informacion por columnas
+     */
     public void cargarDetalles() {
         detail.llenarListas();
         List<List<String>> detalles = detail.listaDetalles();
@@ -88,6 +102,13 @@ public class OwnersPetsDetails {
             System.out.println(separador);
         }
     }
+
+    /*
+     * Registra a un nuevo detalle
+     * Muetsra primero la lista de registros disponibles para seleccionar el propietario
+     * Luego, muestra la lista de ciudades para elegir la mascota
+     * Ademas, se guard el tipo de propietario, hay dos: el principal y el secundario
+     */
     public void registrarDetalle() {
         detail.llenarListas();
 
@@ -158,6 +179,11 @@ public class OwnersPetsDetails {
             }
         }
     }
+
+    /*
+     * Actualiza los datos del detalle
+     * Solicita la nueva informacion y actualiza con esos nuevos valores
+     */
     public void actualizarDetalle(int r) {
         String idDetalle = detail.capturarIdLista(r);
         if (idDetalle == null) {
@@ -228,6 +254,10 @@ public class OwnersPetsDetails {
         // Actualizar consulta
         detail.actualizarDetalle(r, nuevoTipoPropietario, nuevoIdMascota, nuevoIdPropietario);
     }
+
+    /*
+     * Elimina un registro de detalle
+     */
     public void eliminarDetalle(int registro) {
         detail.eliminarDetalle(registro);
     }

@@ -19,6 +19,7 @@ public class OwnersPetsDetailsModel {
      */
     public static List<List<String>> cargarListaDetalles() {
         List<List<String>> listaDetalles = new ArrayList<>();
+        // Query para obtener los registros
         String sql = "SELECT * FROM detalle_propietarios_mascotas";
 
         try (
@@ -85,6 +86,7 @@ public class OwnersPetsDetailsModel {
      */
     public static List<List<String>> cargarListaPropietarios() {
         List<List<String>> listaPropietarios = new ArrayList<>();
+        // Query para obtener los registros de los propietarios
         String sql = "SELECT * FROM propietarios";
 
         try (

@@ -11,6 +11,7 @@ public class ProductsController {
 
     }
 
+    // Creamos atributos privados para almacenar los datos de un producto
     private String idProducto;
     private String nombreProducto;
     private String descripcionProducto;
@@ -20,12 +21,13 @@ public class ProductsController {
     private String unidadMedidaProducto;
     private String estadoProducto;
     private String visibilidadProducto;
-    private List<List<String>> listaProductos;
+    private List<List<String>> listaProductos; // Lista de lista para almecenar la información de todos los productos
 
     public String getIdProducto() {
         return idProducto;
     }
 
+    // Getters y setters para cada atributo del producto
     public void setIdProducto(String idProducto) {
         this.idProducto = idProducto;
     }
@@ -94,17 +96,23 @@ public class ProductsController {
         this.visibilidadProducto = visibilidadProducto;
     }
 
+    // Carga la lista de productos
     public void cargarListaProductos() {
         listaProductos = ProductsModel.cargarListaProductos();
     }
+
+    // Devuelve la lista que se cargo previamente
     public List<List<String>> getListaProductos() {
         return listaProductos;
     }
 
+    // Registra un nuevo producto
     public int registrarProducto() {
-        return ProductsModel.ingresarProducto(nombreProducto, descripcionProducto, precioProducto, stockProducto, pesoProducto, unidadMedidaProducto);
+        return ProductsModel.ingresarProducto(nombreProducto, descripcionProducto, precioProducto, stockProducto,
+                pesoProducto, unidadMedidaProducto);
     }
 
+    // Dado un número de registro busca un ID
     public String capturarIdLista(int numero) {
         if (numero > 0 && numero <= listaProductos.size()) {
             return listaProductos.get(numero - 1).get(0);
@@ -112,18 +120,22 @@ public class ProductsController {
         return null;
     }
 
-    public List<String> cargarDatosProducto(int registro){
+    // Dado un número de registro cargo los daatos de un producto específico
+    public List<String> cargarDatosProducto(int registro) {
         String id = capturarIdLista(registro);
-        if (id != null){
-            return ProductsModel.cargarProducto(id);
+        if (id != null) {
+            return ProductsModel.cargarProducto(id); // Si el ID esta vacío, retorna una lista vacía
         }
         return new ArrayList<>();
     }
 
-    public void actualizarProducto(int registro, String nombreProducto, String descripcionProducto, double precioProducto, int stockProducto, double pesoProducto, String unidadMedidaProducto) {
+    // Permite actualizar los cambios realizados
+    public void actualizarProducto(int registro, String nombreProducto, String descripcionProducto,
+            double precioProducto, int stockProducto, double pesoProducto, String unidadMedidaProducto) {
         String id = capturarIdLista(registro);
         if (id != null) {
-            int resultado = ProductsModel.actualizarProducto(id, nombreProducto, descripcionProducto, precioProducto, stockProducto, pesoProducto, unidadMedidaProducto);
+            int resultado = ProductsModel.actualizarProducto(id, nombreProducto, descripcionProducto, precioProducto,
+                    stockProducto, pesoProducto, unidadMedidaProducto);
             if (resultado > 0) {
                 System.out.println("Registro actualizado correctamente.");
             } else {
@@ -134,7 +146,8 @@ public class ProductsController {
         }
     }
 
-    public void eliminarProducto(int numero){
+    // Dado el número de registro, permite eliminar un producto
+    public void eliminarProducto(int numero) {
         String id = this.capturarIdLista(numero);
         if (id != null) {
             int resultado = ProductsModel.eliminarProducto(id);

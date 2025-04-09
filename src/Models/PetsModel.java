@@ -13,6 +13,7 @@ import java.util.List;
  * @version 1.0
  */
 public class PetsModel {
+
     /**
      * Carga todas las mascotas registradas en la base de datos
      * @return una lista de listas con los datos de las mascotas
@@ -22,10 +23,10 @@ public class PetsModel {
         String sql = "SELECT id_mascota, nombre_mascota, color_mascota, peso_mascota, unidad_peso_mascota, genero_mascota, codigo_chip_mascota, estado_reproductivo_mascota, fecha_nacimiento_mascota, talla_mascota, fallecimiento_mascota, razon_fallecimiento FROM mascotas WHERE visibilidad_mascota = 1";
 
         try (
-                Connection conexion = ConnectionModel.conectar();
-                PreparedStatement ps = conexion.prepareStatement(sql);
-                ResultSet rs = ps.executeQuery()
-        ) {
+                Connection conexion = ConnectionModel.conectar(); // conexion a bd
+                PreparedStatement ps = conexion.prepareStatement(sql); // para la preparación de las consultas SQL
+                // Hace la consulta para obtener un resultado
+                ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
                 List<String> mascota = new ArrayList<>();
                 mascota.add(rs.getString("id_mascota"));
@@ -41,12 +42,12 @@ public class PetsModel {
                 mascota.add(rs.getString("fallecimiento_mascota"));
                 mascota.add(rs.getString("razon_fallecimiento"));
 
-                listaMascotas.add(mascota);
+                listaMascotas.add(mascota); // agrega la mascota a la lista
             }
         } catch (SQLException e) {
             System.out.println("Error al leer datos: " + e.getMessage());
         }
-
+        // para devolver la lista de mascotas
         return listaMascotas;
     }
 
@@ -67,27 +68,28 @@ public class PetsModel {
         int retorno = 0;
         String sql;
 
-        if(unidadPesoMascota == null){
+        // construye la consulta dependiendo si el peso es nulo o no
+        if (unidadPesoMascota == null) {
             sql = "INSERT INTO mascotas (nombre_mascota, color_mascota, peso_mascota, genero_mascota, codigo_chip_mascota, estado_reproductivo_mascota, fecha_nacimiento_mascota, talla_mascota) VALUES (?,?,?,?,?,?,?,?)";
-        }else{
+        } else {
             sql = "INSERT INTO mascotas (nombre_mascota, color_mascota, peso_mascota, genero_mascota, codigo_chip_mascota, estado_reproductivo_mascota, fecha_nacimiento_mascota, talla_mascota, unidad_peso_mascota) VALUES (?,?,?,?,?,?,?,?,?)";
         }
-        try(
+        try (
                 Connection conexion = ConnectionModel.conectar();
-                PreparedStatement ps = conexion.prepareStatement(sql)){
-                ps.setString(1, nombreMascota);
-                ps.setString(2, colorMascota);
-                ps.setDouble(3, pesoMascota);
-                ps.setString(4, generoMascota);
-                ps.setString(5, codigoChipMascota);
-                ps.setString(6, estadoReproductivoMascota);
-                ps.setString(7, fechaNacimientoMascota);
-                ps.setString(8, tallaMascota);
+                PreparedStatement ps = conexion.prepareStatement(sql)) {
+            ps.setString(1, nombreMascota);
+            ps.setString(2, colorMascota);
+            ps.setDouble(3, pesoMascota);
+            ps.setString(4, generoMascota);
+            ps.setString(5, codigoChipMascota);
+            ps.setString(6, estadoReproductivoMascota);
+            ps.setString(7, fechaNacimientoMascota);
+            ps.setString(8, tallaMascota);
 
-                if(unidadPesoMascota != null){
-                    ps.setString(9, unidadPesoMascota);
-                }
-
+            if (unidadPesoMascota != null) {
+                ps.setString(9, unidadPesoMascota);
+            }
+            // para obtener el numero de las filas afectadas
             retorno = ps.executeUpdate();
             return retorno;
         } catch (SQLException e) {
@@ -152,7 +154,7 @@ public class PetsModel {
     public static int actualizarMascota(String id, String nombreMascota, String colorMascota, double pesoMascota, String unidadPesoMascota, String generoMascota, String codigoChipMascota, String estadoReproductivoMascota, String fechaNacimientoMascota, String tallaMascota, boolean fallecimiento_mascota, String razon_fallecimiento) {
         String sql = "UPDATE mascotas SET nombre_mascota=?, color_mascota=?, peso_mascota=?, unidad_peso_mascota=?, genero_mascota=?, codigo_chip_mascota=?, estado_reproductivo_mascota=?, fecha_nacimiento_mascota=?, talla_mascota=?, fallecimiento_mascota=?, razon_fallecimiento=? WHERE id_mascota=?";
         try (Connection conexion = ConnectionModel.conectar();
-             PreparedStatement ps = conexion.prepareStatement(sql)) {
+                PreparedStatement ps = conexion.prepareStatement(sql)) {
             ps.setString(1, nombreMascota);
             ps.setString(2, colorMascota);
             ps.setDouble(3, pesoMascota);
@@ -180,7 +182,7 @@ public class PetsModel {
     public static int eliminarMascota(String id) {
         String sql = "UPDATE mascotas SET visibilidad_mascota = false WHERE id_mascota=?";
         try (Connection conexion = ConnectionModel.conectar();
-             PreparedStatement ps = conexion.prepareStatement(sql)) {
+                PreparedStatement ps = conexion.prepareStatement(sql)) {
             ps.setString(1, id);
             return ps.executeUpdate();
         } catch (SQLException e) {

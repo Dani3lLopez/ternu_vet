@@ -19,13 +19,16 @@ public class InvoicesModel {
      */
     public static List<List<String>> cargarListaFacturas() {
         List<List<String>> listaFacturas = new ArrayList<>();
+        // Query para obtener los datos de la tabla "facturas"
         String sql = "SELECT * FROM facturas WHERE visibilidad_factura = 1";
 
         try (
+                // Se conecta con la base de datos, se realiza la query y se guardan los resultados
                 Connection conexion = ConnectionModel.conectar();
                 PreparedStatement ps = conexion.prepareStatement(sql);
                 ResultSet rs = ps.executeQuery()
         ) {
+            // Itera cada registro
             while (rs.next()) {
                 List<String> factura = new ArrayList<>();
                 factura.add(rs.getString("numero_factura"));
@@ -34,6 +37,7 @@ public class InvoicesModel {
                 factura.add(rs.getString("id_propietario"));
                 factura.add(rs.getString("visibilidad_factura"));
 
+                // Agrega la factura a la lsita de facturas
                 listaFacturas.add(factura);
             }
         } catch (SQLException e) {
@@ -49,14 +53,17 @@ public class InvoicesModel {
      */
     public static List<List<String>> cargarListaPropietarios() {
         List<List<String>> listaFacturas = new ArrayList<>();
+        // Query para obtener propietarios activos
         String sql = "SELECT * FROM propietarios WHERE visibilidad_propietario = 1";
 
         try (
+                // Se conecta con la base de datos, se realiza la query y se guardan los resultados
                 Connection conexion = ConnectionModel.conectar();
                 PreparedStatement ps = conexion.prepareStatement(sql);
                 ResultSet rs = ps.executeQuery()
         ) {
             while (rs.next()) {
+
                 List<String> factura = new ArrayList<>();
                 factura.add(rs.getString("id_propietario"));
                 factura.add(rs.getString("id_persona"));
@@ -64,6 +71,7 @@ public class InvoicesModel {
                 factura.add(rs.getString("direccion"));
                 factura.add(rs.getString("visibilidad_propietario"));
 
+                // Agrega el registro a la lista
                 listaFacturas.add(factura);
             }
         } catch (SQLException e) {
@@ -83,6 +91,7 @@ public class InvoicesModel {
      */
     public static int crearNuevaFactura(String fechaEmision, String horaEmision, String idPropietario, Boolean visibilidadFactura){
         int retorno = 0;
+        // Query para insertar una nueva factura
         String sql = "INSERT INTO facturas (fecha_emision_factura, hora_emision_factura, id_propietario, visibilidad_factura) VALUES (?,?,?,?)";
         try(
                 Connection conexion = ConnectionModel.conectar();

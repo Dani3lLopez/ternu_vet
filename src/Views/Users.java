@@ -9,11 +9,14 @@ public class Users {
     Scanner scan = new Scanner(System.in);
     public UsersController user = new UsersController();
 
+    // Hicimos un método principal para el menú de usuarios
     public void userMenu() {
         Scanner scan = new Scanner(System.in);
         String separador = "-";
 
         boolean active = true;
+
+        // Bucle que contiene todas las funciones y opciones principales del menú
         while (active) {
             System.out.println("\uD83D\uDC64 Qué haremos hoy?");
             System.out.println("1. Listar Usuarios");
@@ -27,24 +30,36 @@ public class Users {
 
             switch (choice) {
                 case 1:
+
+                    // Carga los usuarios
                     cargarUsuarios();
                     System.out.println(separador.repeat(70));
                     break;
                 case 2:
+
+                    // Registra al usuario nuevo
                     registrarUsuarios();
                     break;
                 case 3:
+
+                    // Carga los usuarios y solicita el número de registro que se quiere actualizar
                     cargarUsuarios();
                     System.out.print("Ingrese el número de registro a actualizar: ");
                     int r = scan.nextInt();
                     scan.nextLine();
+
+                    // Actualiza el usuario
                     actualizarUsuario(r);
                     break;
                 case 4:
+
+                    // Carga los usuarios y pide el número de registro que se quiere desactivar
                     cargarUsuarios();
                     System.out.print("Ingrese el número de registro que desea desactivar: ");
                     int registro = scan.nextInt();
                     scan.nextLine();
+
+                    // Desactiva el usuario
                     desactivarUsuario(registro);
                     break;
                 case 5:
@@ -57,6 +72,7 @@ public class Users {
         }
     }
 
+    // Hicimos otro método para cargar y mostrar la lista de usuarios
     public void cargarUsuarios() {
         user.llenarListas();
         List<List<String>> usuarios = user.listaUsuarios();
@@ -75,20 +91,26 @@ public class Users {
                 String idDoctor = usuario.get(5);
                 String idPersonaDoctor = "";
 
+                // Dado el usuario, busca el doctor
                 for (List<String> doctor : user.listaDoctores()) {
                     if (doctor.get(0).equalsIgnoreCase(idDoctor)) {
                         idPersonaDoctor = doctor.get(1);
                         break;
                     }
                 }
+
+                // Obtiene el nombre del doctor
                 String doctorNombre = user.capturarNombres(idPersonaDoctor);
 
+                // Imprime la fila correspondiente
                 System.out.printf("| %-5d | %-20s | %-20s | %-20s|\n", n, nombre, estado, doctorNombre);
                 n++;
             }
             System.out.println(separador);
         }
     }
+
+    // Creamos un método para registrar los nuevos usuarios
     public void registrarUsuarios() {
         user.llenarListas();
 
@@ -97,8 +119,10 @@ public class Users {
         System.out.printf("| %-5s | %-50s |\n", "No.", "Doctor");
         System.out.println(separador);
 
+        // Obtiene la lista de doctores sin usuario
         List<List<String>> doctores = user.listaDoctoresSinUsuario();
 
+        // Se asegura que todos los doctores tengan usuario
         if (doctores.isEmpty()) {
             System.out.println("Todos los doctores poseen un usuario.");
             System.out.println(separador);
@@ -106,6 +130,7 @@ public class Users {
             return;
         }
 
+        // Muestra los doctores que no tienen usuairo
         int r = 1;
         for (List<String> doctor : doctores) {
             String idp = doctor.get(1);
@@ -116,10 +141,12 @@ public class Users {
         }
         System.out.println(separador);
 
+        // Solicita que se seleccione un doctor
         System.out.print("Seleccione al usuario: ");
         int valor = scan.nextInt();
         scan.nextLine();
 
+        // Comprueba que lo ingresado sea válido
         if (valor > 0 && valor <= doctores.size()) {
             String idDoctor = doctores.get(valor - 1).get(0);
             user.setIdDoctor(idDoctor);
@@ -137,6 +164,7 @@ public class Users {
             String estado = "Activo";
             user.setEstadoUsuario(estado);
 
+            // Evalua si el usuario es administrador o no
             List<List<String>> usuarios = user.listaUsuarios();
             boolean admin = usuarios.isEmpty();
             user.setAdministrador(admin);
@@ -153,6 +181,8 @@ public class Users {
             System.out.println("Selección de persona inválida.");
         }
     }
+
+    // Hicimos otro método para poder actualizar un usuario existente
     public void actualizarUsuario(int r) {
         String idUsuario = user.capturarIdListaUsuario(r);
         if (idUsuario == null) {
@@ -160,12 +190,14 @@ public class Users {
             return;
         }
 
+        // Carga la información del usuario
         List<String> usuario = user.cargarDatosUsuario(r);
         if (usuario.isEmpty()) {
             System.out.println("No se encontró el registro especificado");
             return;
         }
 
+        // Ontiene la información actual
         String nombreUsuarioActual = usuario.get(1);
         String claveUsuarioActual = usuario.get(2);
         String idDoctorActual = usuario.get(5);
@@ -189,8 +221,11 @@ public class Users {
         System.out.print("Estado (Activo/Inactivo): ");
         String estado = scan.nextLine();
 
+        // Actualiza la informaxión cambiada
         user.actualizarUsuario(r, nuevoNombreUsuario, nuevaClaveUsuario, estado, administrador, idDoctorActual);
     }
+
+    // Y por último otro método para desactivar el usuario
     public void desactivarUsuario(int registro) {
         user.desactivarUsuario(registro);
     }

@@ -16,7 +16,10 @@ public class ConnectionModel {
      * @return una instancia de Connection
      * @throws SQLException si ocurre algún tipo de error al intentar conectarse a la base
      */
+public class ConnectionModel {
+
     public static Connection conectar() throws SQLException{
+        // URL, usuario y contraseña de conexion a la base de datos
         String url = "jdbc:mariadb://localhost:3306/db_vet_ternurita";
         String user = "root";
         String pass = "1234";
@@ -27,6 +30,7 @@ public class ConnectionModel {
         } catch (ClassNotFoundException e) {
             System.out.println("No se pudo cargar el jdbc: " + e.getMessage());
         }
+
         //Retorna la conexion a la base de datos
         return DriverManager.getConnection(url, user, pass);
     }

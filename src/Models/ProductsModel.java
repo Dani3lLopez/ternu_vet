@@ -24,8 +24,7 @@ public class ProductsModel {
         try (
                 Connection conexion = ConnectionModel.conectar();
                 PreparedStatement ps = conexion.prepareStatement(sql);
-                ResultSet rs = ps.executeQuery()
-        ) {
+                ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
                 List<String> producto = new ArrayList<>();
                 producto.add(rs.getString("id_producto"));
@@ -57,23 +56,24 @@ public class ProductsModel {
      * @return numero de filas afectadas
      */
     public static int ingresarProducto(String nombreProducto, String descripcionProducto, double precioProducto, int stockProducto, double pesoProducto, String unidadMedidaProducto) {
+
         int retorno = 0;
 
         String sql;
-        if(unidadMedidaProducto == null){
+        if (unidadMedidaProducto == null) {
             sql = "INSERT INTO productos (nombre_producto, descripcion_producto, precio_producto, stock_producto, peso_producto) VALUES (?,?,?,?,?)";
-        }else{
+        } else {
             sql = "INSERT INTO productos (nombre_producto, descripcion_producto, precio_producto, stock_producto, peso_producto, unidad_medida_producto) VALUES (?,?,?,?,?,?)";
         }
-        try(
-            Connection conexion = ConnectionModel.conectar();
-            PreparedStatement ps = conexion.prepareStatement(sql)){
+        try (
+                Connection conexion = ConnectionModel.conectar();
+                PreparedStatement ps = conexion.prepareStatement(sql)) {
             ps.setString(1, nombreProducto);
             ps.setString(2, descripcionProducto);
             ps.setDouble(3, precioProducto);
             ps.setInt(4, stockProducto);
             ps.setDouble(5, pesoProducto);
-            if(unidadMedidaProducto != null){
+            if (unidadMedidaProducto != null) {
                 ps.setString(6, unidadMedidaProducto);
             }
             retorno = ps.executeUpdate();
@@ -95,8 +95,7 @@ public class ProductsModel {
 
         try (
                 Connection conexion = ConnectionModel.conectar();
-                PreparedStatement ps = conexion.prepareStatement(sql);
-        ) {
+                PreparedStatement ps = conexion.prepareStatement(sql);) {
             ps.setString(1, id);
             ResultSet rs = ps.executeQuery();
 
@@ -132,7 +131,7 @@ public class ProductsModel {
     public static int actualizarProducto(String id, String nombreProducto, String descripcionProducto, double precioProducto, int stockProducto, double pesoProducto, String unidadMedidaProducto) {
         String sql = "UPDATE productos SET nombre_producto=?, descripcion_producto=?, precio_producto=?, stock_producto=?, peso_producto=?, unidad_medida_producto=? WHERE id_producto=?";
         try (Connection conexion = ConnectionModel.conectar();
-             PreparedStatement ps = conexion.prepareStatement(sql)) {
+                PreparedStatement ps = conexion.prepareStatement(sql)) {
             ps.setString(1, nombreProducto);
             ps.setString(2, descripcionProducto);
             ps.setDouble(3, precioProducto);
@@ -155,7 +154,7 @@ public class ProductsModel {
     public static int eliminarProducto(String id) {
         String sql = "UPDATE productos SET visibilidad_producto=0 WHERE id_producto=?";
         try (Connection conexion = ConnectionModel.conectar();
-             PreparedStatement ps = conexion.prepareStatement(sql)) {
+                PreparedStatement ps = conexion.prepareStatement(sql)) {
             ps.setString(1, id);
             return ps.executeUpdate();
         } catch (SQLException e) {

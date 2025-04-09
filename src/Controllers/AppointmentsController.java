@@ -5,15 +5,22 @@ import src.Models.AppointmentsModel;
 import java.util.ArrayList;
 import java.util.List;
 
+/*
+ * Controlador para la entidad de citas
+ * Extiende las funcionalidades del controlador de doctores (DoctorsController)
+ * Interactua con AppointmentsModel para gestionar citas, mascotas y doctores
+ */
 public class AppointmentsController extends DoctorsController {
-
+    /*
+     * Constructor para inicializar las listas de citas, mascotas y doctores
+     */
     public AppointmentsController() {
         super();
         listaCitas = new ArrayList<>();
         listaMascotas = new ArrayList<>();
         listaDoctores = new ArrayList<>();
     }
-
+    // Atributos especificos para las citas
     private String idCita;
     private String motivoCita;
     private String fechaCita;
@@ -21,10 +28,12 @@ public class AppointmentsController extends DoctorsController {
     private String idMascota;
     private String idDoctor;
     private Boolean visibilidadCita;
+    //Listas para almacenar los registros de las citas, mascotas y doctores
     private List<List<String>> listaCitas;
     private List<List<String>> listaMascotas;
     private List<List<String>> listaDoctores;
 
+    // Getters y setters
     public String getIdCita() {
         return idCita;
     }
@@ -81,18 +90,30 @@ public class AppointmentsController extends DoctorsController {
         this.visibilidadCita = visibilidadCita;
     }
 
+    /*
+     * Retorna la lista de citas
+     */
     public List<List<String>> listaCitas() {
         return listaCitas;
     }
 
+    /*
+     * Retorna la lista de mascotas
+     */
     public List<List<String>> listaMascotas() {
         return listaMascotas;
     }
 
+    /*
+     * Retorna la lista de doctores
+     */
     public List<List<String>> listaDoctores() {
         return listaDoctores;
     }
 
+    /*
+     * Llena las listas de citas, mascotas y doctores, y carga la lista de las personas
+     */
     public void llenarListas(){
         listaCitas = AppointmentsModel.cargarListaCitas();
         listaMascotas = AppointmentsModel.cargarListaMascotas();
@@ -100,13 +121,22 @@ public class AppointmentsController extends DoctorsController {
         cargarListaPersonas();
     }
 
+    /*
+     * Captura el id de la cita a partir de su posicion en la lista
+     * El parametro es el numero indice en la lista
+     * Retorna el id si existe, o null en caso que no
+     */
     public String capturarIdLista(int numero) {
         if (numero > 0 && numero <= listaCitas.size()) {
             return listaCitas.get(numero - 1).get(0);
         }
         return null;
     }
-
+    /*
+     * Captura el id de la mascota con base a su posicion en la lista
+     * El parametro es el numero indice en la lista de mascotas
+     * Retorna el id de la mascota o null si no
+     */
     public String capturarIdListaMascotas(int numero) {
         if (numero > 0 && numero <= listaMascotas.size()) {
             return listaMascotas.get(numero - 1).get(0);
@@ -114,6 +144,11 @@ public class AppointmentsController extends DoctorsController {
         return null;
     }
 
+    /*
+     * Captura el id del doctor con base a su posicion en la lista
+     * El parametro es el numero indice en la lista de doctores
+     * Retorna el id del doctor o null si no
+     */
     public String capturarIdListaDoctores(int numero) {
         if (numero > 0 && numero <= listaDoctores.size()) {
             return listaDoctores.get(numero - 1).get(0);
@@ -121,6 +156,11 @@ public class AppointmentsController extends DoctorsController {
         return null;
     }
 
+    /*
+     * Captura el nombre completo del doctor asociado a un id de persona
+     * El parametro es el id de la persona
+     * Retorna el nombre completo, o "Desconocido" si no se encuentra
+     */
     public String capturarNombresDoctores(String idPersona) {
         for (List<String> doctor : listaDoctores()) {
             if (doctor.get(3).trim().equalsIgnoreCase(idPersona.trim())) {
@@ -134,6 +174,11 @@ public class AppointmentsController extends DoctorsController {
         return "Desconocido";
     }
 
+    /*
+     * Captura el nombre de la mascota con base al id
+     * El parametro es el id de la mascota
+     * Retorna el nombre de la mascota, o "No encontrada" si no se encuentra
+     */
     public String capturarMascotas(String idMascota){
         for (List<String> mascota : listaMascotas()) {
             if (mascota.get(0).trim().equalsIgnoreCase(idMascota)) {
@@ -143,10 +188,19 @@ public class AppointmentsController extends DoctorsController {
         return "No encontrada";
     }
 
+    /*
+     * Registra una nueva cita en la base de datos con los atributos actuales
+     * Retorna el numero de filas afectadas
+     */
     public int registrarCita() {
         return AppointmentsModel.ingresarNuevaCita(motivoCita, fechaCita, horaCita, idMascota, idDoctor, visibilidadCita);
     }
 
+    /*
+     * Carga los datos de una cita especifica con base a su posicion en la lista
+     * El parametro es el registro indice en la lista
+     * Retorna la lista con los datos de la cita, o lista vacia si no se encuentra
+     */
     public List<String> cargarDatosCita(int registro){
         String id = capturarIdLista(registro);
         if (id != null){
@@ -155,6 +209,9 @@ public class AppointmentsController extends DoctorsController {
         return new ArrayList<>();
     }
 
+    /*
+     * Actualiza los datos de una cita
+     */
     public void actualizarCita(int registro, String motivoCita, String fechaCita, String horaCita, String idMascota, String idDoctor, Boolean visibilidadCita) {
         String id = capturarIdLista(registro);
         if (id != null) {
@@ -169,6 +226,9 @@ public class AppointmentsController extends DoctorsController {
         }
     }
 
+    /*
+     * Desactiva una cita con base a su posicion en la lista (eliminar)
+     */
     public void desactivarCita(int numero){
         String id = this.capturarIdLista(numero);
         if (id != null) {

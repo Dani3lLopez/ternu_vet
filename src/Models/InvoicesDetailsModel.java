@@ -127,7 +127,7 @@ public class InvoicesDetailsModel {
 
         return listaNombresItems;
     }
-
+  
     /**
      * Carga el detalle de una factura especificado por su id
      * @param id del registro del detalle en la base de datos

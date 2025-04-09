@@ -19,13 +19,16 @@ public class OwnersModel {
      */
     public static List<List<String>> cargarListaPropietarios() {
         List<List<String>> listaPropietarios = new ArrayList<>();
+        // Querry parar obtener los propetiarios activos
         String sql = "SELECT * FROM propietarios WHERE visibilidad_propietario = 1";
 
         try (
+                // Hace la conexion y ejecuta la query
                 Connection conexion = ConnectionModel.conectar();
                 PreparedStatement ps = conexion.prepareStatement(sql);
                 ResultSet rs = ps.executeQuery()
         ) {
+            // Itera cada registro obtenido
             while (rs.next()) {
                 List<String> propietario = new ArrayList<>();
                 propietario.add(rs.getString("id_propietario"));
@@ -34,6 +37,7 @@ public class OwnersModel {
                 propietario.add(rs.getString("direccion"));
                 propietario.add(rs.getString("visibilidad_propietario"));
 
+                // Agrega el registro a la lista de propietarios
                 listaPropietarios.add(propietario);
             }
         } catch (SQLException e) {
@@ -49,6 +53,7 @@ public class OwnersModel {
      */
     public static List<List<String>> cargarListaCiudades() {
         List<List<String>> listaCiudades = new ArrayList<>();
+        // Query para obtener todas las ciudades
         String sql = "SELECT * FROM ciudades";
 
         try (
@@ -100,7 +105,7 @@ public class OwnersModel {
 
         return datosPropietario;
     }
-
+  
     /**
      * Registra un nuevo propietario en la base de datos
      * @param idPersona id de la persona propietario
