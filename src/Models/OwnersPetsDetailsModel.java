@@ -7,16 +7,15 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-/*
- * Modelo de detalle de propietarios con mascotas
- * Este modelo contiene métodos para cargar listas de registros de detalle, mascotas y propietarios desde
- * la base de datos con la tabla "detalle_propietarios_mascotas y las tablas relacionadas
+/**
+ * OwnersPetsDetailsModel: Clase que gestiona todos los procesos relacionados con los detalles de propietarios y sus mascotas
+ * @author TernuVet-DevTeam
+ * @version 1.0
  */
 public class OwnersPetsDetailsModel {
-
-    /*
-     * Carga la lista de detalles de propietarios con mascotas
-     * Retorna una lista de listas. Cada sublista contiene datos de un registro en la tabla dicha
+    /**
+     * Carga todos los detalles de propietarios y sus mascotas
+     * @return una lista de listas con los detalles de los propietarios y sus mascotas
      */
     public static List<List<String>> cargarListaDetalles() {
         List<List<String>> listaDetalles = new ArrayList<>();
@@ -43,9 +42,10 @@ public class OwnersPetsDetailsModel {
 
         return listaDetalles;
     }
-    /*
-     * Carga la lista de mascotas activas
-     * Retorna una lista de listas. Cada sublista con datos de las mascotas con visibilidad activa
+
+    /**
+     * Carga todas las mascotas registradas en la base de datos
+     * @return una lista de listas con los datos de las mascotas
      */
     public static List<List<String>> cargarListaMascotas() {
         List<List<String>> listaMascotas = new ArrayList<>();
@@ -80,9 +80,9 @@ public class OwnersPetsDetailsModel {
         return listaMascotas;
     }
 
-    /*
-     * Carga la lista de propietarios
-     * Retorna una lista de listas. Cada sublista contiene datos de un propietario
+    /**
+     * Carga todos los propietarios registrados en la base de datos
+     * @return una lista de listas con los datos de los propietarios
      */
     public static List<List<String>> cargarListaPropietarios() {
         List<List<String>> listaPropietarios = new ArrayList<>();
@@ -111,6 +111,11 @@ public class OwnersPetsDetailsModel {
         return listaPropietarios;
     }
 
+    /**
+     * Carga un detalle de propietario y su mascota especifico segun su id
+     * @param id id del detalle
+     * @return los datos del detalle especificado o vacio en caso de no encontrar el registro
+     */
     public static List<String> cargarDetalle(String id){
         List<String> datosDetalle = new ArrayList<>();
         String sql = "SELECT * FROM detalle_propietarios_mascotas WHERE id_detalle_propietario_mascota = ?";
@@ -134,6 +139,14 @@ public class OwnersPetsDetailsModel {
 
         return datosDetalle;
     }
+
+    /**
+     * Registra un nuevo detalle en la base de datos
+     * @param tipoPropietario tipo de propietario
+     * @param idMascota id de la mascota perteneciente al propietario
+     * @param idPropietario id del propietario registrado
+     * @return numero de filas afectadas
+     */
     public static int ingresarNuevoDetalle(String tipoPropietario, String idMascota, String idPropietario){
         int retorno = 0;
         String sql = "INSERT INTO detalle_propietarios_mascotas (tipo_propietario, id_mascota, id_propietario) VALUES (?,?,?)";
@@ -151,6 +164,15 @@ public class OwnersPetsDetailsModel {
             return retorno;
         }
     }
+
+    /**
+     * Actualiza un detalle existente
+     * @param id id del detalle de propietario y su mascota
+     * @param tipoPropietario nuevo tipo de propietario
+     * @param idMascota nueva mascota
+     * @param idPropietario nuevo propietario
+     * @return numero de filas afectadas
+     */
     public static int actualizarDetalle(String id, String tipoPropietario, String idMascota, String idPropietario) {
         String sql = "UPDATE detalle_propietarios_mascotas SET tipo_propietario=?, id_mascota=?, id_propietario=? WHERE id_detalle_propietario_mascota=?";
         try (Connection conexion = ConnectionModel.conectar();
@@ -165,6 +187,12 @@ public class OwnersPetsDetailsModel {
         }
         return 0;
     }
+
+    /**
+     * Elimina un detalle especifico segun su id
+     * @param id del detalle que se eliminará
+     * @return numero de filas afectadas
+     */
     public static int eliminarDetalle(String id) {
         String sql = "DELETE FROM detalle_propietarios_mascotas WHERE id_detalle_propietario_mascota=?";
         try (Connection conexion = ConnectionModel.conectar();

@@ -7,16 +7,15 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-/*
- * Modelo de doctores: maneja las operaciones CRUD en la base de datos
- * Este modelo contiene métodos para cargar, crear y actualizar registros de doctores
- * sobre la tabla "doctores" de la base de datos
+/**
+ * DoctorsModel: Clase que gestiona todos los procesos relacionados con los doctores
+ * @author TernuVet-DevTeam
+ * @version 1.0
  */
 public class DoctorsModel {
-
-    /*
-     * Carga la lista de los doctores registrados en la base de datos
-     * Retorna una lista de listas. Cada sublista contiene los datos de un doctor
+    /**
+     * Carga una lista con todos los doctores registrados en la base de datos
+     * @return una lista de listas de los doctores
      */
     public static List<List<String>> cargarListaDoctores() {
         List<List<String>> listaDoctores = new ArrayList<>();
@@ -51,9 +50,9 @@ public class DoctorsModel {
         return listaDoctores;
     }
 
-    /*
-     * Carga la lista de las especialidades en la base de datos
-     * Retorna una lista de listas. Cada sublista son los datos de cada especialidad
+    /**
+     * Carga una lista con todas las especialidades disponibles para los doctores
+     * @return una lista de listas de las especialidades disponibles
      */
     public static List<List<String>> cargarListaEspecialidades() {
         List<List<String>> listaEspecialidades = new ArrayList<>();
@@ -80,10 +79,10 @@ public class DoctorsModel {
         return listaEspecialidades;
     }
 
-    /*
-     * Carga los datos de un doctor con base a su id
-     * El parametro id es el identificador del doctor
-     * Retorna una lista con los datos del doctor
+    /**
+     * Carga una lista con los datos de un doctor especifico segun su id
+     * @param id id del doctor
+     * @return una lista con los datos del doctor especificado segun su id
      */
     public static List<String> cargarDoctor(String id){
         List<String> datosDoctor = new ArrayList<>();
@@ -113,9 +112,13 @@ public class DoctorsModel {
         return datosDoctor;
     }
 
-    /*
-     * Inserta un nuevo doctor a la base de datos
-     * Retorna el numero de filas afectadas al realizar la query. Se espera 1 si sí se insertó
+    /**
+     * Registra nuevos doctores en la base de datos
+     * @param fechaContratacion fecha de contratacion del doctor
+     * @param fechaNacimiento fecha de nacimiento del doctor
+     * @param idPersona id de la persona registrada en la base de datos
+     * @param idEspecialidad id de la especialidad que posee el doctor
+     * @return numero de filas afectadas
      */
     public static int ingresarNuevoDoctor(String fechaContratacion, String fechaNacimiento, String idPersona, String idEspecialidad){
         int retorno = 0;
@@ -138,9 +141,14 @@ public class DoctorsModel {
         }
     }
 
-    /*
-     * Actualiza los datos de un doctor de la base de datos
-     * Retorna el numero de filas afectas
+    /**
+     * Actualiza el registro de un doctor especificado por su id
+     * @param id id del registro del doctor
+     * @param fechaContratacion nueva fecha de contratacion
+     * @param fechaNacimiento nueva fecha de nacimiento
+     * @param idPersona nuevo id de persona
+     * @param idEspecialidad nueva especialidad para el doctor
+     * @return numero de filas afectadas
      */
     public static int actualizarDoctor(String id, String fechaContratacion, String fechaNacimiento, String idPersona, String idEspecialidad) {
         // Querry para actualizar los datos del doctor

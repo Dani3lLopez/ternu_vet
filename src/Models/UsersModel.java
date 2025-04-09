@@ -7,8 +7,16 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-// Para obtener lista de los usuarios
+/**
+ * UsersModel: Clase que gestiona todos los procesos relacionados con los usuarios
+ * @author TernuVet-DevTeam
+ * @version 1.0
+ */
 public class UsersModel {
+    /**
+     * Carga todos los usuarios registrados en la base de datos
+     * @return una lista de listas con todos los usuarios registrados en la base de datos
+     */
     public static List<List<String>> cargarListaUsuarios() {
         List<List<String>> listaUsuarios = new ArrayList<>();
         String sql = "SELECT * FROM usuarios";
@@ -38,7 +46,10 @@ public class UsersModel {
         return listaUsuarios;
     }
 
-    // Muestra la lista de los doctores
+    /**
+     * Carga todos los doctores registrados en la base de datos
+     * @return una lista de listas con los doctores
+     */
     public static List<List<String>> cargarListaDoctores() {
         List<List<String>> listaDoctores = new ArrayList<>();
         String sql = "SELECT * FROM doctores";
@@ -60,14 +71,19 @@ public class UsersModel {
         return listaDoctores;
     }
 
-    // Método para mostrar los datos de un usuario dado un ID
-    public static List<String> cargarUsuario(String id) {
+    /**
+     * Carga los datos de un usuario según su id
+     * @param id id del usuario
+     * @return los datos del usuario
+     */
+    public static List<String> cargarUsuario(String id){
         List<String> datosUsuario = new ArrayList<>();
         String sql = "SELECT * FROM usuarios WHERE id_usuario = ?";
 
         try (
                 Connection conexion = ConnectionModel.conectar();
-                PreparedStatement ps = conexion.prepareStatement(sql);) {
+                PreparedStatement ps = conexion.prepareStatement(sql)
+        ) {
             ps.setString(1, id);
             ResultSet rs = ps.executeQuery();
 
@@ -86,7 +102,11 @@ public class UsersModel {
         return datosUsuario;
     }
 
-    // Verifica que un usuario existe
+    /**
+     * Verifica la existencia de un usuario en la base de datos
+     * @param nombreUsuario nombre de usuario del usuario
+     * @return numero de coincidencias encontradas
+     */
     public static boolean existenciaUsuario(String nombreUsuario) {
         String sql = "SELECT COUNT(*) FROM usuarios WHERE nombre_usuario = ?";
 
@@ -107,7 +127,10 @@ public class UsersModel {
         return false;
     }
 
-    // Mostrar los doctores sin un usuario
+    /**
+     * Carga todos los doctores que no poseen un usuario
+     * @return una lista de listas con los doctores que no poseen un usuario
+     */
     public static List<List<String>> cargarDoctoresSinUsuario() {
         List<List<String>> listaDoctores = new ArrayList<>();
         String sql = "SELECT id_doctor, id_persona FROM doctores WHERE id_doctor NOT IN (SELECT id_doctor FROM usuarios)";
@@ -129,9 +152,16 @@ public class UsersModel {
         return listaDoctores;
     }
 
-    // Agregar un usuario nuevo
-    public static int ingresarNuevoUsuario(String nombreUsuario, String claveUsuario, String estadoUsuario,
-            Boolean administrador, String idDoctor) {
+    /**
+     * Registra un nuevo usuario
+     * @param nombreUsuario nombre de usuario
+     * @param claveUsuario clave de usuario
+     * @param estadoUsuario estado del usuario
+     * @param administrador es administrador? (true, false)
+     * @param idDoctor id del doctor
+     * @return numero de filas afectadas
+     */
+    public static int ingresarNuevoUsuario(String nombreUsuario, String claveUsuario, String estadoUsuario, Boolean administrador, String idDoctor){
         int retorno = 0;
         String sql = "INSERT INTO usuarios (nombre_usuario, clave_usuario, estado_usuario, administrador, id_doctor) VALUES (?,?,?,?,?)";
         try (
@@ -151,9 +181,17 @@ public class UsersModel {
         }
     }
 
-    // Permite actualizar los datos de un usuario
-    public static int actualizarUsuario(String id, String nombreUsuario, String claveUsuario, String estadoUsuario,
-            int administrador, String idDoctor) {
+    /**
+     * Actualiza los datos de un usuario existente
+     * @param id id del usuario
+     * @param nombreUsuario nuevo nombre de usuario
+     * @param claveUsuario nueva clave de usuario
+     * @param estadoUsuario nuevo estado
+     * @param administrador administrador? (true, false)
+     * @param idDoctor nuevo id del doctor
+     * @return numero de filas afectadas
+     */
+    public static int actualizarUsuario(String id, String nombreUsuario, String claveUsuario, String estadoUsuario, int administrador, String idDoctor) {
         String sql = "UPDATE usuarios SET nombre_usuario=?, clave_usuario=?, estado_usuario=?, administrador=?, id_doctor=? WHERE id_usuario=?";
         try (Connection conexion = ConnectionModel.conectar();
                 PreparedStatement ps = conexion.prepareStatement(sql)) {
@@ -166,12 +204,15 @@ public class UsersModel {
             return ps.executeUpdate();
         } catch (SQLException e) {
             System.out.println("Error al actualizar persona: " + e.getMessage());
-            e.printStackTrace();
         }
         return 0;
     }
 
-    // Desactiva un usuario dado un ID
+    /**
+     * Actualiza la visibilidad del registro del usuario (simula una eliminación)
+     * @param id id del usuario
+     * @return numero de filas afectadas
+     */
     public static int desactivarUsuario(String id) {
         String sql = "UPDATE usuarios SET estado_usuario = 'Inactivo' WHERE id_usuario=?";
         try (Connection conexion = ConnectionModel.conectar();
