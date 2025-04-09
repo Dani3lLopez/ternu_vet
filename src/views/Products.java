@@ -279,6 +279,11 @@ public class Products {
     public void actualizarProducto(int registro) {
         List<String> producto = product.cargarDatosProducto(registro);
 
+        if (producto.isEmpty()) {
+            System.out.println("No se encontró el registro especificado");
+            return;
+        }
+
         String nombreProducto;
 
         // Valida que se ingrese un nombre, de lo contrario mantiene el que ya estaba
