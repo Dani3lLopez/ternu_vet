@@ -1,6 +1,6 @@
 package src.app;
 
-import src.Views.*;
+import src.views.*;
 
 import java.util.Scanner;
 
