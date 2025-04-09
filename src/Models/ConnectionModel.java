@@ -16,8 +16,6 @@ public class ConnectionModel {
      * @return una instancia de Connection
      * @throws SQLException si ocurre algún tipo de error al intentar conectarse a la base
      */
-public class ConnectionModel {
-
     public static Connection conectar() throws SQLException{
         // URL, usuario y contraseña de conexion a la base de datos
         String url = "jdbc:mariadb://localhost:3306/db_vet_ternurita";
