@@ -1,18 +1,13 @@
 package src.Controllers;
 
-import src.Models.PeopleModel;
 import src.Models.PetsModel;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class PetsController {
-    // Constructor
-    public PetsController() {
+    public PetsController() {}
 
-    }
-
-    // Atributos
     private String idMascota;
     private String nombreMascota;
     private String colorMascota;
@@ -27,8 +22,6 @@ public class PetsController {
     private String razonFallecimiento;
     private boolean visibilidadMascota;
     private List<List<String>> listaMascotas;
-
-    // Getters y Setters para acceder y modificar los atributos
 
     public String getIdMascota() {
         return idMascota;
@@ -143,13 +136,11 @@ public class PetsController {
         return listaMascotas;
     }
 
-    // registra nueva mascota utilizando el modelo
     public int registrarMascota() {
         return PetsModel.ingresarNuevaMascota(nombreMascota, colorMascota, pesoMascota, unidadPesoMascota,
                 generoMascota, codigoChipMascota, estadoReproductivoMascota, fechaNacimientoMascota, tallaMascota);
     }
 
-    // obtiene numero de registro como ID y retorna null si es inválido
     public String capturarIdLista(int numero) {
         if (numero > 0 && numero <= listaMascotas.size()) {
             return listaMascotas.get(numero - 1).get(0);
@@ -157,7 +148,6 @@ public class PetsController {
         return null;
     }
 
-    // carga los datos de la mascota usando su ID
     public List<String> cargarDatosMascota(int registro) {
         String id = capturarIdLista(registro);
         if (id != null) {
@@ -166,7 +156,6 @@ public class PetsController {
         return new ArrayList<>();
     }
 
-    // actualiza los datos de la mascota si el ID no es nulo
     public void actualizarMascota(int registro, String nombreMascota, String colorMascota, double pesoMascota,
             String unidadPesoMascota, String generoMascota, String codigoChipMascota, String estadoReproductivoMascota,
             String fechaNacimientoMascota, String tallaMascota, boolean fallecimientoMascota,
@@ -186,7 +175,6 @@ public class PetsController {
         }
     }
 
-    // Usando el numero de registro, se elimina una mascota
     public void eliminarMascota(int numero) {
         String id = this.capturarIdLista(numero);
         if (id != null) {
