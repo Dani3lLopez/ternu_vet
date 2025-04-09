@@ -164,7 +164,7 @@ public class Services {
             String input = scan.nextLine().trim();
             try{
                 Validations.validarCampoObligatorio(input);
-                Validations.validarNumeros(input);
+                Validations.validarDecimales(input);
                 precioServicio = Double.parseDouble(input);
                 break;
             }catch (FormatException e){
@@ -218,7 +218,7 @@ public class Services {
                 break;
             } else {
                 try{
-                    Validations.validarNumeros(input);
+                    Validations.validarDecimales(input);
                     precioServicio = Double.parseDouble(input);
                     break;
                 }catch (FormatException e){
