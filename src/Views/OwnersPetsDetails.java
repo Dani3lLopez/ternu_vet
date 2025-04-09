@@ -65,7 +65,7 @@ public class OwnersPetsDetails {
         } else {
             String separador = "-".repeat(100);
             System.out.println(separador);
-            System.out.printf("| %-5s | %-20s | %-25s | %-20s |\n", "No.", "Propietario", "Tipo", "Mascota");
+            System.out.printf("| %-5s | %-20s | %-20s | %-20s |\n", "No.", "Propietario", "Tipo", "Mascota");
             System.out.println(separador);
 
             int n = 1;
@@ -82,7 +82,7 @@ public class OwnersPetsDetails {
                 }
                 String propietario = detail.capturarNombresPropietarios(idPersonaPropietario);
 
-                System.out.printf("| %-5d | %-20s | %-25s | %-20s |\n", n, propietario, tipo, mascota);
+                System.out.printf("| %-5d | %-20s | %-20s | %-20s |\n", n, propietario, tipo, mascota);
                 n++;
             }
             System.out.println(separador);

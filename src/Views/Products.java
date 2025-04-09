@@ -91,14 +91,18 @@ public class Products {
         } else {
             String separador = "-".repeat(120);
             System.out.println(separador);
-            System.out.printf("| %-5s | %-40s | %-15s | %-15s | %-15s |\n", "No.", "Nombre", "Precio", "Estado", "Peso");
+            System.out.printf("| %-5s | %-20s | %-35s | %-15s | %-15s | %-15s |\n", "No.", "Nombre", "Descripción", "Precio", "Estado", "Peso");
             System.out.println(separador);
 
             int i = 1;
             for (List<String> producto : product.getListaProductos()) {
+                String valorDescripcion = "";
+                if(producto.get(2) == null){
+                    valorDescripcion = "";
+                }
                 String valorPrecio = "$ " + producto.get(3);
                 String valorPeso = producto.get(5) + " " + producto.get(6);
-                System.out.printf("| %-5s | %-40s | %-15s | %-15s | %-15s |\n", i, producto.get(1), valorPrecio, producto.get(7), valorPeso);
+                System.out.printf("| %-5s | %-20s | %-35s | %-15s | %-15s | %-15s |\n", i, producto.get(1), valorDescripcion, valorPrecio, producto.get(7), valorPeso);
                 i++;
             }
             System.out.println(separador);

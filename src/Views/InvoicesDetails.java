@@ -65,7 +65,7 @@ public class InvoicesDetails {
         } else {
             String separador = "-".repeat(100);
             System.out.println(separador);
-            System.out.printf("| %-5s | %-20s | %-40s | %-20s | %-20s |\n", "No.", "# Factura", "Item", "Cantidad", "Precio/u");
+            System.out.printf("| %-5s | %-20s | %-20s | %-20s | %-20s |\n", "No.", "# Factura", "Item", "Cantidad", "Precio/u");
             System.out.println(separador);
 
             int n = 1;
@@ -82,7 +82,7 @@ public class InvoicesDetails {
                 }
                 String nombreItem = invoiceDetail.capturarNombreItem(idProducto);
 
-                System.out.printf("| %-5d | %-20s | %-40s | %-20s | %-20s |\n", n, numero, nombreItem, cantidad, precio);
+                System.out.printf("| %-5d | %-20s | %-20s | %-20s | %-20s |\n", n, numero, nombreItem, cantidad, precio);
                 n++;
             }
             System.out.println(separador);
