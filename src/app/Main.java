@@ -1,11 +1,15 @@
 package src.app;
 
-import src.Controllers.OwnersPetsDetailsController;
 import src.Views.*;
-
 import java.util.Scanner;
 
+/**
+ * Menú de TernuVet
+ */
 public class Main {
+    /**
+     * Provee un menú para navegar en el sistema
+     */
     public static void main(String[] args) {
         Scanner scan = new Scanner(System.in);
         String separador = "-".repeat(50);
