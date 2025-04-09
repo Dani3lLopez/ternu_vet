@@ -1,6 +1,8 @@
 package src.Views;
 
 import src.Controllers.SpecialtiesController;
+import src.validations.FormatException;
+import src.validations.Validations;
 
 import java.util.List;
 import java.util.Scanner;
@@ -23,28 +25,44 @@ public class Specialties {
             System.out.println("4. Volver al menú principal");
             System.out.println(separador.repeat(50));
             System.out.print("Seleccione una opción: ");
-            int choice = scan.nextInt();
-
-            switch (choice) {
-                case 1:
-                    cargarEspecialidades();
-                    break;
-                case 2:
-                    registrarEspecialidad();
-                    break;
-                case 3:
-                    cargarEspecialidades();
-                    System.out.print("Ingrese el número de registro que desea eliminar: ");
-                    int r = scan.nextInt();
-                    scan.nextLine();
-                    eliminarEspecialidad(r);
-                    break;
-                case 4:
-                    active = false;
-                    System.out.println("Cerrando menú...");
-                    break;
-                default:
-                    System.out.println("El valor ingresado no corresponde a una opción de menú");
+            String choice = scan.nextLine().trim();
+            if(!choice.isEmpty()) {
+                try{
+                    Validations.validarRangoNumeros(choice, 1, 4);
+                    switch (Integer.parseInt(choice)) {
+                        case 1:
+                            cargarEspecialidades();
+                            break;
+                        case 2:
+                            registrarEspecialidad();
+                            break;
+                        case 3:
+                            cargarEspecialidades();
+                            String r = "";
+                            while(true){
+                                System.out.print("Ingrese el número de registro que desea eliminar: ");
+                                r = scan.nextLine().trim();
+                                try{
+                                    Validations.validarNumeros(r);
+                                    break;
+                                }catch (FormatException e){
+                                    System.out.println(e.getMessage());
+                                }
+                            }
+                            if(r.isEmpty()){
+                                break;
+                            }else{
+                                eliminarEspecialidad(Integer.parseInt(r));
+                                break;
+                            }
+                        case 4:
+                            active = false;
+                            System.out.println("Cerrando menú...");
+                            break;
+                    }
+                }catch (FormatException e){
+                    System.out.println(e.getMessage());
+                }
             }
         }
     }
@@ -71,8 +89,17 @@ public class Specialties {
 
     // Registra una nueva especialidad
     public void registrarEspecialidad() {
-        System.out.println("Nombres: ");
-        String nombreEspecialidad = scan.nextLine();
+        String nombreEspecialidad = "";
+        while (true){
+            System.out.print("Nombre de la especialidad *: ");
+            nombreEspecialidad = scan.nextLine().trim();
+            try{
+                Validations.validarCampoObligatorio(nombreEspecialidad);
+                break;
+            }catch (FormatException e){
+                System.out.println(e.getMessage());
+            }
+        }
         specialty.setNombreEspecialidad(nombreEspecialidad);
 
         int resultado = specialty.RegistrarEspecialidad();
