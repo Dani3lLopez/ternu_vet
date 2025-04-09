@@ -1,6 +1,5 @@
 package src.app;
 
-import src.Controllers.OwnersPetsDetailsController;
 import src.Views.*;
 
 import java.util.Scanner;
@@ -11,7 +10,7 @@ public class Main {
         Scanner scan = new Scanner(System.in);
         String separador = "-".repeat(50);
 
-        //Se imprime el menú hasta que el usuario eliga una opción válida o ingrese la opción de salir
+        //Se imprime el menú hasta que el usuario elija una opción válida o ingrese la opción de salir
         boolean active = true;
         while (active) {
             System.out.println(separador);
@@ -51,8 +50,8 @@ public class Main {
                     doctor.doctorMenu();
                     break;
                 case 4:
-                    Specialties especialty = new Specialties();
-                    especialty.specialtiesMenu();
+                    Specialties specialty = new Specialties();
+                    specialty.specialtiesMenu();
                     break;
                 case 5:
                     Users user = new Users();
