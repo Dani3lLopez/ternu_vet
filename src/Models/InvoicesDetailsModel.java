@@ -7,16 +7,15 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-/*
- * Modelo de detalle de facturas
- * Este modelo contiene métodos para cargar listas de registros de facturas y detalle desde
- * la base de datos con la tabla "detalle_facturas"
+/**
+ * InvoicesDetailsModel: Clase que gestiona todos los procesos relacionados con los detalles de facturas
+ * @author TernuVet-DevTeam
+ * @version 1.0
  */
 public class InvoicesDetailsModel {
-
-    /*
-     * Carga la lista de registros de detalles de facturas desde la base de datos
-     * Retorna una lista de listas de cadenas de texto. Cada sublista contiene los datos de un registro
+    /**
+     * Carga todos los detalles de las facturas registrados en la base de datos
+     * @return una lista de listas de los detalles de las facturas
      */
     public static List<List<String>> cargarListaDetallesFacturas() {
         List<List<String>> listaFacturas = new ArrayList<>();
@@ -44,9 +43,9 @@ public class InvoicesDetailsModel {
         return listaFacturas;
     }
 
-    /*
-     * Carga la lista de facturas activas
-     * Retorna una lista de registros de facturas
+    /**
+     * Carga todas las facturas registradas en la base de datos
+     * @return una lista de listas de las facturas registradas en la base de datos
      */
     public static List<List<String>> cargarListaFacturas() {
         List<List<String>> listaFacturas = new ArrayList<>();
@@ -74,9 +73,9 @@ public class InvoicesDetailsModel {
         return listaFacturas;
     }
 
-    /*
-     * Carga la lista de registros de detalles de items desde la tabla "detalle_items"
-     * Retorna una lista de registros de detalles de items
+    /**
+     * Carga todos los detalles de items registrados en la base de datos
+     * @return una lista de listas de los detalles de items
      */
     public static List<List<String>> cargarListaDetallesItems() {
         List<List<String>> listaDetallesItems = new ArrayList<>();
@@ -102,9 +101,9 @@ public class InvoicesDetailsModel {
         return listaDetallesItems;
     }
 
-    /*
-     * Carga la lista de nombres de items con un LEFT JOIN entre productos y detalle_items
-     * Retorna una lista de listas, cada una con el id y el nombre del p
+    /**
+     * Carga los nombres de los items disponibles
+     * @return una lista de listas de los nombres de los items disponibles
      */
     public static List<List<String>> cargarListaNombresItems() {
         List<List<String>> listaNombresItems = new ArrayList<>();
@@ -128,11 +127,11 @@ public class InvoicesDetailsModel {
 
         return listaNombresItems;
     }
-
-    /*
-     * Carga los detalles de una factura en especifico con base a su id
-     * El parametro es el id del detalle de factura a cargar
-     * Retorna una lsita con los datos del detalle
+  
+    /**
+     * Carga el detalle de una factura especificado por su id
+     * @param id del registro del detalle en la base de datos
+     * @return los datos del detalle de la factura o vacio en caso de no encontrar el id
      */
     public static List<String> cargarDetalleFactura(String id){
         List<String> datosDetalle = new ArrayList<>();
@@ -159,9 +158,13 @@ public class InvoicesDetailsModel {
         return datosDetalle;
     }
 
-    /*
-     * Inserta un nuevo registro en la tabla "detalle_facturas" con los datos dados
-     * Retorna el numero de filas afectadas
+    /**
+     * Ingresa nuevos detalles de factura en la base de datos
+     * @param numeroFactura numero de factura
+     * @param idDetalleItem id del item agregado
+     * @param cantidadItem cantidad del item
+     * @param precioUnitario el precio del item
+     * @return numero de filas afectadas
      */
     public static int ingresarNuevoDetalleFactura(String numeroFactura, String idDetalleItem, String cantidadItem, String precioUnitario){
         int retorno = 0;
@@ -182,9 +185,14 @@ public class InvoicesDetailsModel {
         }
     }
 
-    /*
-     * Actualiza un nuevo registro en la tabla "detalle_facturas" con base en su id
-     * Retorna el numero de filas afectadas
+    /**
+     * Actualiza un detalle de factura existente segun su id
+     * @param id del detalle existente
+     * @param numeroFactura nuevo numero de factura
+     * @param idDetalleItem nuevo item
+     * @param cantidadItem nueva cantidad del item
+     * @param precioUnitario nuevo precio
+     * @return numero de filas afectadas
      */
     public static int actualizarDetalle(String id, String numeroFactura, String idDetalleItem, String cantidadItem, String precioUnitario) {
         String sql = "UPDATE detalle_facturas SET numero_factura=?, id_detalle_item=(SELECT id_detalle_item FROM detalle_items WHERE id_producto=? LIMIT 1), cantidad_item=?, precio_unitario_item =? WHERE id_detalle_factura=?";
@@ -202,9 +210,10 @@ public class InvoicesDetailsModel {
         return 0;
     }
 
-    /*
-     *Elimina un registro de la tabla "detalle_facturas" con base en su id
-     * Retorna el numero de filas afectadas
+    /**
+     * Elimina un detalle de la factura segun su id
+     * @param id del detalle
+     * @return numero de filas afectadas
      */
     public static int eliminarDetalleFactura(String id) {
         String sql = "DELETE FROM detalle_facturas WHERE id_detalle_factura=?";

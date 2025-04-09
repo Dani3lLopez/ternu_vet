@@ -7,16 +7,23 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-/*
- * Modelo de citas: maneja las operaciones CRUD en la base de datos
- * Este modelo contiene métodos para cargar, crear, actualizar y desactivar registros de citas
- * Ademas, carga datos de mascotas y propietarios
+/**
+ * AppointmentsModel: Clase que gestiona todas los procesos relacionados con citas, incluyendo la carga, inserción, actualización y desactivación de registros.
+ * Se comunica directamente con la base de datos utilizando JDBC.
+ * @author TernuVet-DevTeam
+ * @version 1.0
  */
+public class AppointmentsModel {
+    /**
+     * Carga las citas almacenadas en la base de datos
+     * @return una lista de listas con los datos de las citas
+    */
 public class AppointmentsModel {
     /*
      * Carga la lista de las citas registradas en la base de datos
      * Retorna una lista de listas. Cada sublista contiene los datos de una cita
      */
+
     public static List<List<String>> cargarListaCitas() {
         List<List<String>> listaCitas = new ArrayList<>();
         // Query para obtener los datos de la tabla "citas"
@@ -47,9 +54,10 @@ public class AppointmentsModel {
 
         return listaCitas;
     }
-    /*
-     * Carga la lista de los mascotas registradas en la base de datos
-     * Retorna una lista de listas. Cada sublista son los datos de cada mascota
+
+    /**
+     * Carga los datos de todas las mascotas almacenadas en la base de datos
+     * @return una lista de listas con los datos de las mascotas
      */
     public static List<List<String>> cargarListaMascotas() {
         List<List<String>> listaMascotas = new ArrayList<>();
@@ -85,10 +93,10 @@ public class AppointmentsModel {
 
         return listaMascotas;
     }
-
-    /*
-     * Carga la lista de los doctores registrados en la base de datos
-     * Retorna una lista de listas. Cada sublista son los datos de cada doctor
+  
+    /**
+     * Carga todos los doctores almacenados en la base de datos
+     * @return una lista de listas con los datos de los doctores
      */
     public static List<List<String>> cargarListaDoctores() {
         List<List<String>> listaDoctores = new ArrayList<>();
@@ -119,11 +127,11 @@ public class AppointmentsModel {
         return listaDoctores;
     }
 
-    /*
-     * Carga los datos de una cita con base a su id
-     * El parametro id es el identificador de la cita
-     * Retorna una lista con los datos de la cita
-     */
+    /**
+    * Carga una cita especifica segun su ID
+    * @param id del ID de la cita a buscar
+     * @return  los datos de la lista o vacío en caso de no encontrar el id especificado
+    */
     public static List<String> cargarCita(String id){
         List<String> datosCita = new ArrayList<>();
         //Query para seleccionar los datos del registro de la cita con base a su id
@@ -155,9 +163,15 @@ public class AppointmentsModel {
         return datosCita;
     }
 
-    /*
-     * Inserta una nueva cita a la base de datos
-     * Retorna el numero de filas afectadas al realizar la query. Se espera 1 si sí se insertó
+    /**
+     * Ingresa una nueva cita en la base de datos
+     * @param motivoCita motivo de la cita
+     * @param fechaCita fecha de la cita
+     * @param horaCita hora de la cita
+     * @param idMascota id de mascota que asistirá a la cita
+     * @param idDoctor id del doctor que llevará la cita
+     * @param visibilidadCita visibilidad de la cita
+     * @return numero de filas afectadas
      */
     public static int ingresarNuevaCita(String motivoCita, String fechaCita, String horaCita, String idMascota, String idDoctor, Boolean visibilidadCita){
         int retorno = 0;
@@ -183,9 +197,16 @@ public class AppointmentsModel {
         }
     }
 
-    /*
-     * Actualiza los datos de una cita de la base de datos
-     * Retorna el numero de filas afectas
+    /**
+     * Actualiza un registro existente de una cita
+     * @param id id de la cita que se actualizará
+     * @param motivoCita nuevo motivo
+     * @param fechaCita nueva fecha
+     * @param horaCita nueva hora
+     * @param idMascota nuevo id de mascota
+     * @param idDoctor nuevo id de doctor
+     * @param visibilidadCita nueva visibilidad
+     * @return numero de filas afectadas
      */
     public static int actualizarCita(String id, String motivoCita, String fechaCita, String horaCita, String idMascota, String idDoctor, Boolean visibilidadCita) {
         // Query para actualizar los datos de la cita
@@ -209,10 +230,10 @@ public class AppointmentsModel {
         return 0;
     }
 
-    /*
-     * Desactiva (elimina) una cita con base en su id de la base de datos
-     *  Requiere un id como parametro para identificar la cita a eliminar
-     *  Retorna la cantidad de filas afectadas por la query
+    /**
+     * Actualiza la visibilidad de las citas (simula una eliminación)
+     * @param id id de la cita que se actualiza
+     * @return numero de filas afectadas
      */
     public static int desactivarCita(String id) {
         String sql = "UPDATE citas SET visibilidad_cita = 0 WHERE id_cita=?";

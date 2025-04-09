@@ -7,15 +7,15 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-/*
- * Modelo de consultas: maneja operaciones para consultas en la base de datos
- * Este modelo contiene métodos para crear, actualizar y desactivar registros de citas
- * Ademas, carga datos de mascotas, doctores y citas
+/**
+ * ConsultationsModel: Clase que gestiona todos los procesos relacionados con las consultas
+ * @author TernuVet-DevTeam
+ * @version 1.0
  */
 public class ConsultationsModel {
-    /*
-     * Carga la lista de las consultas registradas en la base de datos
-     * Retorna una lista de listas. Cada sublista contiene los datos de una consulta
+    /**
+     * Carga una lista con todas las consultas almacenadas en la base de datos
+     * @return una lista de listas con los datos de las consultas.
      */
     public static List<List<String>> cargarListaConsultas() {
         List<List<String>> listaConsultas = new ArrayList<>();
@@ -49,9 +49,9 @@ public class ConsultationsModel {
         return listaConsultas;
     }
 
-    /*
-     * Carga la lista de los mascotas registradas en la base de datos
-     * Retorna una lista de listas. Cada sublista son los datos de cada mascota
+    /**
+     * Carga una lista con todas las mascotas almacenadas en la base de datos
+     * @return una lista de listas con los datos de las mascotas
      */
     public static List<List<String>> cargarListaMascotas() {
         List<List<String>> listaMascotas = new ArrayList<>();
@@ -88,9 +88,9 @@ public class ConsultationsModel {
         return listaMascotas;
     }
 
-    /*
-     * Carga la lista de los doctores registrados en la base de datos
-     * Retorna una lista de listas. Cada sublista son los datos de cada doctor
+    /**
+     * Carga una lista con todos los doctores almacenados en la base de datos
+     * @return una lista de listas con los datos de los doctores
      */
     public static List<List<String>> cargarListaDoctores() {
         List<List<String>> listaDoctores = new ArrayList<>();
@@ -121,10 +121,10 @@ public class ConsultationsModel {
         return listaDoctores;
     }
 
-    /*
-     * Carga los datos de una cita con base a su id
-     * El parametro id es el identificador de la cita
-     * Retorna una lista con los datos de la cita
+    /**
+     * Carga los datos de una consulta especifica segun su id
+     * @param id identificador de la cita
+     * @return una lista con los datos de la consulta o vacia en caso de no encontrarla
      */
     public static List<String> cargarCita(String id){
         List<String> datosConsulta = new ArrayList<>();
@@ -155,9 +155,16 @@ public class ConsultationsModel {
         return datosConsulta;
     }
 
-    /*
-     * Inserta una nueva consulta a la base de datos
-     * Retorna el numero de filas afectadas al realizar la query. Se espera 1 si sí se insertó
+    /**
+     * Inserta un nuevo registro de consulta en la base de datos
+     * @param fechaConsulta fecha de la consulta
+     * @param motivoConsulta motivo de la consulta
+     * @param diagnosticoConsulta diagnostico obtenido en la consulta
+     * @param notasConsulta notas del doctor en la consulta
+     * @param idMascota id de la mascota
+     * @param idDoctor id del doctor que lleva la consulta
+     * @param visibilidadConsulta visibilidad del registro de la consulta
+     * @return numero de filas afectadas
      */
     public static int ingresarNuevaConsulta(String fechaConsulta, String motivoConsulta, String diagnosticoConsulta, String notasConsulta, String idMascota, String idDoctor, Boolean visibilidadConsulta){
         int retorno = 0;
@@ -183,9 +190,17 @@ public class ConsultationsModel {
         }
     }
 
-    /*
-     * Actualiza los datos de una consulta de la base de datos
-     * Retorna el numero de filas afectas
+    /**
+     * Actualiza un registro de consulta segun su id
+     * @param id id de la consulta a actualizar
+     * @param fechaConsulta nueva fecha de consulta
+     * @param motivoConsulta nuevo motivo de consulta
+     * @param diagnosticoConsulta nuevo dignostico de consulta
+     * @param notasConsulta nuevas notas de consulta
+     * @param idMascota nueva mascota
+     * @param idDoctor nuevo id del doctor encargado de la consulta
+     * @param visibilidadConsulta nueva visibilidad para la consulta
+     * @return numero de filas afectadas
      */
     public static int actualizarConsulta(String id, String fechaConsulta, String motivoConsulta, String diagnosticoConsulta, String notasConsulta, String idMascota, String idDoctor, Boolean visibilidadConsulta) {
         // Query para actualizar los datos de la cita
@@ -209,10 +224,10 @@ public class ConsultationsModel {
         return 0;
     }
 
-    /*
-     * Desactiva (elimina) una consulta con base en su id de la base de datos
-     *  Requiere un id como parametro para identificar la consulta a eliminar
-     *  Retorna la cantidad de filas afectadas por la query
+    /**
+     * Actualiza la visibilidad de la consulta (simula una eliminacion)
+     * @param id id de la consulta que se actualizará
+     * @return numero de filas afectadas
      */
     public static int desactivarConsulta(String id) {
         String sql = "UPDATE consultas SET visibilidad_consulta = 0 WHERE id_consulta=?";

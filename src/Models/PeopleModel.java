@@ -7,16 +7,15 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-/*
- * Modelo de personas: maneja las operaciones CRUD en la base de datos
- * Este modelo contiene métodos para cargar, crear, actualizar y eliminar registros de personas
- * sobre la tabla "personas" de la base de datos
+/**
+ * PeopleModel: Clase que gestiona todos los procesos relacionados con las personas
+ * @author TernuVet-DevTeam
+ * @version 1.0
  */
-
 public class PeopleModel {
-    /*
-     * Carga la lista de las personas registradas en la base de datos
-     * Retorna una lista de listas. Cada sublista contiene los datos de una persona
+    /**
+     * Carga a todas las personas registradas en la base de datos
+     * @return una lista de listas con los datos de todas las personas registras en la base de datos
      */
     public static List<List<String>> cargarListaPersonas() {
         List<List<String>> listaPersonas = new ArrayList<>();
@@ -53,10 +52,10 @@ public class PeopleModel {
         return listaPersonas;
     }
 
-    /*
-     * Carga los datos de una persona con base a su id
-     * El parametro id es el identificador de la persona
-     * Retorna una lista con los datos de la persona
+    /**
+     * Carga los datos de una persona especificada por su id
+     * @param id id de la persona
+     * @return los datos de la persona
      */
     public static List<String> cargarPersona(String id){
         List<String> datosPersona = new ArrayList<>();
@@ -90,9 +89,14 @@ public class PeopleModel {
         return datosPersona;
     }
 
-    /*
-     * Inserta una nueva persona a la base de datos
-     * Retorna el numero de filas afectadas al realizar la query. Se espera 1 si sí se insertó
+    /**
+     * Registra una nueva persona en la base de datos
+     * @param nombre nombre de la persona
+     * @param apellido apellido de la persona
+     * @param telefono telefono de la persona
+     * @param email email de la persona
+     * @param dui dui de la persona
+     * @return numero de filas afectadas
      */
     public static int ingresarNuevaPersona(String nombre, String apellido, String telefono, String email, String dui){
         int retorno = 0;
@@ -121,9 +125,15 @@ public class PeopleModel {
         }
     }
 
-    /*
-     * Actualiza los datos de una persona  de la base de datos
-     * Retorna el numero de filas afectas
+    /**
+     * Actualiza un registro de persona existente
+     * @param id id del registro de la persona
+     * @param nombre nuevo nombre de la persona
+     * @param apellido nuevo apellido de la persona
+     * @param telefono nuevo telefono de la persona
+     * @param email nuevo email de la persona
+     * @param dui nuevo dui de la persona
+     * @return numero de filas afectadas
      */
     public static int actualizarPersona(String id, String nombre, String apellido, String telefono, String email, String dui) {
         // Querry para actualizar los datos de la persona
@@ -147,10 +157,10 @@ public class PeopleModel {
         return 0;
     }
 
-    /*
-     * Elimina una persona con base en su ID de la base de datos
-     *  Requiere el id como parametro para identificar la persona a eliminar
-     *  Retorna la cantidad de filas afectadas por la querry
+    /**
+     * Elimina el registro de una persona de la base de datos
+     * @param id id del registro a eliminar
+     * @return numero de filas afectadas
      */
     public static int eliminarPersona(String id) {
         // Querry para eliminar la persona de la base de datos

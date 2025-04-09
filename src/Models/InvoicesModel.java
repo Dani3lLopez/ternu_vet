@@ -7,15 +7,15 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-/*
- * Este modelo gestiona el acceso a datos de la entidad "Facturas"
- * Contiene metodos para cargar, crear y desactivar facturas
+/**
+ * InvoicesModel: Clase que gestiona todos los procesos relacionados con las facturas
+ * @author TernuVet-DevTeam
+ * @version 1.0
  */
 public class InvoicesModel {
-
-    /*
-     * Carga la lsita de facturas activas desde la base de datos
-     * Retorna una lista de listas
+    /**
+     * Carga todas las facturas registradas en la base de datos
+     * @return una lista de listas de facturas
      */
     public static List<List<String>> cargarListaFacturas() {
         List<List<String>> listaFacturas = new ArrayList<>();
@@ -47,9 +47,9 @@ public class InvoicesModel {
         return listaFacturas;
     }
 
-    /*
-     * Carga la lista de los propietarios registrados en la base de datos
-     * Retorna una lista de listas. Cada sublista son los datos de cada propietario
+    /**
+     * Carga todos los propietarios registrados en la base de datos
+     * @return una lista de listas de los propietarios registrados en la base de datos
      */
     public static List<List<String>> cargarListaPropietarios() {
         List<List<String>> listaFacturas = new ArrayList<>();
@@ -81,9 +81,13 @@ public class InvoicesModel {
         return listaFacturas;
     }
 
-    /*
-     * Crea una nueva factura en la base de datos
-     * Retorna el numero de filas afectadas (se espera 1 si hubo exito)
+    /**
+     * Crea un nuevo registro de factura
+     * @param fechaEmision fecha de emision de la factura
+     * @param horaEmision hora de emision de la factura
+     * @param idPropietario id del propietario de la mascota
+     * @param visibilidadFactura visibilidad de la factura
+     * @return numero de filas afectadas
      */
     public static int crearNuevaFactura(String fechaEmision, String horaEmision, String idPropietario, Boolean visibilidadFactura){
         int retorno = 0;
@@ -104,8 +108,11 @@ public class InvoicesModel {
             return retorno;
         }
     }
-    /*
-     * Desactiva una factura cambiando su visibilidad
+
+    /**
+     * Actualiza la visibilidad de la factura (simula una eliminacion)
+     * @param id de la factura que se actualizará
+     * @return numero de filas afectadas
      */
     public static int desactivarFactura(String id) {
         String sql = "UPDATE facturas SET visibilidad_factura = false WHERE numero_factura=?";

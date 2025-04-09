@@ -7,8 +7,16 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-// Obtiene la lista de especialidades
+/**
+ * SpecialtiesModel: Clase que gestiona todos los procesos relacionados con las especialidades
+ * @author TernuVet-DevTeam
+ * @version 1.0
+ */
 public class SpecialtiesModel {
+    /**
+     * Carga todas las especialidades registradas en la base de datos
+     * @return una lista de listas con las especialidades registradas en la base de datos
+     */
     public static List<List<String>> cargarListaEspecialidades() {
         List<List<String>> listaEspecialidades = new ArrayList<>();
         String sql = "SELECT * FROM especialidades";
@@ -34,8 +42,12 @@ public class SpecialtiesModel {
         return listaEspecialidades;
     }
 
-    // Agrega una nueva especialidad
-    public static int ingresarNuevaEspecialidad(String nombreEspecialidad) {
+    /**
+     * Registra una nueva especialidad en la base de datos
+     * @param nombreEspecialidad nombre de la especialidad
+     * @return numero de filas afectadas
+     */
+    public static int ingresarNuevaEspecialidad(String nombreEspecialidad){
         int retorno = 0;
         String sql = "INSERT INTO especialidades (nombre_especialidad) VALUES (?)";
         try (
@@ -51,7 +63,11 @@ public class SpecialtiesModel {
         }
     }
 
-    // Para eliminar una especialidad
+    /**
+     * Elimina una especialidad según su id
+     * @param id id de la especialidad
+     * @return numero de filas afectadas
+     */
     public static int eliminarEspecialidad(String id) {
         String sql = "DELETE FROM especialidades WHERE id_especialidad=?";
         try (Connection conexion = ConnectionModel.conectar();

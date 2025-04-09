@@ -7,9 +7,16 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-// Carga lista de productos. Crea una cadena de listas, donde la interna
-// representa un producto
+/**
+ * ProductsModel: Clase que gestiona todos los procesos relacionados con los productos
+ * @author TernuVet-DevTeam
+ * @version 1.0
+ */
 public class ProductsModel {
+    /**
+     * Carga todos los productos almacenados en la base de datos
+     * @return una lista de listas con todos los productos de la base de datos
+     */
     public static List<List<String>> cargarListaProductos() {
         List<List<String>> listaProductos = new ArrayList<>();
         String sql = "SELECT id_producto, nombre_producto, descripcion_producto, precio_producto, stock_producto, peso_producto, unidad_medida_producto, estado_producto FROM productos WHERE visibilidad_producto = 1";
@@ -38,9 +45,18 @@ public class ProductsModel {
         return listaProductos;
     }
 
-    // permite agregar un nuevo producto
-    public static int ingresarProducto(String nombreProducto, String descripcionProducto, double precioProducto,
-            int stockProducto, double pesoProducto, String unidadMedidaProducto) {
+    /**
+     * Registra un nuevo producto en la base de datos
+     * @param nombreProducto nombre del producto
+     * @param descripcionProducto descripción del producto
+     * @param precioProducto precio del producto
+     * @param stockProducto stock disponible del producto
+     * @param pesoProducto peso del producto
+     * @param unidadMedidaProducto unidad de medida del producto
+     * @return numero de filas afectadas
+     */
+    public static int ingresarProducto(String nombreProducto, String descripcionProducto, double precioProducto, int stockProducto, double pesoProducto, String unidadMedidaProducto) {
+
         int retorno = 0;
 
         String sql;
@@ -68,8 +84,12 @@ public class ProductsModel {
         }
     }
 
-    // carga los productos dependiendo del ID
-    public static List<String> cargarProducto(String id) {
+    /**
+     * Carga los datos de un producto en específico
+     * @param id id del producto
+     * @return los datos del producto
+     */
+    public static List<String> cargarProducto(String id){
         List<String> datosServicio = new ArrayList<>();
         String sql = "SELECT * FROM productos WHERE id_producto = ?";
 
@@ -97,9 +117,18 @@ public class ProductsModel {
         return datosServicio;
     }
 
-    // actualiza los datos de un producto con el ID dado
-    public static int actualizarProducto(String id, String nombreProducto, String descripcionProducto,
-            double precioProducto, int stockProducto, double pesoProducto, String unidadMedidaProducto) {
+    /**
+     * Actualiza el registro de un producto existente
+     * @param id id del producto existente
+     * @param nombreProducto nuevo nombre del producto
+     * @param descripcionProducto nueva descripción del producto
+     * @param precioProducto nuevo precio
+     * @param stockProducto nuevo stock
+     * @param pesoProducto nuevo peso
+     * @param unidadMedidaProducto nueva unidad de medida
+     * @return numero de filas afectadas
+     */
+    public static int actualizarProducto(String id, String nombreProducto, String descripcionProducto, double precioProducto, int stockProducto, double pesoProducto, String unidadMedidaProducto) {
         String sql = "UPDATE productos SET nombre_producto=?, descripcion_producto=?, precio_producto=?, stock_producto=?, peso_producto=?, unidad_medida_producto=? WHERE id_producto=?";
         try (Connection conexion = ConnectionModel.conectar();
                 PreparedStatement ps = conexion.prepareStatement(sql)) {
@@ -117,7 +146,11 @@ public class ProductsModel {
         return 0;
     }
 
-    // elimina, con el ID proporcionado, el producto de la bd
+    /**
+     * Actualiza la visibilidad de un producto (simula una eliminación)
+     * @param id id del producto
+     * @return numero de filas afectadas
+     */
     public static int eliminarProducto(String id) {
         String sql = "UPDATE productos SET visibilidad_producto=0 WHERE id_producto=?";
         try (Connection conexion = ConnectionModel.conectar();
