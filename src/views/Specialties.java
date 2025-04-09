@@ -35,6 +35,7 @@ public class Specialties {
                             break;
                         case 2:
                             registrarEspecialidad();
+                            System.out.println("-".repeat(50));
                             break;
                         case 3:
                             cargarEspecialidades();
@@ -53,6 +54,7 @@ public class Specialties {
                                 break;
                             }else{
                                 eliminarEspecialidad(Integer.parseInt(r));
+                                System.out.println("-".repeat(50));
                                 break;
                             }
                         case 4:
