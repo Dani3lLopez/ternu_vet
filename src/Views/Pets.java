@@ -98,8 +98,6 @@ public class Pets {
                     active = false; // Aquí se sale del bucle
                     System.out.println("Cerrando menú...");
                     break;
-                default:
-                    System.out.println("El valor ingresado no corresponde a una opción de menú");
             }
         }
     }
