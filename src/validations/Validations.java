@@ -18,7 +18,7 @@ public class Validations {
         // Si no encuentra letras, comprueba que solo hay números y establece la
         // varaible como verdadera
         if (conteoLetras != 0) {
-            throw new FormatException("Entrada inválida: solo se permiten números.");
+            throw new FormatException("Entrada inválida: solo se permiten números positivos.");
         }
     }
 
