@@ -1,6 +1,8 @@
 package src.views;
 
 import src.controllers.UsersController;
+import src.validations.FormatException;
+import src.validations.Validations;
 
 import java.util.List;
 import java.util.Scanner;
@@ -26,48 +28,72 @@ public class Users {
             System.out.println("5. Volver al menú principal");
             System.out.println(separador.repeat(50));
             System.out.print("Seleccione una opción: ");
-            int choice = scan.nextInt();
-
-            switch (choice) {
-                case 1:
-
-                    // Carga los usuarios
-                    cargarUsuarios();
-                    System.out.println(separador.repeat(70));
-                    break;
-                case 2:
-
-                    // Registra al usuario nuevo
-                    registrarUsuarios();
-                    break;
-                case 3:
-
-                    // Carga los usuarios y solicita el número de registro que se quiere actualizar
-                    cargarUsuarios();
-                    System.out.print("Ingrese el número de registro a actualizar: ");
-                    int r = scan.nextInt();
-                    scan.nextLine();
-
-                    // Actualiza el usuario
-                    actualizarUsuario(r);
-                    break;
-                case 4:
-
-                    // Carga los usuarios y pide el número de registro que se quiere desactivar
-                    cargarUsuarios();
-                    System.out.print("Ingrese el número de registro que desea desactivar: ");
-                    int registro = scan.nextInt();
-                    scan.nextLine();
-
-                    // Desactiva el usuario
-                    desactivarUsuario(registro);
-                    break;
-                case 5:
-                    active = false;
-                    System.out.println("Cerrando menú...");
-                    break;
-                default:
-                    System.out.println("El valor ingresado no corresponde a una opción de menú");
+            String choice = scan.nextLine().trim();
+            if(!choice.isEmpty()) {
+                try{
+                    Validations.validarRangoNumeros(choice, 1, 5);
+                    switch (Integer.parseInt(choice)) {
+                        case 1:
+                            // Carga los usuarios
+                            cargarUsuarios();
+                            break;
+                        case 2:
+                            // Registra al usuario nuevo
+                            registrarUsuarios();
+                            System.out.println(separador.repeat(50));
+                            break;
+                        case 3:
+                            // Carga los usuarios y solicita el número de registro que se quiere actualizar
+                            cargarUsuarios();
+                            String r = "";
+                            while(true){
+                                System.out.print("Ingrese el número de registro a actualizar: ");
+                                r = scan.nextLine().trim();
+                                try{
+                                    Validations.validarNumeros(r);
+                                    break;
+                                }catch (FormatException e){
+                                    System.out.println(e.getMessage());
+                                }
+                            }
+                            if(r.isEmpty()){
+                                break;
+                            }else{
+                                // Actualiza el usuario
+                                actualizarUsuario(Integer.parseInt(r));
+                                System.out.println(separador.repeat(50));
+                                break;
+                            }
+                        case 4:
+                            // Carga los usuarios y pide el número de registro que se quiere desactivar
+                            cargarUsuarios();
+                            String registro = "";
+                            while(true){
+                                System.out.print("Ingrese el número de registro que desea desactivar: ");
+                                registro = scan.nextLine().trim();
+                                try{
+                                    Validations.validarNumeros(registro);
+                                    break;
+                                }catch (FormatException e){
+                                    System.out.println(e.getMessage());
+                                }
+                            }
+                            if(registro.isEmpty()){
+                                break;
+                            }else{
+                                // Desactiva el usuario
+                                desactivarUsuario(Integer.parseInt(registro));
+                                System.out.println(separador.repeat(50));
+                                break;
+                            }
+                        case 5:
+                            active = false;
+                            System.out.println("Cerrando menú...");
+                            break;
+                    }
+                }catch (FormatException e){
+                    e.getMessage();
+                }
             }
         }
     }
@@ -142,54 +168,72 @@ public class Users {
         System.out.println(separador);
 
         // Solicita que se seleccione un doctor
-        System.out.print("Seleccione al usuario: ");
-        int valor = scan.nextInt();
-        scan.nextLine();
-
-        // Comprueba que lo ingresado sea válido
-        if (valor > 0 && valor <= doctores.size()) {
-            String idDoctor = doctores.get(valor - 1).get(0);
-            user.setIdDoctor(idDoctor);
-
-            System.out.println("Nombre de usuario: ");
-            String nombre = scan.nextLine();
-            if (user.existenciaUsuario(nombre)) {
-                System.out.println("El usuario ya existe.");
-                return;
+        String valor = "";
+        while(true){
+            System.out.print("Seleccione al usuario *: ");
+            valor = scan.nextLine().trim();
+            try{
+                Validations.validarCampoObligatorio(valor);
+                Validations.validarRangoNumeros(valor, 1, doctores.size());
+                break;
+            }catch (FormatException e){
+                System.out.println(e.getMessage());
             }
-            user.setNombreUsuario(nombre);
-            System.out.println("Clave: ");
-            String clave = scan.nextLine();
-            user.setClaveUsuario(clave);
-            String estado = "Activo";
-            user.setEstadoUsuario(estado);
+        }
 
-            // Evalua si el usuario es administrador o no
-            List<List<String>> usuarios = user.listaUsuarios();
-            boolean admin = usuarios.isEmpty();
-            user.setAdministrador(admin);
+        String idDoctor = doctores.get(Integer.parseInt(valor) - 1).get(0);
+        user.setIdDoctor(idDoctor);
 
-            int resultado = user.RegistrarUsuario();
-
-            if (resultado == 1) {
-                System.out.println("Usuario registrado con éxito.");
-
-            } else {
-                System.out.println("Ha ocurrido un error al registrar el usuario.");
+        String nombre = "";
+        while(true){
+            System.out.print("Nombre de usuario *: ");
+            nombre = scan.nextLine().trim();
+            try{
+                Validations.validarCampoObligatorio(nombre);
+                break;
+            }catch (FormatException e){
+                System.out.println(e.getMessage());
             }
+        }
+        if (user.existenciaUsuario(nombre)) {
+            System.out.println("El usuario ya existe.");
+            return;
+        }
+        user.setNombreUsuario(nombre);
+
+        String contra = "";
+        while(true){
+            System.out.print("Clave *: ");
+            contra = scan.nextLine().trim();
+            try{
+                Validations.validarCampoObligatorio(contra);
+                contra = Validations.encriptarContra(contra);
+                break;
+            }catch (FormatException e){
+                System.out.println(e.getMessage());
+            }
+        }
+        user.setClaveUsuario(contra);
+        String estado = "Activo";
+        user.setEstadoUsuario(estado);
+
+        // Evalua si el usuario es administrador o no
+        List<List<String>> usuarios = user.listaUsuarios();
+        boolean admin = usuarios.isEmpty();
+        user.setAdministrador(admin);
+
+        int resultado = user.RegistrarUsuario();
+
+        if (resultado == 1) {
+            System.out.println("Usuario registrado con éxito.");
+
         } else {
-            System.out.println("Selección de persona inválida.");
+            System.out.println("Ha ocurrido un error al registrar el usuario.");
         }
     }
 
     // Hicimos otro método para poder actualizar un usuario existente
     public void actualizarUsuario(int r) {
-        String idUsuario = user.capturarIdListaUsuario(r);
-        if (idUsuario == null) {
-            System.out.println("Registro extraño");
-            return;
-        }
-
         // Carga la información del usuario
         List<String> usuario = user.cargarDatosUsuario(r);
         if (usuario.isEmpty()) {
@@ -201,10 +245,12 @@ public class Users {
         String nombreUsuarioActual = usuario.get(1);
         String claveUsuarioActual = usuario.get(2);
         String idDoctorActual = usuario.get(5);
+        int administradorActual = Integer.parseInt(usuario.get(4));
+        String estadoActual = usuario.get(3);
 
         System.out.print("Nuevo nombre de usuario: ");
-        String nuevoNombreUsuario = scan.nextLine();
-        if (nuevoNombreUsuario.isEmpty()) {
+        String nuevoNombreUsuario = scan.nextLine().trim();
+        if(nuevoNombreUsuario.isEmpty()){
             nuevoNombreUsuario = nombreUsuarioActual;
         }
 
@@ -212,14 +258,55 @@ public class Users {
         String nuevaClaveUsuario = scan.nextLine();
         if (nuevaClaveUsuario.isEmpty()) {
             nuevaClaveUsuario = claveUsuarioActual;
+        }else{
+            nuevaClaveUsuario = Validations.encriptarContra(nuevaClaveUsuario);
         }
 
-        System.out.print("¿Es administrador? (1/0): ");
-        int administrador = scan.nextInt();
-        scan.nextLine();
+        System.out.println("¿Es administrador?");
+        System.out.println("1. Sí");
+        System.out.println("2. No");
+        int administrador = 0;
+        while(true){
+            System.out.print("Opción seleccionada: ");
+            String opcion = scan.nextLine().trim();
+            if(opcion.isEmpty()){
+                administrador = administradorActual;
+                break;
+            }else{
+                try{
+                    Validations.validarRangoNumeros(opcion, 1, 2);
+                    administrador = Integer.parseInt(opcion);
+                    break;
+                }catch (FormatException e){
+                    System.out.println(e.getMessage());
+                }
+            }
+        }
 
-        System.out.print("Estado (Activo/Inactivo): ");
-        String estado = scan.nextLine();
+        System.out.println("Estado del usuario");
+        System.out.println("1. Activo");
+        System.out.println("2. Inactivo");
+        String estado;
+        while(true){
+            System.out.print("Opcion seleccionada: ");
+            String opcion = scan.nextLine().trim();
+            if(opcion.isEmpty()){
+                estado = estadoActual;
+                break;
+            }else{
+                try{
+                    Validations.validarRangoNumeros(opcion, 1, 2);
+                    if(Integer.parseInt(opcion) == 1){
+                        estado = "Activo";
+                    }else{
+                        estado = "Inactivo";
+                    }
+                    break;
+                }catch (FormatException e){
+                    System.out.println(e.getMessage());
+                }
+            }
+        }
 
         // Actualiza la informaxión cambiada
         user.actualizarUsuario(r, nuevoNombreUsuario, nuevaClaveUsuario, estado, administrador, idDoctorActual);

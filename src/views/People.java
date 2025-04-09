@@ -4,6 +4,7 @@ import src.controllers.PeopleController;
 import src.validations.FormatException;
 import src.validations.Validations;
 
+import java.text.Format;
 import java.util.List;
 import java.util.Scanner;
 
@@ -231,6 +232,12 @@ public class People {
      */
     public void actualizarPersona(int r){
         List<String> persona = person.cargarDatosPersona(r);
+
+        if (persona.isEmpty()) {
+            System.out.println("No se encontró el registro especificado");
+            return;
+        }
+
         System.out.print("Nuevo Nombre: ");
         String nombre = scan.nextLine().trim();
         if (nombre.isEmpty()) nombre = persona.get(1);
