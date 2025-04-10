@@ -1,4 +1,4 @@
-![image](https://github.com/user-attachments/assets/12243c3d-48be-4423-8062-b8756dad1a02)# TernuVet-System 🐾
+# TernuVet-System 🐾
 
 ![License](https://img.shields.io/badge/License-MIT-blue.svg) ![Java](https://img.shields.io/badge/Java-8%2B-orange.svg)
 
