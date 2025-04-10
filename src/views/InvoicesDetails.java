@@ -24,7 +24,7 @@ public class InvoicesDetails {
 
         boolean active = true;
         while (active) {
-            System.out.println("\uD83D\uDC36 Qué haremos hoy?");
+            System.out.println("\uD83E\uDDFE Qué haremos hoy?");
             System.out.println("1. Listar Detalles");
             System.out.println("2. Registrar Detalle");
             System.out.println("3. Actualizar Detalle");
@@ -187,7 +187,7 @@ public class InvoicesDetails {
 
         String v = "";
         while(true){
-            System.out.print("Seleccione el producto/servicio *: ");
+            System.out.print("Seleccione el producto *: ");
             v = scan.nextLine().trim();
             try{
                 Validations.validarCampoObligatorio(v);
@@ -201,13 +201,23 @@ public class InvoicesDetails {
         String n = invoiceDetail.capturarIdListaDetallesItems(Integer.parseInt(v));
         invoiceDetail.setIdDetalleItem(n);
 
-        System.out.println("Cantidad: ");
-        String cantidad = scan.nextLine();
+        String cantidad = "";
+        while(true){
+            System.out.print("Cantidad *: ");
+            cantidad = scan.nextLine().trim();
+            try{
+                Validations.validarCampoObligatorio(cantidad);
+                Validations.validarRangoNumeros(cantidad, 1, 100);
+                break;
+            }catch(FormatException e){
+                System.out.println(e.getMessage());
+            }
+        }
         invoiceDetail.setCantidadItem(cantidad);
 
         String precio = "";
         while(true){
-            System.out.println("Precio unitario *: ");
+            System.out.print("Precio unitario *: ");
             precio = scan.nextLine().trim();
             try{
                 Validations.validarCampoObligatorio(precio);
@@ -222,7 +232,7 @@ public class InvoicesDetails {
         int resultado = invoiceDetail.registrarItemFactura();
 
         if (resultado == 1) {
-            System.out.println("detalle registrado con éxito.");
+            System.out.println("Detalle registrado con éxito.");
         } else {
             System.out.println("Ha ocurrido un error al registrar el detalle.");
         }
@@ -234,12 +244,6 @@ public class InvoicesDetails {
      * Es posible dejar campos en blanco para mantener su valor actual
      */
     public void actualizarDetalle(int r) {
-        String idDetalle = invoiceDetail.capturarIdLista(r);
-        if (idDetalle == null) {
-            System.out.println("Registro extraño");
-            return;
-        }
-
         List<String> detalle = invoiceDetail.cargarDatosDetalle(r);
         if (detalle.isEmpty()) {
             System.out.println("No se encontró el registro especificado");
@@ -259,16 +263,22 @@ public class InvoicesDetails {
         }
         System.out.println(separador);
 
-        System.out.print("Nueva factura: ");
-        String np = scan.nextLine();
-        String nuevoIdFactura = detalle.get(0);
-
-        if (!np.isEmpty()) {
-            int idNuevo = Integer.parseInt(np);
-            if (idNuevo > 0 && idNuevo <= facturas.size()) {
-                nuevoIdFactura = facturas.get(idNuevo - 1).get(0);
-            } else {
-                System.out.println("Factura no válida.");
+        String np = "";
+        String nuevoIdFactura = "";
+        while(true){
+            System.out.print("Nueva factura: ");
+            np = scan.nextLine().trim();
+            if(np.isEmpty()){
+                nuevoIdFactura = detalle.get(1);
+                break;
+            }else{
+                try{
+                    Validations.validarRangoNumeros(np, 1, facturas.size());
+                    nuevoIdFactura = facturas.get(Integer.parseInt(np) - 1).get(0);
+                    break;
+                }catch(FormatException e){
+                    System.out.println(e.getMessage());
+                }
             }
         }
 
@@ -282,26 +292,57 @@ public class InvoicesDetails {
         }
         System.out.println(separador);
 
-        System.out.print("Nuevo producto: ");
-        String nm = scan.nextLine();
-        String nuevoIdProducto = detalle.get(2);
-
-        if (!nm.isEmpty()) {
-            int idNuevoProducto = Integer.parseInt(nm);
-            if (idNuevoProducto > 0 && idNuevoProducto <= productos.size()) {
-                nuevoIdProducto = productos.get(idNuevoProducto - 1).get(0);
-            } else {
-                System.out.println("Producto no válida.");
+        String nm = "";
+        String nuevoIdProducto = "";
+        while(true){
+            System.out.print("Nuevo producto: ");
+            nm = scan.nextLine().trim();
+            if(nm.isEmpty()){
+                nuevoIdProducto = detalle.get(2);
+                break;
+            }else{
+                try{
+                    Validations.validarRangoNumeros(nm, 1, productos.size());
+                    nuevoIdProducto = productos.get(Integer.parseInt(nm) - 1).get(0);
+                    break;
+                }catch(FormatException e){
+                    System.out.println(e.getMessage());
+                }
+            }
+        }
+        String nuevaCantidad = "";
+        while(true){
+            System.out.print("Cantidad: ");
+            nuevaCantidad = scan.nextLine().trim();
+            if(nuevaCantidad.isEmpty()){
+                nuevaCantidad = detalle.get(3);
+                break;
+            }else{
+                try{
+                    Validations.validarRangoNumeros(nuevaCantidad, 1, 100);
+                    break;
+                }catch (FormatException e){
+                    System.out.println(e.getMessage());
+                }
             }
         }
 
-        System.out.print("Cantidad: ");
-        String nuevaCantidad = scan.nextLine();
-        if (nuevaCantidad.isEmpty()) nuevaCantidad = detalle.get(3);
-
-        System.out.print("Precio: ");
-        String nuevoPrecio = scan.nextLine();
-        if (nuevoPrecio.isEmpty()) nuevoPrecio = detalle.get(4);
+        String nuevoPrecio = "";
+        while(true){
+            System.out.print("Precio unitario: ");
+            nuevoPrecio = scan.nextLine().trim();
+            if(nuevoPrecio.isEmpty()){
+                nuevoPrecio = detalle.get(4);
+                break;
+            }else{
+                try{
+                    Validations.validarDecimales(nuevoPrecio);
+                    break;
+                }catch (FormatException e){
+                    System.out.println(e.getMessage());
+                }
+            }
+        }
 
         // Actualizar el detalle
         invoiceDetail.actualizarDetalle(r, nuevoIdFactura, nuevoIdProducto, nuevaCantidad, nuevoPrecio);
