@@ -1,7 +1,10 @@
 package src.views;
 
 import src.controllers.ConsultationsController;
+import src.validations.FormatException;
+import src.validations.Validations;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Scanner;
 
@@ -26,7 +29,7 @@ public class Consultations {
 
         boolean active = true;
         while (active) {
-            System.out.println("\uD83D\uDC36 Qué haremos hoy?");
+            System.out.println("\uD83E\uDD15 Qué haremos hoy?");
             System.out.println("1. Listar Consultas");
             System.out.println("2. Registrar Consultas");
             System.out.println("3. Actualizar Consultas");
@@ -34,36 +37,67 @@ public class Consultations {
             System.out.println("5. Volver al menú principal");
             System.out.println(separador.repeat(50));
             System.out.print("Seleccione una opción: ");
-            int choice = scan.nextInt();
+            String choice = scan.nextLine().trim();
 
-            switch (choice) {
-                case 1:
-                    cargarConsultas();
-                    System.out.println(separador.repeat(70));
-                    break;
-                case 2:
-                    registrarConsulta();
-                    break;
-                case 3:
-                    cargarConsultas();
-                    System.out.print("Ingrese el número de registro a actualizar: ");
-                    int r = scan.nextInt();
-                    scan.nextLine();
-                    actualizarConsulta(r);
-                    break;
-                case 4:
-                    cargarConsultas();
-                    System.out.print("Ingrese el número de registro a eliminar: ");
-                    int registro = scan.nextInt();
-                    scan.nextLine();
-                    desactivarConsulta(registro);
-                    break;
-                case 5:
-                    active = false;
-                    System.out.println("Cerrando menú...");
-                    break;
-                default:
-                    System.out.println("El valor ingresado no corresponde a una opción de menú");
+            if(!choice.isEmpty()){
+                try{
+                    Validations.validarRangoNumeros(choice, 1, 5);
+                    switch (Integer.parseInt(choice)) {
+                        case 1:
+                            cargarConsultas();
+                            break;
+                        case 2:
+                            registrarConsulta();
+                            System.out.println(separador.repeat(50));
+                            break;
+                        case 3:
+                            cargarConsultas();
+                            String r = "";
+                            while (true){
+                                System.out.print("Ingrese el número de registro a actualizar: ");
+                                r = scan.nextLine().trim();
+                                try{
+                                    Validations.validarNumeros(r);
+                                    break;
+                                }catch(FormatException e){
+                                    System.out.println(e.getMessage());
+                                }
+                            }
+                            if(r.isEmpty()){
+                                break;
+                            }else{
+                                actualizarConsulta(Integer.parseInt(r));
+                                System.out.println(separador.repeat(50));
+                                break;
+                            }
+                        case 4:
+                            cargarConsultas();
+                            String registro = "";
+                            while(true){
+                                System.out.print("Ingrese el número de registro a eliminar: ");
+                                registro = scan.nextLine().trim();
+                                try{
+                                    Validations.validarNumeros(registro);
+                                    break;
+                                }catch(FormatException e){
+                                    System.out.println(e.getMessage());
+                                }
+                            }
+                            if(registro.isEmpty()){
+                               break;
+                            }else{
+                                desactivarConsulta(Integer.parseInt(registro));
+                                System.out.println(separador.repeat(50));
+                                break;
+                            }
+                        case 5:
+                            active = false;
+                            System.out.println("Cerrando menú...");
+                            break;
+                    }
+                }catch (FormatException e){
+                    System.out.println(e.getMessage());
+                }
             }
         }
     }
@@ -129,64 +163,107 @@ public class Consultations {
         }
         System.out.println(separador);
         // Solicita al usuario seleccionar un doctor
-        System.out.print("Seleccione al doctor/a: ");
-        int valor = scan.nextInt();
-        scan.nextLine();
-
-        if (valor > 0 && valor <= consultation.listaDoctores().size()) {
-            String id = consultation.capturarIdListaDoctores(valor);
-            consultation.setIdDoctor(id);
-
-            System.out.println(separador);
-            // Muestra la lista de mascotas para elegir
-            System.out.printf("| %-5s | %-50s |\n", "No.", "Mascota");
-            System.out.println(separador);
-
-            for (int c = 0; c < consultation.listaMascotas().size(); c++) {
-                List<String> mascota = consultation.listaMascotas().get(c);
-                System.out.printf("| %-5d | %-50s |\n", (c + 1), mascota.get(1));
+        String valor = "";
+        while(true){
+            System.out.print("Seleccione al doctor/a *: ");
+            valor = scan.nextLine().trim();
+            try{
+                Validations.validarCampoObligatorio(valor);
+                Validations.validarRangoNumeros(valor, 1, doctores.size());
+                break;
+            }catch (FormatException e){
+                System.out.println(e.getMessage());
             }
-            System.out.println(separador);
-            // Selecciona una mascota
-            System.out.print("Seleccione la mascota: ");
-            int v = scan.nextInt();
-            scan.nextLine();
+        }
 
-            if (v > 0 && v <= consultation.listaMascotas().size()) {
-                // Asigna el id de la mascota seleccionada
-                String n = consultation.capturarIdListaMascotas(v);
-                consultation.setIdMascota(n);
-                // Solicita al usuario ingresar los diversos datos requeridos
-                System.out.println("Motivo de la consulta: ");
-                String motivoConsulta = scan.nextLine();
-                consultation.setMotivoConsulta(motivoConsulta);
+        String id = consultation.capturarIdListaDoctores(Integer.parseInt(valor));
+        consultation.setIdDoctor(id);
 
-                System.out.println("Fecha de consulta (YYYY-MM-DD): ");
-                String fechaConsulta = scan.nextLine();
-                consultation.setFechaConsulta(fechaConsulta);
+        System.out.println(separador);
+        // Muestra la lista de mascotas para elegir
+        System.out.printf("| %-5s | %-50s |\n", "No.", "Mascota");
+        System.out.println(separador);
 
-                System.out.println("Diagnostico: ");
-                String diagnostico = scan.nextLine();
-                consultation.setDiagnosticoConsulta(diagnostico);
+        for (int c = 0; c < consultation.listaMascotas().size(); c++) {
+            List<String> mascota = consultation.listaMascotas().get(c);
+            System.out.printf("| %-5d | %-50s |\n", (c + 1), mascota.get(1));
+        }
+        System.out.println(separador);
 
-                System.out.println("Notas: ");
-                String notas = scan.nextLine();
-                consultation.setNotasConsulta(notas);
-
-                Boolean visibilidad = true;
-                consultation.setVisibilidadConsulta(visibilidad);
-
-                // Llama al controlador para registrar la nueva consulta
-                int resultado = consultation.registrarConsulta();
-
-                if (resultado == 1) {
-                    System.out.println("Consulta registrada con éxito.");
-                } else {
-                    System.out.println("Ha ocurrido un error al registrar la consulta.");
-                }
-            } else {
-                System.out.println("Selección de persona inválida.");
+        String v = "";
+        while(true){
+            System.out.print("Seleccione la mascota *: ");
+            v = scan.nextLine().trim();
+            try{
+                Validations.validarCampoObligatorio(v);
+                Validations.validarRangoNumeros(v, 1, consultation.listaMascotas().size());
+                break;
+            }catch (FormatException e){
+                System.out.println(e.getMessage());
             }
+        }
+
+        String n = consultation.capturarIdListaMascotas(Integer.parseInt(v));
+        consultation.setIdMascota(n);
+
+        String motivoConsulta = "";
+        // Solicita al usuario ingresar los diversos datos requeridos
+        while(true){
+            System.out.print("Motivo de la consulta *: ");
+            motivoConsulta = scan.nextLine().trim();
+            try {
+                Validations.validarCampoObligatorio(motivoConsulta);
+                break;
+            }catch (FormatException e){
+                System.out.println(e.getMessage());
+            }
+        }
+        consultation.setMotivoConsulta(motivoConsulta);
+
+        String fechaConsulta = "";
+        while(true){
+            System.out.print("Fecha de consulta *: ");
+            fechaConsulta = scan.nextLine().trim();
+            try{
+                Validations.validarCampoObligatorio(fechaConsulta);
+                Validations.validarRangoFechas(fechaConsulta, LocalDate.now().minusYears(1), LocalDate.now());
+                break;
+            }catch (FormatException e){
+                System.out.println(e.getMessage());
+            }
+        }
+        consultation.setFechaConsulta(fechaConsulta);
+
+        String diagnostico = "";
+        while(true){
+            System.out.print("Diagnostico *: ");
+            diagnostico = scan.nextLine().trim();
+            try{
+                Validations.validarCampoObligatorio(diagnostico);
+                break;
+            }catch (FormatException e){
+                System.out.println(e.getMessage());
+            }
+        }
+        consultation.setDiagnosticoConsulta(diagnostico);
+
+        System.out.print("Notas: ");
+        String notas = scan.nextLine().trim();
+        if(notas.isEmpty()){
+            notas = null;
+        }
+        consultation.setNotasConsulta(notas);
+
+        Boolean visibilidad = true;
+        consultation.setVisibilidadConsulta(visibilidad);
+
+        // Llama al controlador para registrar la nueva consulta
+        int resultado = consultation.registrarConsulta();
+
+        if (resultado == 1) {
+            System.out.println("Consulta registrada con éxito.");
+        } else {
+            System.out.println("Ha ocurrido un error al registrar la consulta.");
         }
     }
 
@@ -196,11 +273,6 @@ public class Consultations {
      * El parametro es el indice de la consulta a actualizar
      */
     public void actualizarConsulta(int r) {
-        String idConsulta = consultation.capturarIdLista(r);
-        if (idConsulta == null) {
-            System.out.println("Registro extraño");
-            return;
-        }
         // Carga los datos actuales de la consulta
         List<String> consulta = consultation.cargarDatosConsulta(r);
         if (consulta.isEmpty()) {
@@ -222,17 +294,23 @@ public class Consultations {
             System.out.printf("| %-5d | %-50s |\n", (i + 1), nombreDoctor);
         }
         System.out.println(separador);
-        // Se solicita el nuevo doctor, o se puede dejar vacio si es el mismo
-        System.out.print("Nuevo doctor: ");
-        String np = scan.nextLine();
-        String nuevoIdDoctor = consulta.get(6); // ID actual del doctor
 
-        if (!np.isEmpty()) {
-            int idNuevo = Integer.parseInt(np);
-            if (idNuevo > 0 && idNuevo <= doctores.size()) {
-                nuevoIdDoctor = doctores.get(idNuevo - 1).get(0);
-            } else {
-                System.out.println("Doctor no válido.");
+        String np = "";
+        String nuevoIdDoctor = "";
+        while(true){
+            System.out.print("Nuevo doctor: ");
+            np = scan.nextLine().trim();
+            if(np.isEmpty()){
+                nuevoIdDoctor = consulta.get(6);
+                break;
+            }else{
+                try{
+                    Validations.validarRangoNumeros(np, 1, doctores.size());
+                    nuevoIdDoctor = doctores.get(Integer.parseInt(np) - 1).get(0);
+                    break;
+                }catch (FormatException e){
+                    System.out.println(e.getMessage());
+                }
             }
         }
 
@@ -247,34 +325,56 @@ public class Consultations {
         }
         System.out.println(separador);
 
-        // Permite al usuario seleccionar la nueva mascota, o dejar vacio para mantener la actual
-        System.out.print("Nueva mascota: ");
-        String nm = scan.nextLine();
-        String nuevoIdMascota = consulta.get(5);
-
-        if (!nm.isEmpty()) {
-            int idNuevaMascota = Integer.parseInt(nm);
-            if (idNuevaMascota > 0 && idNuevaMascota <= mascotas.size()) {
-                nuevoIdMascota = mascotas.get(idNuevaMascota - 1).get(0);
-            } else {
-                System.out.println("Mascota no válida.");
+        String nm = "";
+        String nuevoIdMascota = "";
+        while(true){
+            System.out.print("Nueva mascota: ");
+            nm = scan.nextLine().trim();
+            if(nm.isEmpty()){
+                nuevoIdMascota = consulta.get(5);
+                break;
+            }else{
+                try{
+                    Validations.validarRangoNumeros(nm, 1, mascotas.size());
+                    nuevoIdMascota = mascotas.get(Integer.parseInt(nm) - 1).get(0);
+                    break;
+                }catch (FormatException e){
+                    System.out.println(e.getMessage());
+                }
             }
         }
+
         // Solicita el nuevo motivo de la consulta, se puede dejar el actual
         System.out.print("Nuevo motivo de consulta: ");
-        String nuevoMotivo = scan.nextLine();
+        String nuevoMotivo = scan.nextLine().trim();
         if (nuevoMotivo.isEmpty()) nuevoMotivo = consulta.get(2);
+
         // Solicita la nueva fecha de la consulta, se puede dejar la actual
-        System.out.print("Nueva fecha de consulta: ");
-        String nuevaFecha = scan.nextLine();
-        if (nuevaFecha.isEmpty()) nuevaFecha = consulta.get(1);
+        String nuevaFecha = "";
+        while(true){
+            System.out.print("Nueva fecha de consulta: ");
+            nuevaFecha = scan.nextLine().trim();
+            if(nuevaFecha.isEmpty()){
+                nuevaFecha = consulta.get(1);
+                break;
+            }else{
+                try{
+                    Validations.validarRangoFechas(nuevaFecha, LocalDate.now().minusYears(1), LocalDate.now());
+                    break;
+                }catch (FormatException e){
+                    System.out.println(e.getMessage());
+                }
+            }
+        }
+
         // Solicita el nuevo diagnostico de la consulta, se puede dejar la actual
         System.out.print("Nuevo diagnostico: ");
-        String nuevoDiagnostico = scan.nextLine();
+        String nuevoDiagnostico = scan.nextLine().trim();
         if (nuevoDiagnostico.isEmpty()) nuevoDiagnostico = consulta.get(3);
+
         //Solicita las nuevas notas de la consulta, se puede dejar la actual
         System.out.print("Nuevas notas: ");
-        String nuevaNota = scan.nextLine();
+        String nuevaNota = scan.nextLine().trim();
         if (nuevaNota.isEmpty()) nuevaNota = consulta.get(4);
 
         Boolean visibilidad = true;
