@@ -5,18 +5,16 @@ import src.controllers.OwnersPetsDetailsController;
 import java.util.List;
 import java.util.Scanner;
 
-/*
- * Vista de detalles de propietarios con mascotas
- *  Interactua con el usuario para gestionar el detalles de propietarios con mascotas
- * Permite listar, registrar, actualizar y eliminar registros
- * Se comunica con el controlador OwnersPetsDetailsController para realizar las opciones
+/**
+ * Vista: OwnerPetsDetails
+ * Contiene los métodos necesarios para administrar los detalles de la relación propietario-mascota
  */
 public class OwnersPetsDetails {
     Scanner scan = new Scanner(System.in);
     public OwnersPetsDetailsController detail = new OwnersPetsDetailsController();
 
-    /*
-     * Muestra el menu
+    /**
+     * Menú de opciones para administrar los datos
      */
     public void detailMenu() {
         Scanner scan = new Scanner(System.in);
@@ -66,10 +64,8 @@ public class OwnersPetsDetails {
         }
     }
 
-    /*
-     * Carga y muestra la lista de detalles en formato de tabla
-     * Se obtienen las listas de detalles, mascotas y propietarios a traves del controlador
-     * Se muestra la informacion por columnas
+    /**
+     * Carga todos los detalles almacenados en la base de datos
      */
     public void cargarDetalles() {
         detail.llenarListas();
@@ -103,11 +99,8 @@ public class OwnersPetsDetails {
         }
     }
 
-    /*
-     * Registra a un nuevo detalle
-     * Muetsra primero la lista de registros disponibles para seleccionar el propietario
-     * Luego, muestra la lista de ciudades para elegir la mascota
-     * Ademas, se guard el tipo de propietario, hay dos: el principal y el secundario
+    /**
+     * Registra nuevos detalles de la relación propietario-mascota
      */
     public void registrarDetalle() {
         detail.llenarListas();
@@ -180,9 +173,10 @@ public class OwnersPetsDetails {
         }
     }
 
-    /*
-     * Actualiza los datos del detalle
-     * Solicita la nueva informacion y actualiza con esos nuevos valores
+    /**
+     * Actualiza un detalle existente
+     * @param r número de registro
+     * Es posible dejar campos en blanco para mantener su valor actual
      */
     public void actualizarDetalle(int r) {
         String idDetalle = detail.capturarIdLista(r);
@@ -255,8 +249,9 @@ public class OwnersPetsDetails {
         detail.actualizarDetalle(r, nuevoTipoPropietario, nuevoIdMascota, nuevoIdPropietario);
     }
 
-    /*
-     * Elimina un registro de detalle
+    /**
+     * Elimina un detalle
+     * @param registro número de registro
      */
     public void eliminarDetalle(int registro) {
         detail.eliminarDetalle(registro);
