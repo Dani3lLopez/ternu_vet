@@ -1,4 +1,4 @@
-# Sistema de Gestión Veterinaria 🐾
+# TernuVet-System 🐾
 
 ![License](https://img.shields.io/badge/License-MIT-blue.svg) ![Java](https://img.shields.io/badge/Java-8%2B-orange.svg)
 
@@ -22,28 +22,28 @@ Este proyecto está diseñado para gestionar una clínica veterinaria. Es ideal 
 - **Gestión de Servicios**: Registrar y actualizar la información de los servicios.
 - **Interfaz en Consola**: El sistema es operado a través de la consola.
 
-## 📂 Estructura del Proyecto
+##  Estructura del Proyecto 📂
 
 ```plaintext
 │── src
 │   ├── app
 │   │   ├── Main
 │   │   ├── NotasProyecto
-│   │   ├── Controllers
-│   │   │   ├── AppointmentsController
-│   │   │   ├── ConsultationsController
-│   │   │   ├── DoctorsController
-│   │   │   ├── InvoicesController
-│   │   │   ├── InvoicesDetailsController
-│   │   │   ├── OwnersController
-│   │   │   ├── OwnersPetsDetailsController
-│   │   │   ├── PeopleController
-│   │   │   ├── PetsController
-│   │   │   ├── ProductsController
-│   │   │   ├── ServicesController
-│   │   │   ├── SpecialtiesController
-│   │   │   ├── UsersController
-│   ├── Models
+│   ├── controllers
+│   │   ├── AppointmentsController
+│   │   ├── ConsultationsController
+│   │   ├── DoctorsController
+│   │   ├── InvoicesController
+│   │   ├── InvoicesDetailsController
+│   │   ├── OwnersController
+│   │   ├── OwnersPetsDetailsController
+│   │   ├── PeopleController
+│   │   ├── PetsController
+│   │   ├── ProductsController
+│   │   ├── ServicesController
+│   │   ├── SpecialtiesController
+│   │   ├── UsersController
+│   ├── models
 │   │   ├── AppointmentsModel
 │   │   ├── ConnectionModel
 │   │   ├── ConsultationsModel
@@ -58,7 +58,7 @@ Este proyecto está diseñado para gestionar una clínica veterinaria. Es ideal 
 │   │   ├── ServicesModel
 │   │   ├── SpecialtiesModel
 │   │   ├── UsersModel
-│   ├── Views
+│   ├── views
 │   │   ├── Appointments
 │   │   ├── Consultations
 │   │   ├── Doctors
@@ -77,6 +77,16 @@ Este proyecto está diseñado para gestionar una clínica veterinaria. Es ideal 
 │   ├── mariadb-java-client-2.7.12.jar
 
 ```
+
+## Ultimas Actualizaciones 🆕
+
+- **Renombramiento de paquetes**: Los paquetes del proyecto fueron renombrados.
+- **Documentación interna Javadoc**: Cada clase tiene sus respectivos comentarios que generan un Javadoc.
+- **Validación de campos**: Se implementan validaciones en los campos de entrada de datos para asegurar el correcto funcionamiento del proyecto.
+- **Encriptación de contraseñas**: (Nueva funcionalidad) el sistema encripta contraseñas antes de enviar los datos a la base de datos.
+- **Cambio en la clase de conexión**: Se ha definido un parámetro para el nombre de la base de datos, esto facilita el cambio entre la base de testing y la original.
+- **Implementación de testing**: Se han implementado pruebas con JUnit 5.12.1 Jupiter.
+- **Errores solucionados**: Errores encontrados han sido solucionados.
 
 ## Requisitos 📌
 
@@ -110,5 +120,18 @@ Antes de comenzar, asegúrate de tener instalados los siguientes programas en tu
    - ![image](https://github.com/user-attachments/assets/f9c681ad-674b-4414-9b37-12065de6f754)
    - Buscar el archivo JAR y cargarlo en el programa.
 
+## Instrucciones para generar JAVADOC 📄
 
- 
+1. **Clic en "Tools" dentro del proyecto:**
+
+   ![image](https://github.com/user-attachments/assets/c9d7ea6a-0b99-403c-9c2e-32eb57dee7a0)
+
+
+2. **Selecciona: "Generate Javadoc"**
+
+   ![image](https://github.com/user-attachments/assets/81f9b065-5e4f-4027-a6ef-48c736e5fe16)
+
+
+   **Configuración necesaria:**
+   
+  ![javadoc](https://github.com/user-attachments/assets/5870ae04-78b6-414c-88ac-9fd76d59ebb0)
