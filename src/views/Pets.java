@@ -40,65 +40,64 @@ public class Pets {
             if(!choice.isEmpty()){
                 try{
                     Validations.validarRangoNumeros(choice, 1, 5);
-                    break;
+                    Pets actual = new Pets(); // Genera una nueva instancia de la clase Pets
+
+                    // Usamos un switch para que se ejecute la acción que corresponda a la opción deseada
+                    switch (Integer.parseInt(choice)) {
+                        case 1:
+                            cargarMascotas();
+                            break;
+                        case 2:
+                            registrarMascota();
+                            System.out.println("-".repeat(50));
+                            break;
+                        case 3:
+                            actual.cargarMascotas(); // Muestra la lista de mascotas antes de hacer cambios
+                            String registroActualizar;
+                            while (true) {
+                                System.out.print("Ingrese el número de registro a actualizar: ");
+                                registroActualizar = scan.nextLine().trim();
+                                try{
+                                    Validations.validarNumeros(registroActualizar);
+                                    break;
+                                }catch(FormatException e){
+                                    System.out.println(e.getMessage());
+                                }
+                            }
+                            if(registroActualizar.isEmpty()){
+                                break;
+                            }else{
+                                actual.actualizarMascota(Integer.parseInt(registroActualizar)); // Llama al método para actualizar una mascota
+                                System.out.println("-".repeat(50));
+                                break;
+                            }
+                        case 4:
+                            actual.cargarMascotas();
+                            String registroEliminar;
+                            while (true) {
+                                System.out.print("Ingrese el número de registro a eliminar: ");
+                                registroEliminar = scan.nextLine().trim();
+                                try{
+                                    Validations.validarNumeros(registroEliminar);
+                                    break;
+                                }catch(FormatException e){
+                                    System.out.println(e.getMessage());
+                                }
+                            }
+                            if(registroEliminar.isEmpty()){
+                                break;
+                            }else{
+                                actual.eliminarMascota(Integer.parseInt(registroEliminar));
+                                System.out.println("-".repeat(50));
+                                break;
+                            }
+                        case 5:
+                            active = false; // Aquí se sale del bucle
+                            System.out.println("Cerrando menú...");
+                            break;
+                    }
                 }catch(FormatException e){
                     System.out.println(e.getMessage());
-                }
-                Pets actual = new Pets(); // Genera una nueva instancia de la clase Pets
-
-                // Usamos un switch para que se ejecute la acción que corresponda a la opción deseada
-                switch (Integer.parseInt(choice)) {
-                    case 1:
-                        cargarMascotas();
-                        break;
-                    case 2:
-                        registrarMascota();
-                        System.out.println("-".repeat(50));
-                        break;
-                    case 3:
-                        actual.cargarMascotas(); // Muestra la lista de mascotas antes de hacer cambios
-                        String registroActualizar;
-                        while (true) {
-                            System.out.print("Ingrese el número de registro a actualizar: ");
-                            registroActualizar = scan.nextLine().trim();
-                            try{
-                                Validations.validarNumeros(registroActualizar);
-                                break;
-                            }catch(FormatException e){
-                                System.out.println(e.getMessage());
-                            }
-                        }
-                        if(registroActualizar.isEmpty()){
-                            break;
-                        }else{
-                            actual.actualizarMascota(Integer.parseInt(registroActualizar)); // Llama al método para actualizar una mascota
-                            System.out.println("-".repeat(50));
-                            break;
-                        }
-                    case 4:
-                        actual.cargarMascotas();
-                        String registroEliminar;
-                        while (true) {
-                            System.out.print("Ingrese el número de registro a eliminar: ");
-                            registroEliminar = scan.nextLine().trim();
-                            try{
-                                Validations.validarNumeros(registroEliminar);
-                                break;
-                            }catch(FormatException e){
-                                System.out.println(e.getMessage());
-                            }
-                        }
-                        if(registroEliminar.isEmpty()){
-                            break;
-                        }else{
-                            actual.eliminarMascota(Integer.parseInt(registroEliminar));
-                            System.out.println("-".repeat(50));
-                            break;
-                        }
-                    case 5:
-                        active = false; // Aquí se sale del bucle
-                        System.out.println("Cerrando menú...");
-                        break;
                 }
             }
         }
