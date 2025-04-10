@@ -9,9 +9,9 @@ import java.time.LocalTime;
 import java.util.List;
 import java.util.Scanner;
 
-/*
- * Esta vista gestiona la interaccion con el usuario para listar, crear y desactivar facturas
- * Muestra las opciones, captura entradas y llama a los metodos correspondientes a la solicitud
+/**
+ * Vista: Invoices
+ * Contiene los métodos necesarios para administrar las facturas
  */
 public class Invoices {
 
@@ -20,10 +20,8 @@ public class Invoices {
     // Instancia del controlador para las operaciones de facturas
     public InvoicesController invoice = new InvoicesController();
 
-    /*
-     * Muestra el menu
-     * Gestiona la solicitud hecha por el usuario. Con base a la opcion seleccionada
-     * se llaman a los metodos correspondientes y si se necesitan parametros se solicitan
+    /**
+     * Menú de opciones para administrar los datos de las facturas
      */
     public void invoiceMenu() {
         Scanner scan = new Scanner(System.in);
@@ -78,8 +76,9 @@ public class Invoices {
             }
         }
     }
-    /*
-     * Carga la lista de facturas desde el controlador y las muestra en formato tabular
+
+    /**
+     * Carga todas las facturas obtenidas de la base de datos
      */
     public void cargarFacturas(){
         invoice.llenarListas();
@@ -104,7 +103,7 @@ public class Invoices {
                 // En la lista de propietarios, busca el registro que coincide con el idPropietario
                 for (List<String> propietario : invoice.listaPropietarios()) {
                     if (propietario.get(0).equalsIgnoreCase(idPropietario)) {
-                        // el id del propietario está justamente en la posicion 1 del registro
+                        // el id del propietario está justamente en la posición 1 del registro
                         idPersonaPropietario = propietario.get(1);
                         break;
                     }
@@ -119,12 +118,11 @@ public class Invoices {
         }
     }
 
-    /*
-     * Solicita al usuario los datos para crear la nueva factura
-     * Llama al controlador para registrar la factura en la base de datos
+    /**
+     * Crea un nuevo registro de factura
      */
     public void crearFactura() {
-        // Actualiza las listas para tener los datos mas recientes
+        // Actualiza las listas para tener los datos más recientes
         invoice.llenarListas();
 
         String separador = "-".repeat(70);
@@ -159,7 +157,7 @@ public class Invoices {
         String idPropietario = propietarios.get(Integer.parseInt(valor) - 1).get(0);
         invoice.setIdPropietario(idPropietario);
 
-        // Establece la fecha y hora de emision de la factura (actuales a la hora de hacerlo)
+        // Establece la fecha y hora de emisión de la factura (actuales a la hora de hacerlo)
         LocalDate fecha = LocalDate.now();
         LocalTime hora = LocalTime.now();
         invoice.setFechaEmisionFactura(fecha.toString());
@@ -178,8 +176,10 @@ public class Invoices {
             System.out.println("Ha ocurrido un error al crear la factura.");
         }
     }
-    /*
-     * Desactiva una factura por su indice en la lista
+
+    /**
+     * Desactiva el registro de una factura
+     * @param registro número de registro correspondiente a una factura
      */
     public void desactivarFactura(int registro) {
         invoice.desactivarFactura(registro);

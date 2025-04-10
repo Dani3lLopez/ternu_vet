@@ -9,24 +9,30 @@ import java.util.Scanner;
 import src.validations.FormatException;
 import src.validations.Validations;
 
+/**
+ * Vista: Pets
+ * Contiene los métodos necesarios para administrar a las mascotas
+ */
 public class Pets {
     Scanner scan = new Scanner(System.in); // creamos un objeto scanner para leer la entrada del usuario
-    public PetsController pet = new PetsController(); // creamos una instacia del controlador
+    public PetsController pet = new PetsController(); // creamos una instancia del controlador
 
-    // Creamos un método para poder mostrar el menú
+    /**
+     * Menú de opciones para administrar los datos de las mascotas
+     */
     public void petMenu() {
         String separador = "-";
 
         boolean active = true;
         while (active) {
-            // Permitira mostrar todas las opciones del menú
+            // Permitirá mostrar todas las opciones del menú
             System.out.println("\uD83D\uDC36 Qué haremos hoy?");
             System.out.println("1. Listar Mascotas");
             System.out.println("2. Registrar Mascota");
             System.out.println("3. Actualizar Mascota");
             System.out.println("4. Eliminar Mascota");
             System.out.println("5. Volver al menú principal");
-            System.out.println(separador.repeat(50)); // Imprime una line separadora
+            System.out.println(separador.repeat(50)); // Imprime una linea separadora
 
             String choice; // Esta variable es para almacenar la opción elegida por el usuario
             System.out.print("Seleccione una opción: ");
@@ -40,8 +46,7 @@ public class Pets {
                 }
                 Pets actual = new Pets(); // Genera una nueva instancia de la clase Pets
 
-                // Usamos un switch para que se ejecute la acción que corresponda a la opción
-                // elegida
+                // Usamos un switch para que se ejecute la acción que corresponda a la opción deseada
                 switch (Integer.parseInt(choice)) {
                     case 1:
                         cargarMascotas();
@@ -66,8 +71,7 @@ public class Pets {
                         if(registroActualizar.isEmpty()){
                             break;
                         }else{
-                            actual.actualizarMascota(Integer.parseInt(registroActualizar)); // Llama al método para actualizar
-                            // una moscata
+                            actual.actualizarMascota(Integer.parseInt(registroActualizar)); // Llama al método para actualizar una mascota
                             System.out.println("-".repeat(50));
                             break;
                         }
@@ -100,17 +104,19 @@ public class Pets {
         }
     }
 
-    // Hicimos otro método para poder cargar y enseñar la lista de mascotas
+    /**
+     * Carga los datos de las mascotas desde la base de datos
+     */
     public void cargarMascotas() {
         pet.cargarListaMascotas();
-        // Verificamos si la lista está vacia
+        // Verificamos si la lista está vacía
         if (pet.getListaMascotas().isEmpty()) {
             System.out.println("No hay mascotas registradas.");
         } else {
-            // De haber mascotas, las muestrará en una tabla
+            // De haber mascotas, las mostrará en una tabla
             String separador = "-".repeat(120);
             System.out.println(separador);
-            // Mostrará la cabezera de la tabla con los nombres de las columnas
+            // Mostrará la cabecera de la tabla con los nombres de las columnas
             System.out.printf("| %-5s | %-20s | %-20s | %-15s | %-30s | %-15s |\n", "No.", "Nombre", "Color", "Peso",
                     "Genero", "Fallecido");
             System.out.println(separador);
@@ -139,7 +145,9 @@ public class Pets {
         }
     }
 
-    // Otro método para los registro de nuevas máscotas dentro del sistema
+    /**
+     * Registra mascotas nuevas en la base de datos
+     */
     public void registrarMascota() {
         String nombreMascota;
 
@@ -158,7 +166,7 @@ public class Pets {
         }
         pet.setNombreMascota(nombreMascota); // Agrega el nombre en el controlador
 
-        // Permitira pedir y guardar información extra de la mascota a registrar
+        // Permitirá pedir y guardar información extra de la mascota a registrar
         System.out.print("Color de la mascota: ");
         String colorMascota = scan.nextLine().trim();
         if (colorMascota.isEmpty()) {
@@ -226,7 +234,7 @@ public class Pets {
         System.out.println("1. Masculino");
         System.out.println("2. Femenino");
 
-        // Este bucle permite establecer el genero de la mascota
+        // Este bucle permite establecer el género de la mascota
         while (true) {
             System.out.print("Opción seleccionada: ");
             String opcionGenero = scan.nextLine().trim();
@@ -285,11 +293,11 @@ public class Pets {
                 }
             }
         }
-        pet.setEstadoReproductivoMascota(estadoRMascota); // Agrega el estado repructivo de la mascota
+        pet.setEstadoReproductivoMascota(estadoRMascota); // Agrega el estado reproductivo de la mascota
 
         String fechaNacimientoMascota;
 
-        // Con estee bucle obtenemos la fecha de nacimiento de la mascota
+        // Con este bucle obtenemos la fecha de nacimiento de la mascota
         while (true) {
             System.out.print("Fecha de nacimiento de la mascota: ");
             fechaNacimientoMascota = scan.nextLine();
@@ -365,8 +373,11 @@ public class Pets {
         System.out.println("-".repeat(50));
     }
 
-    // Creamos otro método para poder actualizar la información de las mascotas que
-    // ya estan en el sistema
+    /**
+     * Actualiza registros de mascotas existentes
+     * @param registro número de registro
+     * Es posible dejar campos en blanco para mantener su valor actual
+     */
     public void actualizarMascota(int registro) {
 
         // Muestra la información actual de la mascota desde el registro especificado
@@ -632,8 +643,10 @@ public class Pets {
                 razonesFallecimiento); // Hace todos los cambios realizados
     }
 
-    // También hicimos un método para eliminar una mascota del sistema,
-    // seleccionando su número de registro
+    /**
+     * Elimina un registro de mascota
+     * @param registro número de registro
+     */
     public void eliminarMascota(int registro) {
         pet.eliminarMascota(registro);
     }

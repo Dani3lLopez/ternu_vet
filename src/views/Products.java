@@ -7,11 +7,17 @@ import src.validations.Validations;
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ * Vista: Products
+ * Contiene los métodos necesarios para administrar los productos
+ */
 public class Products {
     Scanner scan = new Scanner(System.in);
     public ProductsController product = new ProductsController();
 
-    // Creamos un método para el menú principal de productos
+    /**
+     * Menú de opciones para administrar los datos
+     */
     public void productMenu() {
         String separador = "-";
 
@@ -102,7 +108,9 @@ public class Products {
         }
     }
 
-    // Hicimos otro método para poder cargar y luego mostrar la lista de productos
+    /**
+     * Carga todos los productos registrados en la base de datos
+     */
     public void cargarProductos() {
         product.cargarListaProductos();
         if (product.getListaProductos().isEmpty()) {
@@ -134,7 +142,9 @@ public class Products {
         }
     }
 
-    // Creamos un método para registrar productos nuevos
+    /**
+     * Registra nuevos productos en la base de datos
+     */
     public void registrarProducto() {
         String nombreProducto;
 
@@ -275,7 +285,11 @@ public class Products {
         }
     }
 
-    // Creamos también otro método para actualizar productos ya existentes
+    /**
+     * Actualiza un producto existente en la base de datos
+     * @param registro número de registro
+     * Es posible dejar campos en blanco para mantener su valor actual
+     */
     public void actualizarProducto(int registro) {
         List<String> producto = product.cargarDatosProducto(registro);
 
@@ -415,7 +429,10 @@ public class Products {
                 pesoProducto, unidadMedidaProducto);
     }
 
-    // Método para poder eleminar productos
+    /**
+     * Elimina un producto de la base de datos
+     * @param registro número de registro
+     */
     public void eliminarProducto(int registro) {
         product.eliminarProducto(registro);
     }

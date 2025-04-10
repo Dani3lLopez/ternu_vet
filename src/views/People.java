@@ -8,21 +8,19 @@ import java.text.Format;
 import java.util.List;
 import java.util.Scanner;
 
-/*
- * Clase de vista (People)
- * Su funcion es realizar la interaccion con el usuario
- * Muestra el menu de opciones para personas, solicita acciones del usuario
- * Ademas, llama a los metodos del controlador
+/**
+ * Vista: People
+ * Contiene los métodos necesarios para administrar a las personas
  */
 public class People {
 
     // Objeto Scanner para leer los datos ingresados en la consola por los usuarios
     Scanner scan = new Scanner(System.in);
-    // Se instancia el controlador para gesrionar la parte logica de People
+    // Objeto del controlador para gestionar la parte lógica de People
     public PeopleController person = new PeopleController();
 
-    /*
-     * Metodo para mostrar el menu de opciones
+    /**
+     * Menú de opciones para administrar los datos de las personas
      */
     public void peopleMenu() {
         Scanner scan = new Scanner(System.in);
@@ -40,12 +38,12 @@ public class People {
             System.out.println(separador.repeat(50));
             System.out.print("Seleccione una opción: ");
 
-            // Guarda la opcion seleccionada por el usuario
+            // Guarda la opción seleccionada por el usuario
             String choice = scan.nextLine().trim();
             if(!choice.isEmpty()){
                 try{
-                    // Se llaman a los metodos correspondientes con base a la opcion seleccionada por el usuario.
-                    // Ademas, si se requeiren ciertos parametros, se solicitan al usuario
+                    // Se llaman a los métodos correspondientes con base a la opción seleccionada por el usuario.
+                    // Si se requieren ciertos parámetros, se solicitan al usuario
                     Validations.validarRangoNumeros(choice, 1, 5);
                     switch (Integer.parseInt(choice)){
                         case 1:
@@ -108,9 +106,8 @@ public class People {
         }
     }
 
-    /*
-     * Carga la lista de personas desde el controlador
-     * Muestro estas personas en la consola
+    /**
+     * Carga los registros de personas obtenidas desde la base de datos
      */
     public void cargarPersonas() {
         // Llama al controlador
@@ -132,9 +129,9 @@ public class People {
             System.out.println(separador);
         }
     }
-    /*
-     * Solicita al usuario los datos de la nueva persona
-     *  Registra los datos a traves del controlador
+
+    /**
+     * Registra una nueva persona en la base de datos
      */
     public void registrarPersona() {
         String nombre = "";
@@ -226,9 +223,10 @@ public class People {
         }
     }
 
-    /*
-     * Actualiza los datos de una persona; solicita a los usuarios los nuevos valores
-     * Permite dejar un campo vacio para mantener el valor que ya tenia
+    /**
+     * Actualiza un registro existente de persona
+     * @param r número de registro
+     * Es posible dejar campos en blanco para mantener su valor actual
      */
     public void actualizarPersona(int r){
         List<String> persona = person.cargarDatosPersona(r);
@@ -296,12 +294,13 @@ public class People {
             }
         }
 
-        // LLama al controlador para realizar la actualizacion
+        // LLama al controlador para realizar la actualización
         person.actualizarPersona(r, nombre, apellido, telefono, email, dui);
     }
 
-    /*
-     * Elimina a una persona con base a su indice en la lista
+    /**
+     * Elimina el registro de una persona de la base de datos
+     * @param registro número de registro
      */
     public void eliminarPersona(int registro) {
         person.eliminarPersona(registro);
