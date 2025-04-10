@@ -100,6 +100,9 @@ public class InvoicesDetails {
     /**
      * Carga los detalles de la factura
      */
+    /**
+     * Carga los detalles de la factura
+     */
     public void cargarDetallesFacturas() {
         invoiceDetail.llenarListas();
         List<List<String>> detalles = invoiceDetail.listaDetallesFacturas();
@@ -123,7 +126,9 @@ public class InvoicesDetails {
                         break;
                     }
                 }
-                String nombreItem = invoiceDetail.capturarNombreItem(idProducto);
+
+                // Llamada al controlador para obtener el nombre del item
+                String nombreItem = invoiceDetail.obtenerNombreItem(idProducto);
 
                 System.out.printf("| %-5d | %-10s | %-50s | %-25s | %-20s |\n", n, numero, nombreItem, cantidad, precio);
                 n++;
