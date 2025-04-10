@@ -1,5 +1,7 @@
 package src.app;
 
+import src.validations.FormatException;
+import src.validations.Validations;
 import src.views.*;
 
 import java.util.Scanner;
@@ -31,72 +33,76 @@ public class Main {
             System.out.println("11. Consultas \uD83E\uDD15");
             System.out.println("12. Detalles-Propietarios-Mascotas \u2764\uFE0F");
             System.out.println("13. Detalles-Facturas \uD83E\uDDFE");
-            System.out.println("❌ Cualquier otra opción para salir ❌");
+            System.out.println("0. Para salir del programa ❌");
             System.out.println(separador);
             System.out.print("Seleccione una opción: ");
-            int choice = scan.nextInt();
-            scan.nextLine();
-            System.out.println(separador);
-
-            //Dependiendo de su elección se ejecuta el menú de la opción seleccionada
-            switch (choice) {
-                case 1:
-                    People ppl = new People();
-                    ppl.peopleMenu();
-                    break;
-                case 2:
-                    Owners owner = new Owners();
-                    owner.ownerMenu();
-                    break;
-                case 3:
-                    Doctors doctor = new Doctors();
-                    doctor.doctorMenu();
-                    break;
-                case 4:
-                    Specialties specialty = new Specialties();
-                    specialty.specialtiesMenu();
-                    break;
-                case 5:
-                    Users user = new Users();
-                    user.userMenu();
-                    break;
-                case 6:
-                    Invoices invoice = new Invoices();
-                    invoice.invoiceMenu();
-                    break;
-                case 7:
-                    Pets pet = new Pets();
-                    pet.petMenu();
-                    break;
-                case 8:
-                    Products product = new Products();
-                    product.productMenu();
-                    break;
-                case 9:
-                    Services service = new Services();
-                    service.serviceMenu();
-                    break;
-                case 10:
-                    Appointments appointment = new Appointments();
-                    appointment.appointmentMenu();
-                    break;
-                case 11:
-                    Consultations consultation = new Consultations();
-                    consultation.consultationMenu();
-                    break;
-                case 12:
-                    OwnersPetsDetails detail = new OwnersPetsDetails();
-                    detail.detailMenu();
-                    break;
-                case 13:
-                    InvoicesDetails invoiceDetail = new InvoicesDetails();
-                    invoiceDetail.invoiceDetailMenu();
-                    break;
-                default:
-                    //Se cierra el programa
-                    active = false;
-                    System.out.println("Cerrando el programa...");
-                    break;
+            String choice = scan.nextLine().trim();
+            if(!choice.isEmpty()) {
+                try{
+                    Validations.validarNumeros(choice);
+                    //Dependiendo de su elección se ejecuta el menú de la opción seleccionada
+                    switch (Integer.parseInt(choice)) {
+                        case 1:
+                            People ppl = new People();
+                            ppl.peopleMenu();
+                            break;
+                        case 2:
+                            Owners owner = new Owners();
+                            owner.ownerMenu();
+                            break;
+                        case 3:
+                            Doctors doctor = new Doctors();
+                            doctor.doctorMenu();
+                            break;
+                        case 4:
+                            Specialties specialty = new Specialties();
+                            specialty.specialtiesMenu();
+                            break;
+                        case 5:
+                            Users user = new Users();
+                            user.userMenu();
+                            break;
+                        case 6:
+                            Invoices invoice = new Invoices();
+                            invoice.invoiceMenu();
+                            break;
+                        case 7:
+                            Pets pet = new Pets();
+                            pet.petMenu();
+                            break;
+                        case 8:
+                            Products product = new Products();
+                            product.productMenu();
+                            break;
+                        case 9:
+                            Services service = new Services();
+                            service.serviceMenu();
+                            break;
+                        case 10:
+                            Appointments appointment = new Appointments();
+                            appointment.appointmentMenu();
+                            break;
+                        case 11:
+                            Consultations consultation = new Consultations();
+                            consultation.consultationMenu();
+                            break;
+                        case 12:
+                            OwnersPetsDetails detail = new OwnersPetsDetails();
+                            detail.detailMenu();
+                            break;
+                        case 13:
+                            InvoicesDetails invoiceDetail = new InvoicesDetails();
+                            invoiceDetail.invoiceDetailMenu();
+                            break;
+                        case 0:
+                            //Se cierra el programa
+                            active = false;
+                            System.out.println("Cerrando el programa...");
+                            break;
+                    }
+                }catch (FormatException e){
+                    System.out.println(e.getMessage());
+                }
             }
         }
     }

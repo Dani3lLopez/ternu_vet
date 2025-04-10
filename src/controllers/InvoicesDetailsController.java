@@ -153,7 +153,6 @@ public class InvoicesDetailsController {
      */
     public String capturarIdListaDetallesItems(int numero) {
         if (numero > 0 && numero <= listaDetallesItems.size()) {
-            System.out.println(listaDetallesItems.get(numero - 1).get(0));
             return listaDetallesItems.get(numero - 1).get(0);
         }
         return null;
