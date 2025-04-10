@@ -174,6 +174,15 @@ public class InvoicesDetailsController {
     }
 
     /**
+     * Método para obtener el nombre del item
+     * @param idDetalleItem id del item
+     * @return nombre del item
+     */
+    public String obtenerNombreItem(String idDetalleItem) {
+        return InvoicesDetailsModel.obtenerNombreItem(idDetalleItem);
+    }
+
+    /**
      * Captura el nombre de un ítem dado su ID de detalle
      * @param idDetalleItem id del detalle del ítem
      * @return nombre del ítem o mensaje de error si no se encuentra

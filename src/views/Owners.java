@@ -127,6 +127,10 @@ public class Owners {
                 String nombre = owner.capturarNombres(propietario.get(1));
                 String ciudad = owner.capturarCiudad(propietario.get(2));
                 String direccion = propietario.get(3);
+                if (direccion == null)
+                {
+                    direccion = "";
+                }
 
                 System.out.printf("| %-5d | %-20s | %-20s | %-20s |\n", n, nombre, ciudad, direccion);
                 n++;
@@ -220,6 +224,7 @@ public class Owners {
     /**
      * Actualiza un propietario existente
      * @param r número de registro
+     * Es posible dejar campos en blanco para mantener su valor actual
      */
     public void actualizarPropietario(int r) {
         List<String> propietario = owner.cargarDatosPropietario(r);
@@ -302,7 +307,6 @@ public class Owners {
     /**
      * Desactiva el registro de un propietario
      * @param registro número de registro
-     * Es posible dejar campos en blanco para mantener su valor actual
      */
     public void desactivarPropietario(int registro) {
         owner.desactivarPropietario(registro);

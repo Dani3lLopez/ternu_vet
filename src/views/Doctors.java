@@ -106,6 +106,10 @@ public class Doctors {
             for (List<String> doctor : doctores) {
                 String fechaCont = doctor.get(1);
                 String fechaNacimiento = doctor.get(2);
+                if (fechaNacimiento == null)
+                {
+                    fechaNacimiento = "";
+                }
                 String nombre = doc.capturarNombres(doctor.get(3));
                 String especialidad = doc.capturarEspecialidades(doctor.get(4));
 

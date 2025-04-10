@@ -44,6 +44,49 @@ public class InvoicesDetailsModel {
     }
 
     /**
+     * Obtiene el nombre del item (producto o servicio) asociado a un detalle de item
+     * @param idDetalleItem el id del detalle del item
+     * @return el nombre del producto o la descripción del servicio, o "No encontrado" si no existe
+     */
+    public static String obtenerNombreItem(String idDetalleItem) {
+        String nombreItem = "No encontrado";
+
+        String sqlProducto = "SELECT p.nombre_producto FROM productos p " +
+                "INNER JOIN detalle_items di ON p.id_producto = di.id_producto " +
+                "WHERE di.id_detalle_item = ?";
+
+        String sqlServicio = "SELECT s.nombre_servicio FROM servicios s " +
+                "INNER JOIN detalle_items di ON s.id_servicio = di.id_servicio " +
+                "WHERE di.id_detalle_item = ?";
+
+        try (Connection conexion = ConnectionModel.conectar()) {
+
+            // intenta obtener nombre del producto
+            try (PreparedStatement ps = conexion.prepareStatement(sqlProducto)) {
+                ps.setString(1, idDetalleItem);
+                ResultSet rs = ps.executeQuery();
+                if (rs.next()) {
+                    return rs.getString("nombre_producto");
+                }
+            }
+
+            // Intentar obtener descripción del servicio
+            try (PreparedStatement ps = conexion.prepareStatement(sqlServicio)) {
+                ps.setString(1, idDetalleItem);
+                ResultSet rs = ps.executeQuery();
+                if (rs.next()) {
+                    return rs.getString("nombre_servicio");
+                }
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Error al obtener nombre del item: " + e.getMessage());
+        }
+
+        return nombreItem;
+    }
+
+    /**
      * Carga todas las facturas registradas en la base de datos
      * @return una lista de listas de las facturas registradas en la base de datos
      */

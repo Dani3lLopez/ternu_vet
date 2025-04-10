@@ -118,7 +118,7 @@ public class Products {
         } else {
             String separador = "-".repeat(120);
             System.out.println(separador);
-            System.out.printf("| %-5s | %-20s | %-35s | %-15s | %-15s | %-15s |\n", "No.", "Nombre", "Descripción",
+            System.out.printf("| %-5s | %-50s | %-85s | %-15s | %-15s | %-15s |\n", "No.", "Nombre", "Descripción",
                     "Precio", "Estado", "Peso");
             System.out.println(separador);
 
@@ -134,7 +134,7 @@ public class Products {
                 // Formatea el precio y peso obtenido del producto
                 String valorPrecio = "$ " + producto.get(3);
                 String valorPeso = producto.get(5) + " " + producto.get(6);
-                System.out.printf("| %-5s | %-20s | %-35s | %-15s | %-15s | %-15s |\n", i, producto.get(1),
+                System.out.printf("| %-5s | %-50s | %-85s | %-15s | %-15s | %-15s |\n", i, producto.get(1),
                         valorDescripcion, valorPrecio, producto.get(7), valorPeso);
                 i++;
             }

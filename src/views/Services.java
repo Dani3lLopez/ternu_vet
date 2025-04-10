@@ -115,7 +115,7 @@ public class Services {
         } else {
             String separador = "-".repeat(120);
             System.out.println(separador);
-            System.out.printf("| %-5s | %-35s | %-55s | %-25s |\n", "No.", "Nombre", "Descripción", "Precio");
+            System.out.printf("| %-5s | %-50s | %-80s | %-25s |\n", "No.", "Nombre", "Descripción", "Precio");
             System.out.println(separador);
 
             int i = 1;
@@ -128,7 +128,7 @@ public class Services {
                 // Le da formato al precio del servicio que obtiene
                 String valorPrecio = servicio.get(3);
                 valorPrecio = "$ " + valorPrecio;
-                System.out.printf("| %-5s | %-35s | %-55s | %-25s |\n", i, servicio.get(1), valorDescripcion,
+                System.out.printf("| %-5s | %-50s | %-80s | %-25s |\n", i, servicio.get(1), valorDescripcion,
                         valorPrecio);
                 i++;
             }
