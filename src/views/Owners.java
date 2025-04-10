@@ -224,6 +224,7 @@ public class Owners {
     /**
      * Actualiza un propietario existente
      * @param r número de registro
+     * Es posible dejar campos en blanco para mantener su valor actual
      */
     public void actualizarPropietario(int r) {
         List<String> propietario = owner.cargarDatosPropietario(r);
@@ -306,7 +307,6 @@ public class Owners {
     /**
      * Desactiva el registro de un propietario
      * @param registro número de registro
-     * Es posible dejar campos en blanco para mantener su valor actual
      */
     public void desactivarPropietario(int registro) {
         owner.desactivarPropietario(registro);

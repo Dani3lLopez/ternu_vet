@@ -7,18 +7,16 @@ import src.validations.Validations;
 import java.util.List;
 import java.util.Scanner;
 
-/*
- * Vista de detalles de facturas
- *  Interactua con el usuario para gestionar el detalles de facturas
- * Permite listar, registrar, actualizar y eliminar registros de detalles de facturas
- * Se comunica con el controlador para realizar las opciones
+/**
+ * Vista: InvoicesDetails
+ * Contiene los métodos necesarios para administrar las facturas
  */
 public class InvoicesDetails {
     Scanner scan = new Scanner(System.in);
     public InvoicesDetailsController invoiceDetail = new InvoicesDetailsController();
 
-    /*
-     * Muestra el menu
+    /**
+     * Menú con opciones para administrar datos
      */
     public void invoiceDetailMenu() {
         Scanner scan = new Scanner(System.in);
@@ -99,9 +97,8 @@ public class InvoicesDetails {
         }
     }
 
-    /*
-     * Carga y muestra la lista de detalles de facturas en formato de tabla
-     * Se obtienen las listas de detalles de factura
+    /**
+     * Carga los detalles de la factura
      */
     public void cargarDetallesFacturas() {
         invoiceDetail.llenarListas();
@@ -135,10 +132,8 @@ public class InvoicesDetails {
         }
     }
 
-    /*
-     * Registra a un nuevo detalle de factura
-     * Muetsra primero la lista de facturas disponibles para seleccionar el propietario
-     * Luego, muestra la lista de productos y se solicita informacion, como el precio, la cantidad
+    /**
+     * Registra un nuevo detalle de factura
      */
     public void registrarDetalleFactura() {
         invoiceDetail.llenarListas();
@@ -228,9 +223,10 @@ public class InvoicesDetails {
         }
     }
 
-    /*
-     * Actualiza los datos del detalle
-     * Solicita la nueva informacion y actualiza con esos nuevos valores
+    /**
+     * Actualiza un detalle existente
+     * @param r número de registro
+     * Es posible dejar campos en blanco para mantener su valor actual
      */
     public void actualizarDetalle(int r) {
         String idDetalle = invoiceDetail.capturarIdLista(r);
@@ -306,8 +302,9 @@ public class InvoicesDetails {
         invoiceDetail.actualizarDetalle(r, nuevoIdFactura, nuevoIdProducto, nuevaCantidad, nuevoPrecio);
     }
 
-    /*
-     * Elimina un registro de detalle de factura
+    /**
+     * Elimina un detalle de la factura
+     * @param registro número de registro
      */
     public void eliminarDetalleFactura(int registro) {
         invoiceDetail.eliminarDetalleFactura(registro);
