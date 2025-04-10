@@ -79,52 +79,10 @@ public class Validations {
      * @param fecha dato de entrada
      */
     public static void validarFecha(String fecha) {
-        boolean validarFecha = true;
-
-        // Comprueba que la longitud de los datos ingresados sea 10
-        if (fecha.length() == 10) {
-
-            // Verifica que los caracteres en las posiciones 4 y 7 sean guiones
-            if (fecha.charAt(4) != '-' || fecha.charAt(7) != '-') {
-                validarFecha = false;
-            }
-            int conteoNoValidosAnio = 0;
-            int conteoNoValidosMes = 0;
-            int conteoNoValidosDia = 0;
-
-            // Verifica que los primeros 4 caracteres sean números
-            for (int i = 0; i < 4; i++) {
-                if (!Character.isDigit(fecha.charAt(i))) {
-                    conteoNoValidosAnio++;
-                }
-            }
-
-            // Verifica que en la posición 5 y 6 también haya números
-            for (int i = 5; i < 7; i++) {
-                if (!Character.isDigit(fecha.charAt(i))) {
-                    conteoNoValidosMes++;
-                }
-            }
-
-            // Y también que los de la 8 y 9 sean números
-            for (int i = 8; i < 10; i++) {
-                if (!Character.isDigit(fecha.charAt(i))) {
-                    conteoNoValidosDia++;
-                }
-            }
-
-            // Si uno de los contadores es mayor a cero, entonces invalidará la fecha
-            // ingresada
-            if (conteoNoValidosAnio > 0 || conteoNoValidosMes > 0 || conteoNoValidosDia > 0) {
-                validarFecha = false;
-            }
-
-        } else {
-            validarFecha = false; // y si la longitud no es 10, la fecha tampoco será válida
-        }
-
-        if(!validarFecha) {
-            throw new FormatException("Entrada inválida: formato de fecha (YYYY-MM-DD) incorrecto.");
+        try{
+            LocalDate.parse(fecha);
+        }catch(DateTimeParseException e){
+            throw new FormatException("throw new FormatException(\"Entrada inválida: formato de fecha (YYYY-MM-DD) incorrecto");
         }
     }
 
