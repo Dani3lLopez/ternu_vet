@@ -127,7 +127,6 @@ public class InvoicesDetails {
                     }
                 }
                 String nombreItem = invoiceDetail.capturarNombreItem(idProducto);
-                System.out.println(nombreItem);
 
                 System.out.printf("| %-5d | %-10s | %-50s | %-25s | %-20s |\n", n, numero, nombreItem, cantidad, precio);
                 n++;
@@ -177,11 +176,12 @@ public class InvoicesDetails {
         invoiceDetail.setNumeroFactura(id);
 
         System.out.println(separador);
-        System.out.printf("| %-5s | %-50s |\n", "No.", "Producto/Servicio");
+        System.out.printf("| %-5s | %-50s |\n", "No.", "Producto");
         System.out.println(separador);
 
         for (int c = 0; c < invoiceDetail.listaNombresItems().size(); c++) {
             List<String> item = invoiceDetail.listaNombresItems().get(c);
+            System.out.printf("| %-5d | %-50s |\n", (c + 1), item.get(1));
         }
         System.out.println(separador);
 
@@ -199,21 +199,10 @@ public class InvoicesDetails {
         }
 
         String n = invoiceDetail.capturarIdListaDetallesItems(Integer.parseInt(v));
-        System.out.println(n);
         invoiceDetail.setIdDetalleItem(n);
 
-        String cantidad = "";
-        while(true){
-            System.out.println("Cantidad *: ");
-            cantidad = scan.nextLine().trim();
-            try {
-                Validations.validarCampoObligatorio(cantidad);
-                Validations.validarRangoNumeros(cantidad, 1, 100);
-                break;
-            }catch(FormatException e){
-                System.out.println(e.getMessage());
-            }
-        }
+        System.out.println("Cantidad: ");
+        String cantidad = scan.nextLine();
         invoiceDetail.setCantidadItem(cantidad);
 
         String precio = "";
@@ -233,7 +222,7 @@ public class InvoicesDetails {
         int resultado = invoiceDetail.registrarItemFactura();
 
         if (resultado == 1) {
-            System.out.println("Detalle registrado con éxito.");
+            System.out.println("detalle registrado con éxito.");
         } else {
             System.out.println("Ha ocurrido un error al registrar el detalle.");
         }
