@@ -79,7 +79,7 @@ public class InvoicesDetailsModel {
      */
     public static List<List<String>> cargarListaDetallesItems() {
         List<List<String>> listaDetallesItems = new ArrayList<>();
-        String sql = "SELECT * FROM detalle_items";
+        String sql = "SELECT * FROM detalle_items ORDER BY id_detalle_item ASC";
 
         try (
                 Connection conexion = ConnectionModel.conectar();
@@ -107,7 +107,17 @@ public class InvoicesDetailsModel {
      */
     public static List<List<String>> cargarListaNombresItems() {
         List<List<String>> listaNombresItems = new ArrayList<>();
-        String sql = "SELECT p.id_producto, p.nombre_producto FROM productos p LEFT JOIN detalle_items di ON p.id_producto = di.id_producto";
+        String sql = "SELECT di.id_detalle_item, p.id_producto AS id, p.nombre_producto AS nombre\n" +
+                "FROM productos p\n" +
+                "INNER JOIN detalle_items di ON p.id_producto = di.id_producto\n" +
+                "\n" +
+                "UNION\n" +
+                "\n" +
+                "SELECT di.id_detalle_item, s.id_servicio AS id, s.nombre_servicio AS nombre\n" +
+                "FROM servicios s\n" +
+                "INNER JOIN detalle_items di ON s.id_servicio = di.id_servicio\n" +
+                "\n" +
+                "ORDER BY id_detalle_item ASC;";
 
         try (
                 Connection conexion = ConnectionModel.conectar();
@@ -116,8 +126,8 @@ public class InvoicesDetailsModel {
         ) {
             while (rs.next()) {
                 List<String> producto = new ArrayList<>();
-                producto.add(rs.getString("id_producto"));
-                producto.add(rs.getString("nombre_producto"));
+                producto.add(rs.getString("id"));
+                producto.add(rs.getString("nombre"));
 
                 listaNombresItems.add(producto);
             }
@@ -167,6 +177,7 @@ public class InvoicesDetailsModel {
      * @return numero de filas afectadas
      */
     public static int ingresarNuevoDetalleFactura(String numeroFactura, String idDetalleItem, String cantidadItem, String precioUnitario){
+        System.out.println(idDetalleItem);
         int retorno = 0;
         String sql = "INSERT INTO detalle_facturas (numero_factura, id_detalle_item, cantidad_item, precio_unitario_item) VALUES (?,?,?,?)";
         try(
