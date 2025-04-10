@@ -1,4 +1,4 @@
-# TernuVet-System 🐾
+![image](https://github.com/user-attachments/assets/12243c3d-48be-4423-8062-b8756dad1a02)# TernuVet-System 🐾
 
 ![License](https://img.shields.io/badge/License-MIT-blue.svg) ![Java](https://img.shields.io/badge/Java-8%2B-orange.svg)
 
@@ -58,6 +58,14 @@ Este proyecto está diseñado para gestionar una clínica veterinaria. Es ideal 
 │   │   ├── ServicesModel
 │   │   ├── SpecialtiesModel
 │   │   ├── UsersModel
+│   ├── test
+│   │   ├── models.test
+│   │   │   ├── UsersModelTest
+│   │   ├── validations.test
+│   │   │   ├── ValidationsTest
+│   ├── validations
+│   │   ├── FormatException
+│   │   ├── Validations
 │   ├── views
 │   │   ├── Appointments
 │   │   ├── Consultations
@@ -85,7 +93,7 @@ Este proyecto está diseñado para gestionar una clínica veterinaria. Es ideal 
 - **Validación de campos**: Se implementan validaciones en los campos de entrada de datos para asegurar el correcto funcionamiento del proyecto.
 - **Encriptación de contraseñas**: (Nueva funcionalidad) el sistema encripta contraseñas antes de enviar los datos a la base de datos.
 - **Cambio en la clase de conexión**: Se ha definido un parámetro para el nombre de la base de datos, esto facilita el cambio entre la base de testing y la original.
-- **Implementación de testing**: Se han implementado pruebas con JUnit 5.9.0 Jupiter.
+- **Implementación de testing**: Se han implementado pruebas con JUnit 5.10.0 Jupiter.
 - **Errores solucionados**: Errores encontrados han sido solucionados.
 
 ## Requisitos 📌
@@ -93,7 +101,7 @@ Este proyecto está diseñado para gestionar una clínica veterinaria. Es ideal 
 Antes de comenzar, asegúrate de tener instalados los siguientes programas en tu máquina:
 
 - **Java 8 o superior**: Asegúrate de tener Java instalado. Si no lo tienes, puedes descargarlo desde [aquí](https://www.oracle.com/java/technologies/javase-jdk8-downloads.html).
-- **MySQL** (o cualquier base de datos que prefieras): Para almacenar la información.
+- **MySQL**: Para almacenar la información de la base de datos.
 - **IDE o editor de texto** (por ejemplo, IntelliJ IDEA, Eclipse, VSCode).
 
 ## Instrucciones de Instalación ⚙️
@@ -127,9 +135,24 @@ Antes de comenzar, asegúrate de tener instalados los siguientes programas en tu
    - ![image](https://github.com/user-attachments/assets/7ca3a1ff-ecf8-45a2-a3ca-9d3cf95b57e2)
    - Seleccionar que se añadirá desde Maven.
    - ![image](https://github.com/user-attachments/assets/7593177f-0c33-4223-a0e6-810edc9bafa6)
-   - Buscar la libreria (JUnit - Jupiter - v. 5.9.0).
-   - ![image](https://github.com/user-attachments/assets/4db1c83b-1fd6-4c23-b1eb-1c06e8293e37)
+   - Buscar la libreria (JUnit - Jupiter - v. 5.10.0).
+   - ![image](https://github.com/user-attachments/assets/7c82f771-b7ba-4f37-b454-38ccc055d967)
    - Presionar OK y seguir el proceso para la instalación.
+
+5. **Colocar tus credenciales de acceso a la base de datos**
+   - Ir al archivo ConnectionModel en el paquete models.
+   - Editar las variables de user y pass (en caso difieran con tu información)
+   - ![image](https://github.com/user-attachments/assets/bdd3d23d-045e-4b99-a173-08cab79de9c0)
+
+6. **Monta la base de datos de producción y de testeos en tu computadora**
+  - Ejecuta los scripts (MySQL) de las bases de producción y testeo en tu computadora.
+
+## Instrucciones para ejecutar las pruebas unitarias 🧪
+   - Ir al paquete de test.
+   - Dentro del paquete de test, buscar las clases de prueba.
+   - ![image](https://github.com/user-attachments/assets/a7961022-ec25-4222-b8ec-e02ecebde43e)
+   - Una vez dentro del archivo que deseas probar, solo hace falta ejecutar el archivo .java.
+   - **Nota:** para probar las clases dentro de models.test es necesario tener la base test en tu computadora.
 
 ## Instrucciones para generar JAVADOC 📄
 
