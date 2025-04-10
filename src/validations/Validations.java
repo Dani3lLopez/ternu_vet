@@ -1,6 +1,9 @@
 package src.validations;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.Base64;
 
 public class Validations {
@@ -104,11 +107,44 @@ public class Validations {
         }
     }
 
+    public static LocalTime validarHora(String hora){
+        LocalTime horaConvertida;
+        if(hora.length() == 8) {
+            try{
+                horaConvertida = LocalTime.parse(hora);
+            }catch (DateTimeParseException e){
+                throw new FormatException("Entrada inválida: formato de 24 horas (HH:MM) incorrecto.");
+            }
+        }else if (hora.length() == 4){
+            try{
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("H:mm");
+                horaConvertida = LocalTime.parse(hora, formatter);
+            }catch (DateTimeParseException e){
+                throw new FormatException("Entrada inválida: formato de 24 horas (HH:MM) incorrecto.");
+            }
+        }else{
+            try{
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+                horaConvertida = LocalTime.parse(hora, formatter);
+            }catch (DateTimeParseException e){
+                throw new FormatException("Entrada inválida: formato de 24 horas (HH:MM) incorrecto.");
+            }
+        }
+        return horaConvertida;
+    }
+
     public static void validarRangoFechas(String fecha, LocalDate fechaInicio, LocalDate fechaFinal) {
         validarFecha(fecha);
         LocalDate fechaConvertida = LocalDate.parse(fecha);
         if (fechaConvertida.isBefore(fechaInicio) || fechaConvertida.isAfter(fechaFinal)) {
             throw new FormatException("Entrada inválida: fecha fuera del rango permitido (" + fechaInicio + " - " + fechaFinal + ").");
+        }
+    }
+
+    public static void validarRangoHoras(String hora, LocalTime horaInicio, LocalTime horaFinal){
+        LocalTime horaConvertida = validarHora(hora);
+        if(horaConvertida.isBefore(horaInicio) || horaConvertida.isAfter(horaFinal)) {
+            throw new FormatException("Entrada inválida: hora fuera del rango permitido (" + horaInicio + " - " + horaFinal + ").");
         }
     }
 
