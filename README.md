@@ -1,4 +1,4 @@
-# Sistema de Gestión Veterinaria 🐾
+# TernuVet-System 🐾
 
 ![License](https://img.shields.io/badge/License-MIT-blue.svg) ![Java](https://img.shields.io/badge/Java-8%2B-orange.svg)
 
@@ -29,21 +29,21 @@ Este proyecto está diseñado para gestionar una clínica veterinaria. Es ideal 
 │   ├── app
 │   │   ├── Main
 │   │   ├── NotasProyecto
-│   │   ├── Controllers
-│   │   │   ├── AppointmentsController
-│   │   │   ├── ConsultationsController
-│   │   │   ├── DoctorsController
-│   │   │   ├── InvoicesController
-│   │   │   ├── InvoicesDetailsController
-│   │   │   ├── OwnersController
-│   │   │   ├── OwnersPetsDetailsController
-│   │   │   ├── PeopleController
-│   │   │   ├── PetsController
-│   │   │   ├── ProductsController
-│   │   │   ├── ServicesController
-│   │   │   ├── SpecialtiesController
-│   │   │   ├── UsersController
-│   ├── Models
+│   ├── controllers
+│   │   ├── AppointmentsController
+│   │   ├── ConsultationsController
+│   │   ├── DoctorsController
+│   │   ├── InvoicesController
+│   │   ├── InvoicesDetailsController
+│   │   ├── OwnersController
+│   │   ├── OwnersPetsDetailsController
+│   │   ├── PeopleController
+│   │   ├── PetsController
+│   │   ├── ProductsController
+│   │   ├── ServicesController
+│   │   ├── SpecialtiesController
+│   │   ├── UsersController
+│   ├── models
 │   │   ├── AppointmentsModel
 │   │   ├── ConnectionModel
 │   │   ├── ConsultationsModel
@@ -58,7 +58,7 @@ Este proyecto está diseñado para gestionar una clínica veterinaria. Es ideal 
 │   │   ├── ServicesModel
 │   │   ├── SpecialtiesModel
 │   │   ├── UsersModel
-│   ├── Views
+│   ├── views
 │   │   ├── Appointments
 │   │   ├── Consultations
 │   │   ├── Doctors
@@ -110,5 +110,18 @@ Antes de comenzar, asegúrate de tener instalados los siguientes programas en tu
    - ![image](https://github.com/user-attachments/assets/f9c681ad-674b-4414-9b37-12065de6f754)
    - Buscar el archivo JAR y cargarlo en el programa.
 
+## Instrucciones para generar JAVADOC 📄
 
- 
+1. **Clic en "Tools" dentro del proyecto:**
+
+   ![image](https://github.com/user-attachments/assets/c9d7ea6a-0b99-403c-9c2e-32eb57dee7a0)
+
+
+2. **Selecciona: "Generate Javadoc"**
+
+   ![image](https://github.com/user-attachments/assets/81f9b065-5e4f-4027-a6ef-48c736e5fe16)
+
+
+   **Configuración necesaria:**
+   
+  ![javadoc](https://github.com/user-attachments/assets/5870ae04-78b6-414c-88ac-9fd76d59ebb0)
