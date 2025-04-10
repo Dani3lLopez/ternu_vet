@@ -55,10 +55,6 @@ public class InvoicesDetailsModel {
                 "INNER JOIN detalle_items di ON p.id_producto = di.id_producto " +
                 "WHERE di.id_detalle_item = ?";
 
-        String sqlServicio = "SELECT s.nombre_servicio FROM servicios s " +
-                "INNER JOIN detalle_items di ON s.id_servicio = di.id_servicio " +
-                "WHERE di.id_detalle_item = ?";
-
         try (Connection conexion = ConnectionModel.conectar()) {
 
             // intenta obtener nombre del producto
@@ -67,15 +63,6 @@ public class InvoicesDetailsModel {
                 ResultSet rs = ps.executeQuery();
                 if (rs.next()) {
                     return rs.getString("nombre_producto");
-                }
-            }
-
-            // Intentar obtener descripción del servicio
-            try (PreparedStatement ps = conexion.prepareStatement(sqlServicio)) {
-                ps.setString(1, idDetalleItem);
-                ResultSet rs = ps.executeQuery();
-                if (rs.next()) {
-                    return rs.getString("nombre_servicio");
                 }
             }
 
@@ -150,7 +137,7 @@ public class InvoicesDetailsModel {
      */
     public static List<List<String>> cargarListaNombresItems() {
         List<List<String>> listaNombresItems = new ArrayList<>();
-        String sql = "SELECT p.id_producto, p.nombre_producto FROM productos p INNER JOIN detalle_items di ON p.id_producto = di.id_producto";
+        String sql = "SELECT p.id_producto, p.nombre_producto FROM productos p LEFT JOIN detalle_items di ON p.id_producto = di.id_producto";;
 
         try (
                 Connection conexion = ConnectionModel.conectar();
@@ -170,7 +157,6 @@ public class InvoicesDetailsModel {
 
         return listaNombresItems;
     }
-  
     /**
      * Carga el detalle de una factura especificado por su id
      * @param id del registro del detalle en la base de datos
@@ -182,7 +168,7 @@ public class InvoicesDetailsModel {
 
         try (
                 Connection conexion = ConnectionModel.conectar();
-                PreparedStatement ps = conexion.prepareStatement(sql)
+                PreparedStatement ps = conexion.prepareStatement(sql);
         ) {
             ps.setString(1, id);
             ResultSet rs = ps.executeQuery();
@@ -200,7 +186,6 @@ public class InvoicesDetailsModel {
 
         return datosDetalle;
     }
-
     /**
      * Ingresa nuevos detalles de factura en la base de datos
      * @param numeroFactura numero de factura
@@ -252,6 +237,7 @@ public class InvoicesDetailsModel {
         }
         return 0;
     }
+
 
     /**
      * Elimina un detalle de la factura segun su id
