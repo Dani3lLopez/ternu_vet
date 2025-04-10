@@ -78,6 +78,16 @@ Este proyecto está diseñado para gestionar una clínica veterinaria. Es ideal 
 
 ```
 
+## Ultimas Actualizaciones 🆕
+
+- **Renombramiento de paquetes**: Los paquetes del proyecto fueron renombrados.
+- **Documentación interna Javadoc**: Cada clase tiene sus respectivos comentarios que generan un Javadoc.
+- **Validación de campos**: Se implementan validaciones en los campos de entrada de datos para asegurar el correcto funcionamiento del proyecto.
+- **Encriptación de contraseñas**: (Nueva funcionalidad) el sistema encripta contraseñas antes de enviar los datos a la base de datos.
+- **Cambio en la clase de conexión**: Se ha definido un parámetro para el nombre de la base de datos, esto facilita el cambio entre la base de testing y la original.
+- **Implementación de testing**: Se han implementado pruebas con JUnit 5.12.1 Jupiter.
+- **Errores solucionados**: Errores encontrados han sido solucionados.
+
 ## Requisitos 📌
 
 Antes de comenzar, asegúrate de tener instalados los siguientes programas en tu máquina:
