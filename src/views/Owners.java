@@ -8,9 +8,9 @@ import src.validations.Validations;
 import java.util.List;
 import java.util.Scanner;
 
-/*
- * Vista de propetiarios: gestiona la interaccion con el usuario
- * Se basa en operaciones de un menu para registrar, actualizar, desactivar propietarios
+/**
+ * Vista: Owners
+ * Contiene los métodos necesarios para administrar a los propietarios
  */
 public class Owners {
 
@@ -21,8 +21,8 @@ public class Owners {
     // Instancia del controlador de personas
     public PeopleController person = new PeopleController();
 
-    /*
-     * Muestra el menu principal y gestiona la opcion que se seleccione
+    /**
+     * Menú con opciones para administrar los datos
      */
     public void ownerMenu() {
         Scanner scan = new Scanner(System.in);
@@ -107,8 +107,8 @@ public class Owners {
         }
     }
 
-    /*
-     * Carga y muestra la lista de propietarios en formato de tabla
+    /**
+     * Carga la lista de propietarios obtenida de la base de datos
      */
     public void cargarPropietarios(){
         owner.llenarListas();
@@ -133,25 +133,23 @@ public class Owners {
             }
         }
     }
-    /*
-     * Registra a un nuevo propietario
-     * Muetsra primero la lista de personas disponibles para seleccionar al propietario
-     * Luego, muestra la lista de ciudades para elgeir una
-     * Por ultimo, se solicita la direccion
+
+    /**
+     * Registra un nuevo propietario en la base de datos
      */
     public void registrarPropietario() {
-        person.cargarListaPersonas();
-        owner.llenarListas();
+        person.cargarListaPersonas(); //carga la lista de personas
+        owner.llenarListas(); //llenamos las listas
 
         String separador = "-".repeat(70);
         System.out.println(separador);
-        System.out.printf("| %-5s | %-50s |\n", "No.", "Nombre");
+        System.out.printf("| %-5s | %-50s |\n", "No.", "Nombre"); //formato de tabla
         System.out.println(separador);
         int r = 1;
         for (int p = 0; p < person.listaPersonas().size(); p++) {
             List<String> persona = person.listaPersonas().get(p);
 
-            System.out.printf("| %-5d | %-50s |\n", r, persona.get(1) + " " + persona.get(2));
+            System.out.printf("| %-5d | %-50s |\n", r, persona.get(1) + " " + persona.get(2)); //llenamos la tabla
             r++;
         }
         System.out.println(separador);
@@ -218,9 +216,10 @@ public class Owners {
             System.out.println("Ha ocurrido un error al registrar el propietario.");
         }
     }
-    /*
-     * Actualizar los datos de un propietario que existe
-     * El parametro es el idncie del registro a actualizar
+
+    /**
+     * Actualiza un propietario existente
+     * @param r número de registro
      */
     public void actualizarPropietario(int r) {
         List<String> propietario = owner.cargarDatosPropietario(r);
@@ -263,7 +262,7 @@ public class Owners {
             }
         }
 
-        // muestra la lsita de ciudades disponibles
+        // muestra la lista de ciudades disponibles
         owner.llenarListas();
         System.out.println("Ciudades Disponibles:");
         for (int c = 0; c < owner.listaCiudades().size(); c++) {
@@ -299,8 +298,11 @@ public class Owners {
         boolean visibilidad = true;
         owner.actualizarPropietario(r, nid, nidc, nuevaDireccion, visibilidad);
     }
-    /*
-     * Desactiva un propietario
+
+    /**
+     * Desactiva el registro de un propietario
+     * @param registro número de registro
+     * Es posible dejar campos en blanco para mantener su valor actual
      */
     public void desactivarPropietario(int registro) {
         owner.desactivarPropietario(registro);

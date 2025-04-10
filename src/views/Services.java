@@ -7,11 +7,17 @@ import src.validations.Validations;
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ * Vista: Services
+ * Contiene los métodos necesarios para administrar los servicios
+ */
 public class Services {
     Scanner scan = new Scanner(System.in);
     public ServicesController service = new ServicesController();
 
-    // Hicimos un método para el menú principal de servicios
+    /**
+     * Menú de opciones para administrar los datos
+     */
     public void serviceMenu() {
         String separador = "-";
 
@@ -27,7 +33,7 @@ public class Services {
             System.out.println(separador.repeat(50));
             Services actual = new Services();
 
-            // Este válida la opción seleccionada
+            // valida la opción seleccionada
             String choice;
             try{
                 System.out.print("Seleccione una opción: ");
@@ -45,7 +51,7 @@ public class Services {
                             actual.cargarServicios();
                             String registroActualizar;
 
-                            // Estebucle solicita un número de registro hasta que se ingrese uno válido
+                            // Este bucle solicita un número de registro hasta que se ingrese uno válido
                             while (true) {
                                 System.out.print("Ingrese el número de registro a actualizar: ");
                                 registroActualizar = scan.nextLine().trim();
@@ -68,8 +74,7 @@ public class Services {
                             actual.cargarServicios();
                             String registroEliminar;
 
-                            // Este bucle al igual que el anterior solicita el número de registro hasta que
-                            // sea válido
+                            // Este bucle al igual que el anterior solicita el número de registro hasta que sea valido
                             while (true) {
                                 System.out.print("Ingrese el número de registro a eliminar: ");
                                 registroEliminar = scan.nextLine().trim();
@@ -100,7 +105,9 @@ public class Services {
         }
     }
 
-    // Hicimos otro método para que se carge y muestre la lista de los servicios
+    /**
+     * Carga todos los servicios almacenados en la base de datos
+     */
     public void cargarServicios() {
         service.cargarListaServicios();
         if (service.getListaServicios().isEmpty()) {
@@ -129,7 +136,9 @@ public class Services {
         }
     }
 
-    // Y otro método para registrar nuevos servicios
+    /**
+     * Registra nuevos servicios en la base de datos
+     */
     public void registrarServicio() {
         String nombreServicio;
 
@@ -182,7 +191,11 @@ public class Services {
         }
     }
 
-    // También creamos un método para actualizar un servicio que ya exista
+    /**
+     * Actualiza un servicio existente
+     * @param registro número de registro
+     * Es posible dejar campos en blanco para mantener su valor actual
+     */
     public void actualizarServicio(int registro) {
         List<String> servicio = service.cargarDatosServicio(registro);
 
@@ -229,7 +242,10 @@ public class Services {
         service.actualizarServicio(registro, nombreServicio, descripcionServicio, precioServicio);
     }
 
-    // Otro método, este permite eliminar un servicio
+    /**
+     * Elimina un servicio
+     * @param registro número de registro
+     */
     public void eliminarServicio(int registro) {
         service.eliminarServicio(registro);
     }

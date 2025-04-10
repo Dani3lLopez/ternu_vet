@@ -7,11 +7,17 @@ import src.validations.Validations;
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ * Vista: Specialties
+ * Contiene los métodos necesarios para administrar las especialidades
+ */
 public class Specialties {
     Scanner scan = new Scanner(System.in);
     public SpecialtiesController specialty = new SpecialtiesController();
 
-    // Creamos un menú principal para la gestión de especialidades
+    /**
+     * Menú de opciones para administrar las especialidades
+     */
     public void specialtiesMenu() {
         Scanner scan = new Scanner(System.in);
         String separador = "-";
@@ -69,7 +75,9 @@ public class Specialties {
         }
     }
 
-    // Primero carga la lista de especialidades y luego la muestra
+    /**
+     * Carga todas las especialidades almacenadas en la base de datos
+     */
     public void cargarEspecialidades() {
         specialty.cargarListaEspecialidades();
         if (specialty.listaEspecialidades().isEmpty()) {
@@ -89,7 +97,9 @@ public class Specialties {
         }
     }
 
-    // Registra una nueva especialidad
+    /**
+     * Registra una nueva especialidad
+     */
     public void registrarEspecialidad() {
         String nombreEspecialidad = "";
         while (true){
@@ -112,7 +122,10 @@ public class Specialties {
         }
     }
 
-    // Dado un número de registro, elemina una especialidad
+    /**
+     * Elimina una especialidad existente
+     * @param registro número de registro
+     */
     public void eliminarEspecialidad(int registro) {
         specialty.eliminarEspecialidad(registro);
     }

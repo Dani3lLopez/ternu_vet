@@ -7,11 +7,17 @@ import src.validations.Validations;
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ * Vista: Users
+ * Contiene los métodos necesarios para administrar los usuarios
+ */
 public class Users {
     Scanner scan = new Scanner(System.in);
     public UsersController user = new UsersController();
 
-    // Hicimos un método principal para el menú de usuarios
+    /**
+     * Menú de opciones para administrar los datos
+     */
     public void userMenu() {
         Scanner scan = new Scanner(System.in);
         String separador = "-";
@@ -98,7 +104,9 @@ public class Users {
         }
     }
 
-    // Hicimos otro método para cargar y mostrar la lista de usuarios
+    /**
+     * Carga todos los usuarios de la base de datos
+     */
     public void cargarUsuarios() {
         user.llenarListas();
         List<List<String>> usuarios = user.listaUsuarios();
@@ -136,7 +144,9 @@ public class Users {
         }
     }
 
-    // Creamos un método para registrar los nuevos usuarios
+    /**
+     * Registra nuevos usuarios en la base de datos
+     */
     public void registrarUsuarios() {
         user.llenarListas();
 
@@ -217,7 +227,7 @@ public class Users {
         String estado = "Activo";
         user.setEstadoUsuario(estado);
 
-        // Evalua si el usuario es administrador o no
+        // Evalúa si el usuario es administrador o no
         List<List<String>> usuarios = user.listaUsuarios();
         boolean admin = usuarios.isEmpty();
         user.setAdministrador(admin);
@@ -232,7 +242,11 @@ public class Users {
         }
     }
 
-    // Hicimos otro método para poder actualizar un usuario existente
+    /**
+     * Actualiza un registro existente de usuario
+     * @param r número de registro
+     * Es posible dejar campos en blanco para mantener su valor actual
+     */
     public void actualizarUsuario(int r) {
         // Carga la información del usuario
         List<String> usuario = user.cargarDatosUsuario(r);
@@ -312,7 +326,10 @@ public class Users {
         user.actualizarUsuario(r, nuevoNombreUsuario, nuevaClaveUsuario, estado, administrador, idDoctorActual);
     }
 
-    // Y por último otro método para desactivar el usuario
+    /**
+     * Desactiva el registro de un usuario
+     * @param registro número de registro
+     */
     public void desactivarUsuario(int registro) {
         user.desactivarUsuario(registro);
     }
