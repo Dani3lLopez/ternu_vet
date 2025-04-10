@@ -9,9 +9,9 @@ import java.time.LocalTime;
 import java.util.List;
 import java.util.Scanner;
 
-/*
- * Esta vista gestiona la interaccion con el usuario para listar, crear y desactivar citas
- * Muestra las opciones, captura entradas y llama a los metodos correspondientes a la solicitud
+/**
+ * Vista: Appointments
+ * Contiene los métodos necesarios para administrar a las citas
  */
 public class Appointments {
     // Scanner para recibir entradas y poderlas procesar
@@ -19,10 +19,8 @@ public class Appointments {
     // Instancia del controlador para las operaciones de citas
     public AppointmentsController appointment = new AppointmentsController();
 
-    /*
-     * Muestra el menu
-     * Gestiona la solicitud hecha por el usuario. Con base a la opcion seleccionada
-     * se llaman a los metodos correspondientes y si se necesitan parametros se solicitan
+    /**
+     * Menú de opciones para administrar los datos
      */
     public void appointmentMenu() {
         Scanner scan = new Scanner(System.in);
@@ -102,8 +100,8 @@ public class Appointments {
         }
     }
 
-    /*
-     * Carga la lista de citas desde el controlador y las muestra en formato tabular
+    /**
+     * Carga las citas de la base de datos
      */
     public void cargarCitas() {
         appointment.llenarListas();
@@ -142,9 +140,8 @@ public class Appointments {
         }
     }
 
-    /*
-     * Solicita al usuario los datos para crear la nueva cita
-     * Llama al controlador para registrar la cita en la base de datos
+    /**
+     * Registra nuevas citas en la base de datos
      */
     public void registrarCita() {
         // Actualiza las listas para tener los datos mas recientes
@@ -269,10 +266,10 @@ public class Appointments {
         }
     }
 
-    /*
-     * Actualiza los datos de una cita existente; solicita a los usuarios los nuevos valores
-     * Llama al controlador para aplicar los cambios
-     * El parametro es el indice de la cita a actualizar
+    /**
+     * Actualiza un registro de cita existente
+     * @param r número de registro
+     * Es posible dejar campos en blanco para mantener su valor actual
      */
     public void actualizarCita(int r) {
         // Carga los datos actuales de la cita
@@ -391,8 +388,10 @@ public class Appointments {
         // Llama al controlador para actualizar la cita con los datos nuevos
         appointment.actualizarCita(r, nuevoMotivo, nuevaFecha, nuevaHora, nuevoIdMascota, nuevoIdDoctor, visibilidad);
     }
-    /*
-     * Desactiva una cita
+
+    /**
+     * Desactiva un registro de cita
+     * @param registro número de registro
      */
     public void desactivarCita(int registro) {
         appointment.desactivarCita(registro);

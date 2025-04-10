@@ -4,13 +4,16 @@ import src.views.*;
 
 import java.util.Scanner;
 
+/**
+ * Clase: Main
+ * Contiene el menú principal de opciones para navegar en el sistema
+ */
 public class Main {
     public static void main(String[] args) {
         //Scanner para manejar las opciones ingresadas por el usuario
         Scanner scan = new Scanner(System.in);
         String separador = "-".repeat(50);
 
-        //Se imprime el menú hasta que el usuario elija una opción válida o ingrese la opción de salir
         boolean active = true;
         while (active) {
             System.out.println(separador);
