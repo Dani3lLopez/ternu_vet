@@ -1,6 +1,8 @@
 package src.views;
 
 import src.controllers.InvoicesDetailsController;
+import src.validations.FormatException;
+import src.validations.Validations;
 
 import java.util.List;
 import java.util.Scanner;
@@ -32,37 +34,67 @@ public class InvoicesDetails {
             System.out.println("5. Volver al menú principal");
             System.out.println(separador.repeat(50));
             System.out.print("Seleccione una opción: ");
-            int choice = scan.nextInt();
+            String choice = scan.nextLine().trim();
 
-            // Se llama el metodo con base a la seleccion. Si se requieren mas parametros, se solicitan
-            switch (choice) {
-                case 1:
-                    cargarDetallesFacturas();
-                    System.out.println(separador.repeat(70));
-                    break;
-                case 2:
-                    registrarDetalleFactura();
-                    break;
-                case 3:
-                    cargarDetallesFacturas();
-                    System.out.print("Ingrese el número de registro a actualizar: ");
-                    int r = scan.nextInt();
-                    scan.nextLine();
-                    actualizarDetalle(r);
-                    break;
-                case 4:
-                    cargarDetallesFacturas();
-                    System.out.print("Ingrese el número de registro a eliminar: ");
-                    int registro = scan.nextInt();
-                    scan.nextLine();
-                    eliminarDetalleFactura(registro);
-                    break;
-                case 5:
-                    active = false;
-                    System.out.println("Cerrando menú...");
-                    break;
-                default:
-                    System.out.println("El valor ingresado no corresponde a una opción de menú");
+            if(!choice.isEmpty()){
+                try{
+                    Validations.validarRangoNumeros(choice, 1, 5);
+                    switch (Integer.parseInt(choice)) {
+                        case 1:
+                            cargarDetallesFacturas();
+                            break;
+                        case 2:
+                            registrarDetalleFactura();
+                            System.out.println(separador.repeat(50));
+                            break;
+                        case 3:
+                            cargarDetallesFacturas();
+                            String r = "";
+                            while(true){
+                                System.out.print("Ingrese el número de registro a actualizar: ");
+                                r = scan.nextLine().trim();
+                                try{
+                                    Validations.validarNumeros(r);
+                                    break;
+                                }catch(FormatException e){
+                                    System.out.println(e.getMessage());
+                                }
+                            }
+                            if(r.isEmpty()){
+                                break;
+                            }else{
+                                actualizarDetalle(Integer.parseInt(r));
+                                System.out.println(separador.repeat(50));
+                                break;
+                            }
+                        case 4:
+                            cargarDetallesFacturas();
+                            String registro = "";
+                            while (true){
+                                System.out.print("Ingrese el número de registro a eliminar: ");
+                                registro = scan.nextLine().trim();
+                                try{
+                                    Validations.validarNumeros(registro);
+                                    break;
+                                }catch(FormatException e){
+                                    System.out.println(e.getMessage());
+                                }
+                            }
+                            if(registro.isEmpty()){
+                                break;
+                            }else{
+                                eliminarDetalleFactura(Integer.parseInt(registro));
+                                System.out.println(separador.repeat(50));
+                                break;
+                            }
+                        case 5:
+                            active = false;
+                            System.out.println("Cerrando menú...");
+                            break;
+                    }
+                }catch(FormatException e){
+                    System.out.println(e.getMessage());
+                }
             }
         }
     }
@@ -79,7 +111,7 @@ public class InvoicesDetails {
         } else {
             String separador = "-".repeat(100);
             System.out.println(separador);
-            System.out.printf("| %-5s | %-20s | %-20s | %-20s | %-20s |\n", "No.", "# Factura", "Item", "Cantidad", "Precio/u");
+            System.out.printf("| %-5s | %-10s | %-50s | %-25s | %-20s |\n", "No.", "# Factura", "Item", "Cantidad", "Precio/u");
             System.out.println(separador);
 
             int n = 1;
@@ -95,8 +127,9 @@ public class InvoicesDetails {
                     }
                 }
                 String nombreItem = invoiceDetail.capturarNombreItem(idProducto);
+                System.out.println(nombreItem);
 
-                System.out.printf("| %-5d | %-20s | %-20s | %-20s | %-20s |\n", n, numero, nombreItem, cantidad, precio);
+                System.out.printf("| %-5d | %-10s | %-50s | %-25s | %-20s |\n", n, numero, nombreItem, cantidad, precio);
                 n++;
             }
             System.out.println(separador);
@@ -127,50 +160,82 @@ public class InvoicesDetails {
         }
         System.out.println(separador);
 
-        System.out.print("Seleccione la factura: ");
-        int valor = scan.nextInt();
-        scan.nextLine();
-
-        if (valor > 0 && valor <= invoiceDetail.listaFacturas().size()) {
-            String id = invoiceDetail.capturarIdListaFacturas(valor);
-            invoiceDetail.setNumeroFactura(id);
-
-            System.out.println(separador);
-            System.out.printf("| %-5s | %-50s |\n", "No.", "Producto");
-            System.out.println(separador);
-
-            for (int c = 0; c < invoiceDetail.listaNombresItems().size(); c++) {
-                List<String> item = invoiceDetail.listaNombresItems().get(c);
-                System.out.printf("| %-5d | %-50s |\n", (c + 1), item.get(1));
+        String valor = "";
+        while(true){
+            System.out.print("Seleccione la factura *: ");
+            valor = scan.nextLine().trim();
+            try{
+                Validations.validarCampoObligatorio(valor);
+                Validations.validarRangoNumeros(valor, 1, facturas.size());
+                break;
+            }catch(FormatException e){
+                System.out.println(e.getMessage());
             }
-            System.out.println(separador);
+        }
 
-            System.out.print("Seleccione el producto: ");
-            int v = scan.nextInt();
-            scan.nextLine();
+        String id = invoiceDetail.capturarIdListaFacturas(Integer.parseInt(valor));
+        invoiceDetail.setNumeroFactura(id);
 
-            if (v > 0 && v <= invoiceDetail.listaNombresItems().size()) {
-                String n = invoiceDetail.capturarIdListaDetallesItems(v);
-                invoiceDetail.setIdDetalleItem(n);
+        System.out.println(separador);
+        System.out.printf("| %-5s | %-50s |\n", "No.", "Producto/Servicio");
+        System.out.println(separador);
 
-                System.out.println("Cantidad: ");
-                String cantidad = scan.nextLine();
-                invoiceDetail.setCantidadItem(cantidad);
+        for (int c = 0; c < invoiceDetail.listaNombresItems().size(); c++) {
+            List<String> item = invoiceDetail.listaNombresItems().get(c);
+        }
+        System.out.println(separador);
 
-                System.out.println("Precio unitario: ");
-                String precio = scan.nextLine();
-                invoiceDetail.setPrecioUnitarioItem(precio);
-
-                int resultado = invoiceDetail.registrarItemFactura();
-
-                if (resultado == 1) {
-                    System.out.println("detalle registrado con éxito.");
-                } else {
-                    System.out.println("Ha ocurrido un error al registrar el detalle.");
-                }
-            } else {
-                System.out.println("Selección de persona inválida.");
+        String v = "";
+        while(true){
+            System.out.print("Seleccione el producto/servicio *: ");
+            v = scan.nextLine().trim();
+            try{
+                Validations.validarCampoObligatorio(v);
+                Validations.validarRangoNumeros(v, 1, invoiceDetail.listaNombresItems().size());
+                break;
+            }catch(FormatException e){
+                System.out.println(e.getMessage());
             }
+        }
+
+        String n = invoiceDetail.capturarIdListaDetallesItems(Integer.parseInt(v));
+        System.out.println(n);
+        invoiceDetail.setIdDetalleItem(n);
+
+        String cantidad = "";
+        while(true){
+            System.out.println("Cantidad *: ");
+            cantidad = scan.nextLine().trim();
+            try {
+                Validations.validarCampoObligatorio(cantidad);
+                Validations.validarRangoNumeros(cantidad, 1, 100);
+                break;
+            }catch(FormatException e){
+                System.out.println(e.getMessage());
+            }
+        }
+        invoiceDetail.setCantidadItem(cantidad);
+
+        String precio = "";
+        while(true){
+            System.out.println("Precio unitario *: ");
+            precio = scan.nextLine().trim();
+            try{
+                Validations.validarCampoObligatorio(precio);
+                Validations.validarDecimales(precio);
+                break;
+            }catch(FormatException e){
+                System.out.println(e.getMessage());
+            }
+        }
+        invoiceDetail.setPrecioUnitarioItem(precio);
+
+        int resultado = invoiceDetail.registrarItemFactura();
+
+        if (resultado == 1) {
+            System.out.println("Detalle registrado con éxito.");
+        } else {
+            System.out.println("Ha ocurrido un error al registrar el detalle.");
         }
     }
 

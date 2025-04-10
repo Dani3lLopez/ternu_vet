@@ -22,7 +22,7 @@ Este proyecto está diseñado para gestionar una clínica veterinaria. Es ideal 
 - **Gestión de Servicios**: Registrar y actualizar la información de los servicios.
 - **Interfaz en Consola**: El sistema es operado a través de la consola.
 
-## 📂 Estructura del Proyecto
+##  Estructura del Proyecto 📂
 
 ```plaintext
 │── src
@@ -78,6 +78,16 @@ Este proyecto está diseñado para gestionar una clínica veterinaria. Es ideal 
 
 ```
 
+## Ultimas Actualizaciones 🆕
+
+- **Renombramiento de paquetes**: Los paquetes del proyecto fueron renombrados.
+- **Documentación interna Javadoc**: Cada clase tiene sus respectivos comentarios que generan un Javadoc.
+- **Validación de campos**: Se implementan validaciones en los campos de entrada de datos para asegurar el correcto funcionamiento del proyecto.
+- **Encriptación de contraseñas**: (Nueva funcionalidad) el sistema encripta contraseñas antes de enviar los datos a la base de datos.
+- **Cambio en la clase de conexión**: Se ha definido un parámetro para el nombre de la base de datos, esto facilita el cambio entre la base de testing y la original.
+- **Implementación de testing**: Se han implementado pruebas con JUnit 5.9.0 Jupiter.
+- **Errores solucionados**: Errores encontrados han sido solucionados.
+
 ## Requisitos 📌
 
 Antes de comenzar, asegúrate de tener instalados los siguientes programas en tu máquina:
@@ -103,12 +113,23 @@ Antes de comenzar, asegúrate de tener instalados los siguientes programas en tu
    
    ![image](https://github.com/user-attachments/assets/279bd8ed-1461-4e97-b3fc-194e164f8500)
 
-4. **Añadir el JDBC al proyecto:**
+3. **Añadir el JDBC al proyecto:**
 
    - ![image](https://github.com/user-attachments/assets/a5270c2a-c6ec-4910-b506-219598c5cf3e)
    - ![image](https://github.com/user-attachments/assets/429f8a21-53c0-443c-9cd4-8002dc1b9f66)
    - ![image](https://github.com/user-attachments/assets/f9c681ad-674b-4414-9b37-12065de6f754)
    - Buscar el archivo JAR y cargarlo en el programa.
+
+4. **Descargar la libreria JUnit para pruebas unitarias**
+   - Ir a la sección de ProjectStructure y seleccionar Libraries.
+   - ![image](https://github.com/user-attachments/assets/8e62e261-a38d-4c5a-82a8-c5d801f3ef40)
+   - Dar click al signo + para indicar que se añadirá una libreria nueva.
+   - ![image](https://github.com/user-attachments/assets/7ca3a1ff-ecf8-45a2-a3ca-9d3cf95b57e2)
+   - Seleccionar que se añadirá desde Maven.
+   - ![image](https://github.com/user-attachments/assets/7593177f-0c33-4223-a0e6-810edc9bafa6)
+   - Buscar la libreria (JUnit - Jupiter - v. 5.9.0).
+   - ![image](https://github.com/user-attachments/assets/4db1c83b-1fd6-4c23-b1eb-1c06e8293e37)
+   - Presionar OK y seguir el proceso para la instalación.
 
 ## Instrucciones para generar JAVADOC 📄
 
@@ -125,3 +146,4 @@ Antes de comenzar, asegúrate de tener instalados los siguientes programas en tu
    **Configuración necesaria:**
    
   ![javadoc](https://github.com/user-attachments/assets/5870ae04-78b6-414c-88ac-9fd76d59ebb0)
+

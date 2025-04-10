@@ -127,6 +127,10 @@ public class Owners {
                 String nombre = owner.capturarNombres(propietario.get(1));
                 String ciudad = owner.capturarCiudad(propietario.get(2));
                 String direccion = propietario.get(3);
+                if (direccion == null)
+                {
+                    direccion = "";
+                }
 
                 System.out.printf("| %-5d | %-20s | %-20s | %-20s |\n", n, nombre, ciudad, direccion);
                 n++;
