@@ -20,7 +20,7 @@ public class ConsultationsModel {
     public static List<List<String>> cargarListaConsultas() {
         List<List<String>> listaConsultas = new ArrayList<>();
         // Query para obtener los datos de la tabla "consultas"
-        String sql = "SELECT * FROM consultas";
+        String sql = "SELECT * FROM consultas WHERE visibilidad_consulta = 1";
 
         try (
                 // Se conecta con la base de datos, se realiza la query y se guardan los resultados
