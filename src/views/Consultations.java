@@ -8,9 +8,9 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Scanner;
 
-/*
- * Esta vista gestiona la interaccion con el usuario para listar, crear y desactivar consultas
- * Muestra las opciones, captura entradas y llama a los metodos correspondientes a la solicitud
+/**
+ * Vista: Consultations
+ * Contiene los métodos necesarios para administrar a las consultas
  */
 public class Consultations {
     // Scanner para recibir entradas y poderlas procesar
@@ -18,10 +18,8 @@ public class Consultations {
     // Instancia del controlador para las operaciones de consultas
     public ConsultationsController consultation = new ConsultationsController();
 
-    /*
-     * Muestra el menu
-     * Gestiona la solicitud hecha por el usuario. Con base a la opcion seleccionada
-     * se llaman a los metodos correspondientes y si se necesitan parametros se solicitan
+    /**
+     * Menú de opciones para administrar datos
      */
     public void consultationMenu() {
         Scanner scan = new Scanner(System.in);
@@ -102,8 +100,8 @@ public class Consultations {
         }
     }
 
-    /*
-     * Carga la lista de consultas desde el controlador y las muestra en formato tabular
+    /**
+     * Carga las consultas almacenadas en la base de datos
      */
     public void cargarConsultas() {
         consultation.llenarListas();
@@ -136,12 +134,12 @@ public class Consultations {
             System.out.println(separador);
         }
     }
-    /*
-     * Solicita al usuario los datos para crear la nueva consulta
-     * Llama al controlador para registrar la consulta en la base de datos
+
+    /**
+     * Registra nuevas consultas en la base de datos
      */
     public void registrarConsulta() {
-        // Actualiza las listas para tener los datos mas recientes
+        // Actualiza las listas para tener los datos más recientes
         consultation.llenarListas();
 
         String separador = "-".repeat(70);
@@ -267,10 +265,10 @@ public class Consultations {
         }
     }
 
-    /*
-     * Actualiza los datos de una consulta existente; solicita a los usuarios los nuevos valores
-     * Llama al controlador para aplicar los cambios
-     * El parametro es el indice de la consulta a actualizar
+    /**
+     * Actualiza una cita existente
+     * @param r número de registro
+     * Es posible dejar campos en blanco para mantener su valor actual
      */
     public void actualizarConsulta(int r) {
         // Carga los datos actuales de la consulta
@@ -382,6 +380,11 @@ public class Consultations {
         // Actualizar consulta
         consultation.actualizarConsulta(r, nuevaFecha, nuevoMotivo, nuevoDiagnostico, nuevaNota, nuevoIdMascota, nuevoIdDoctor, visibilidad);
     }
+
+    /**
+     * Desactiva un registro de consulta
+     * @param registro número de registro
+     */
     public void desactivarConsulta(int registro) {
         consultation.desactivarConsulta(registro);
     }
