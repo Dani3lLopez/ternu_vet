@@ -9,6 +9,9 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Pruebas de todos los metodos del modelo usuarios
+ */
 public class UsersModelTest {
     private String idUsuarioActualizar;
     private String nombreActualizar;
