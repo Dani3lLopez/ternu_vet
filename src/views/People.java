@@ -284,6 +284,7 @@ public class People {
             dui = scan.nextLine().trim();
             if (dui.isEmpty()){
                 dui = persona.get(5);
+                break;
             }else{
                 try{
                     Validations.validarDUI(dui);
